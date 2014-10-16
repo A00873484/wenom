@@ -11,7 +11,7 @@ namespace WcfServiceLibrary1
 {
     public struct User
     {
-        public string UserId;
+        public int UserId;
         public string FirstName;
         public string LastName;
         public string Email;
@@ -20,7 +20,7 @@ namespace WcfServiceLibrary1
 
     public struct Register
     {
-        public string UserId;
+        public int UserId;
         public string FirstName;
         public string LastName;
         public string Email;
@@ -70,7 +70,7 @@ namespace WcfServiceLibrary1
 
         [OperationContract]
         [WebInvoke(RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json, UriTemplate = "users/{userid}")]
-        User getUser(int userid);
+        int getUser(int userid);
 
         [OperationContract]
         [WebInvoke(Method = "POST", RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json, UriTemplate = "users/register")]
