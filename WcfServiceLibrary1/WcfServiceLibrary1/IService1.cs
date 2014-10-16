@@ -12,7 +12,8 @@ namespace WcfServiceLibrary1
     public struct User
     {
         public string UserId;
-        public string Username;
+        public string FirstName;
+        public string LastName;
         public string Email;
         public string PasswordHash;
     }
@@ -20,7 +21,8 @@ namespace WcfServiceLibrary1
     public struct Register
     {
         public string UserId;
-        public string Username;
+        public string FirstName;
+        public string LastName;
         public string Email;
         public string PasswordHash;
     }
@@ -30,19 +32,6 @@ namespace WcfServiceLibrary1
     {
         public string PasswordHash;
         public string Email;
-    }
-
-    // NOTE: You can use the "Rename" command on the "Refactor" menu to change the interface name "IService1" in both code and config file together.
-    [ServiceContract]
-    public interface IService1
-    {
-        [OperationContract]
-        string GetData(int value);
-
-        [OperationContract]
-        CompositeType GetDataUsingDataContract(CompositeType composite);
-
-        // TODO: Add your service operations here
     }
 
     // Use a data contract as illustrated in the sample below to add composite types to service operations.
@@ -73,6 +62,12 @@ namespace WcfServiceLibrary1
     [ServiceContract(Namespace = "http://techproproject.bcit.ca")]
     public interface IService1
     {
+        [OperationContract]
+        string GetData(int value);
+
+        [OperationContract]
+        CompositeType GetDataUsingDataContract(CompositeType composite);
+
         [OperationContract]
         [WebInvoke(RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json, UriTemplate = "users/{userid}")]
         User getUser(int userid);

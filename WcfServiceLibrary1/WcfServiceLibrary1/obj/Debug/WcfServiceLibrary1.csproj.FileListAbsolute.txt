@@ -4,3 +4,10 @@ D:\TechPro\WcfServiceLibrary1\WcfServiceLibrary1\bin\Debug\WcfServiceLibrary1.pd
 D:\TechPro\WcfServiceLibrary1\WcfServiceLibrary1\obj\Debug\WcfServiceLibrary1.csprojResolveAssemblyReference.cache
 D:\TechPro\WcfServiceLibrary1\WcfServiceLibrary1\obj\Debug\WcfServiceLibrary1.dll
 D:\TechPro\WcfServiceLibrary1\WcfServiceLibrary1\obj\Debug\WcfServiceLibrary1.pdb
+D:\TechProWebApp\wenom\WcfServiceLibrary1\WcfServiceLibrary1\obj\Debug\WcfServiceLibrary1.dll
+D:\TechProWebApp\wenom\WcfServiceLibrary1\WcfServiceLibrary1\obj\Debug\WcfServiceLibrary1.pdb
+D:\TechProWebApp\wenom\WcfServiceLibrary1\WcfServiceLibrary1\bin\Debug\WcfServiceLibrary1.dll.config
+D:\TechProWebApp\wenom\WcfServiceLibrary1\WcfServiceLibrary1\bin\Debug\WcfServiceLibrary1.dll
+D:\TechProWebApp\wenom\WcfServiceLibrary1\WcfServiceLibrary1\bin\Debug\WcfServiceLibrary1.pdb
+D:\TechProWebApp\wenom\WcfServiceLibrary1\WcfServiceLibrary1\bin\Debug\Microsoft.Data.ConnectionUI.Dialog.dll
+D:\TechProWebApp\wenom\WcfServiceLibrary1\WcfServiceLibrary1\bin\Debug\Microsoft.Data.ConnectionUI.dll
