@@ -1,0 +1,21 @@
+{
+  "name": "WeNomYou",
+  "version": "0.0.0",
+  "description": "Project dependencies for the WeNomYou project",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@bitbucket.org:wenom/wenomyou.git"
+  },
+  "author": "Jay Huang, Daniel Engelhard, Enoch Yip",
+  "license": "BSD-2-Clause",
+  "devDependencies": {
+    "grunt": "~0.4.5",
+    "grunt-include-source": "~0.4.1",
+    "grunt-contrib-sass": "~0.8.1",
+    "grunt-contrib-watch": "~0.6.1"
+  }
+}
