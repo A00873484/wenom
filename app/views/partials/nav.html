@@ -5,13 +5,13 @@
 		<!-- MENU LEFT -->
 		<div class="nav-header">
 			<div class="navlogo left menu">
-				<a href="/" id="logo" class="item"> WeNomYou Inc.</a>
+				<a href="/" id="logo" class="item">WeNomYou</a>
 			</div>
-				<a class="item mobile-menu" data-toggle="collapse" data-target=".nav-collapse"><i class="reorder icon"></i></a>
+				<a class="item mobile-menu" ng-init="navCollapsed = true" ng-click="navCollapsed = !navCollapsed"><i class="reorder icon"></i></a>
 		</div>
 
 		<!-- COLLAPSE -->
-		<div class="nav-collapse collapse" style="height: 1px;">
+		<div class="nav-collapse collapse" ng-class="{'in': !navCollapsed}">
 			<div class="nav-main-left left menu"> <!-- ng-controller="CampaignStatusCtrl" -->
 				<a href="explore" class="item"> Explore </a>
 				<a ng-if="!campaign.entry_id" href="getstarted" class="item"> Start </a>

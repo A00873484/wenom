@@ -1,7 +1,8 @@
 'use strict';
 
 var app = angular.module('WeNomYou', [
-	'ngRoute'
+	'ngRoute',
+	'ui.bootstrap'
 ]);
 
 app.constant('API_URL', {
