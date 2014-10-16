@@ -1,1 +1,124 @@
-{{hi}}
+
+<!-- ============================================= MASTHEAD -->
+<div class="ui basic masthead segment">
+
+	<div ng-include src="'views/partials/nav.html'"></div> <!-- ================= NAV -->
+
+	<!-- ============================================= BANNER -->
+	<div id="topbanner-main">
+		<div class="ui page grid">
+			<div class="ui column">
+				<h1 class="ui huge header"> WeNomYou Helps! </h1>
+				<h2 class="ui header">Crowdfund, anywhere and anytime!</h2>
+				<p>We are here to help you fundraise your own creative campaign!</p>
+
+				<div class="masthead-button-wrap"> <!-- ng-controller="CampaignStatusCtrl" -->
+
+					<a href="getstarted">
+						<div class="ui large masthhead-button right labeled green icon button">
+							<!-- <span ng-if="campaign.entry_id">Continue Project</span> <i class="right long arrow icon"></i> -->
+							<!-- <span ng-if="!campaign.entry_id">Start Project</span> <i class="right long arrow icon"></i> -->
+							<span>Start Project</span> <i class="right long arrow icon"></i>
+						</div>
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div> <!-- MASTER HEAD -->
+
+<!-- ============================================= PROMO -->
+<div class="ui center aligned basic promo segment"> <!-- ng-controller="ExploreCtrl" -->
+	<h1 class="ui center aligned header"> Be passionate, explore and share your challenges! </h1>
+	<a ng-href="explore?category={{category.id}}" ng-repeat="category in categories" class="ui random-color item huge label">
+		{{category.name}}
+	</a>
+</div>
+
+<!-- ============================================= RECENT PROJECTS -->
+<div id="recent-proj-wrap">
+	<div class="ui page grid">
+		<div ng-show="recentcampaigns.length" class="ui column">
+			<h2 class="ui left aligned header"><i class="time icon"></i> Recent Challenges </h2>	
+			
+			<div class="ui three stackable items">
+				<a class="item campaign-listing" ng-href="{{'/' + campaign.uri_paths[0].path}}" ng-repeat="campaign in recentcampaigns | limitTo: 3">
+					<div class="item">
+						<div class="image">
+							<div class="ui right corner red label"><div class="text">New</div></div>
+							<img ng-repeat="file in campaign.files | filter:{region_id: RESOURCE_REGIONS.campaign.thumbnail} | orderBy:'-file_id' | limitTo: 1" ng-if="campaign.files[0].path_external" ng-src="{{server + '/image/h-421/' + file.path_external}}" class="ui image"/>
+							<img ng-if="!campaign.files[0].path_external" src="http://placehold.it/421x421&text=Image+unavailable" class="ui image"/>
+						</div> <!-- IMAGE -->
+
+						<div class="content">
+							<div class="meta" am-time-ago="campaign.created">{{campaign.created}}</div>
+							<div class="name">{{campaign.name}}</div>
+							
+							<p class="description">{{campaign.blurb}}</p>
+						</div>
+
+						<div class="campaign-stats">
+							<div class="ui successful progress">
+								<div class="bar" style="width: {{campaign.funded_amount / (campaign.funding_goal || 1) * 100 | number: 0}}%"></div>
+							</div>
+							<div class="meta">{{campaign.funded_amount / (campaign.funding_goal || 1) * 100 | number: 0}}% Funded</div>
+						</div>
+
+						<div class="extra">
+							<i class="map marker icon"></i><span ng-repeat="city in campaign.cities">{{city.city_full}}</span>
+						</div> 
+					</div>
+				</a><!-- ITEM -->
+			</div>
+			
+		</div> 
+	</div>
+</div> <!-- RECENT PROJECTS -->
+
+<!-- ============================================= FEATURED PROJECTS -->
+<div id="feat-proj-wrap">
+	<div class="ui page grid">
+		<div ng-show="featuredcampaigns.length" class="ui column">
+
+		<h2 class="ui left aligned header"><i class="star icon"></i> Featured Projects </h2>	
+			<div class="ui three stackable items">
+				<a class="item campaign-listing" ng-href="{{'/' + campaign.uri_paths[0].path}}" ng-repeat="campaign in featuredcampaigns | limitTo: 3">
+					<div class="item">
+						<div class="image">
+							<div ng-show="campaign.featured" class="ui right corner blue label"><i class="star icon"></i></div>
+							<img ng-repeat="file in campaign.files | filter:{region_id: RESOURCE_REGIONS.campaign.thumbnail} | orderBy:'-file_id' | limitTo: 1" ng-if="campaign.files[0].path_external" ng-src="{{server + '/image/h-421/' + file.path_external}}" class="ui image"/>
+							<img ng-if="!campaign.files[0].path_external" src="http://placehold.it/421x421&text=Image+unavailable" class="ui image"/>
+						</div> <!-- IMAGE -->
+
+						<div class="content">
+							<div class="meta" am-time-ago="campaign.created">{{campaign.created}}</div>
+							<div class="name">{{campaign.name}}</div>
+							
+							<p class="description">{{campaign.blurb}}</p>
+						</div>
+
+						<div class="campaign-stats">
+							<div class="ui successful progress">
+								<div class="bar" style="width: {{campaign.funded_amount / (campaign.funding_goal || 1) * 100 | number: 0}}%"></div>
+							</div>
+							<div class="meta">{{campaign.funded_amount / (campaign.funding_goal || 1) * 100 | number: 0}}% Funded</div>
+						</div>
+						
+						<div class="extra">
+							<i class="map marker icon"></i><span ng-repeat="city in campaign.cities">{{city.city_full}}</span>
+						</div> 
+					</div>
+				</a><!-- ITEM -->
+			</div>
+
+			<div class="ui center aligned basic segment">
+				<a href="explore">
+					<div class="ui large blue button">View more projects </div>
+				</a>
+			</div>
+
+		</div> 
+	</div> 
+</div> <!-- FEATURED CHALLENGES -->
+
+<div ng-include src="'views/partials/footer.html'"></div> <!-- ================= FOOTER -->

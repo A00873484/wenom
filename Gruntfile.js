@@ -64,7 +64,11 @@ module.exports = function(grunt) {
 			},
 			css: {
 				src: ['<%= project.css %>/*.css'],
-				dest: '<%= project.css %>style.css'
+				dest: '<%= project.css %>/style.css'
+			},
+			sass: {
+				src: ['<%= project.sass %>/*.scss'],
+				dest: '<%= project.sass %>/style.scss'
 			}
 		},
 		uglify: {
@@ -78,7 +82,7 @@ module.exports = function(grunt) {
 			}
 		},
 		cssmin: {
-			add_banner: {
+			combine: {
 				files: {
 					'<%= project.css %>/style.min.css': ['<%= project.css %>/style.css']
 				}
@@ -91,19 +95,21 @@ module.exports = function(grunt) {
 		            compass: false
 		        },
 		        files: {
-		            '<%= project.assets %>/css/style.css':'<%= project.sass %>/*.scss'
+		        	'<%= project.css %>/style.css':'<%= project.sass %>/style.scss'
 		        }
 		    }
 		},
 		clean: {
 			js: ["<%= project.app %>/combined.*"],
-			css: ['<%= project.css %>/style.*']
+			css: ['<%= project.css %>/style.*'],
+			sass: ['<%= project.sass %>/style.scss']
 		},
 		watch: {
 			index: {
 				files: [
 					'<%= project.app %>/*.tpl',
-					'<%= project.app %>/views/*.html'
+					'<%= project.app %>/views/*.html',
+					'<%= project.app %>/views/**/*.html'
 				],
 				tasks: ['index:files'],
 				options: {
@@ -124,7 +130,7 @@ module.exports = function(grunt) {
 			},
 		    sass: {
 		        files: '<%= project.sass %>/{,*/}*.{scss,sass}',
-		        tasks: ['sass:dev', 'cssmin', 'index:files', 'usebanner:inc'],
+		        tasks: ['clean:sass', 'concat:sass', 'sass:dev', 'cssmin', 'index:files', 'usebanner:inc'],
 		        options: {
 		        	livereload: true
 		        }

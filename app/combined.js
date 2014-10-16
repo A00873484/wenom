@@ -6,35 +6,16 @@
  * License: BSD-2-Clause
  */
 
-/*
- * WeNomYou
- * Project dependencies for the WeNomYou project
- * @author Jay Huang, Daniel Engelhard, Enoch Yip
- * @version 0.0.0
- * License: BSD-2-Clause
- */
-
-/*
- * WeNomYou
- * Project dependencies for the WeNomYou project
- * @author Jay Huang, Daniel Engelhard, Enoch Yip
- * @version 0.0.0
- * License: BSD-2-Clause
- */
-
-/*
- * WeNomYou
- * Project dependencies for the WeNomYou project
- * @author Jay Huang, Daniel Engelhard, Enoch Yip
- * @version 0.0.0
- * License: BSD-2-Clause
- */
-
 'use strict';
 
 var app = angular.module('WeNomYou', [
 	'ngRoute'
 ]);
+
+app.constant('API_URL', {
+	url:"http://localhost",
+	loc: '/api/v1/'
+});
 
 app.config(function($routeProvider, $locationProvider) {
 	$locationProvider.html5Mode(true);
@@ -42,10 +23,19 @@ app.config(function($routeProvider, $locationProvider) {
 	.when('/', {
 		templateUrl: 'views/index.html',
 		controller: 'HomeCtrl'
+	}).when('/register', {
+		templateUrl: 'views/login-register.html',
+		title: 'Register'
+	}).when('/login', {
+		templateUrl: 'views/login-register.html',
+		title: 'Login'
+	}).otherwise({
+		redirectTo: '/'
 	});
 });
 
-app.controller('MainCtrl', function($scope) {
+app.controller('MainCtrl', function($scope, API_URL) {
+	$scope.server = API_URL.url;
 });;app.controller('HomeCtrl', function($scope) {
 	$scope.hi = "Hello";
 });

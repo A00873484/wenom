@@ -1,0 +1,48 @@
+<!-- ============================================= NAV -->
+<div class="ui inverted menu">
+	<div class="nav-wrap">
+
+		<!-- MENU LEFT -->
+		<div class="nav-header">
+			<div class="navlogo left menu">
+				<a href="/" id="logo" class="item"> WeNomYou Inc.</a>
+			</div>
+				<a class="item mobile-menu" data-toggle="collapse" data-target=".nav-collapse"><i class="reorder icon"></i></a>
+		</div>
+
+		<!-- COLLAPSE -->
+		<div class="nav-collapse collapse" style="height: 1px;">
+			<div class="nav-main-left left menu"> <!-- ng-controller="CampaignStatusCtrl" -->
+				<a href="explore" class="item"> Explore </a>
+				<a ng-if="!campaign.entry_id" href="getstarted" class="item"> Start </a>
+				<a ng-if="campaign.entry_id" href="getstarted" class="item"> Continue </a>
+			</div>
+
+			<!-- MENU RIGHT -->
+			<div class="right menu">
+				<div class="item collapsible user-greeting" ng-if="User.isLoggedIn()">
+					Welcome, {{User.first_name}}!
+				</div>
+
+				
+				<div class="ui dropdown item collapsible" ng-if="User.isLoggedIn()">
+					<span class="text"> Dashboard </span>
+					<i class="setting icon"></i>
+					<div class="menu">
+						<a ng-if="User.portal_admin" class="item" href="/admin/dashboard"> Admin Dashboard </a>
+						<a ng-if="User.isLoggedIn() && User.campaign_manager" class="item"> Campaign Manager </a>
+						<a ng-if="User.isLoggedIn() && User.campaign_backer" class="item" href="/pledge-history"> Backer </a>
+						<a ng-if="User.isLoggedIn()" class="item" ng-click="User.setLoggedOut()">Logout</a>
+					</div>
+					<i data-loading class="loading icon"></i>
+				</div>
+				
+				<a href="register" class="item collapsible" ng-if="!User.isLoggedIn()"> Sign up </a>
+				<a href="login" ng-if="!User.isLoggedIn()" class="item collapsible"> Log in </a>
+				
+			</div> <!-- RIGHT MENU END -->
+		</div>
+		
+
+	</div> <!-- NAV WRAP -->
+</div> <!-- NAVIGATION

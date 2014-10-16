@@ -1,0 +1,172 @@
+@media only screen and (min-width : 1100px) {
+	.nav-header {
+		.item.mobile-menu { display: none; }
+	}
+}
+@media only screen and (max-width: 767px) {
+	.ui.stackable.grid > .row:first-child > .column:first-child, .ui.stackable.grid > .column:first-child {
+		margin-top: 0em !important;
+		padding: 20px !important;
+	}
+	.ui.stackable.grid > .row > .column, .ui.stackable.grid > .column {
+		padding: 20px !important;
+		border-radius: 6px;
+	}
+	.mainbody-wrap .ui.basic.background-wrap.segment .campaignsteps .setup.column {
+		border-right: 1px solid #ddd;
+	}
+	#footer-wrap .ui.footer.bottom .column:first-child,
+	#footer-wrap .ui.footer.bottom .column:last-child {
+		float: none ;
+		padding: 0 !important;
+	}
+	#recent-proj-wrap,
+	#feat-proj-wrap {
+		.campaign-listing {
+			width: 100% !important;
+			margin-left: 0;
+			margin-right: 0;
+
+			.ui.image {
+				width: 100%;
+				height: auto;
+				border-top-right-radius: 0.25em;
+				border-top-left-radius: 0.25em;
+			}
+		}
+	}
+	.mainbody-wrap .campaign-tiles .project-list {
+		.campaign-listing {
+			width: 100% !important;
+			margin-left: 0;
+			margin-right: 0;
+			min-height: 470px;
+			.ui.image {
+				width: 100%;
+				height: auto;
+				border-top-right-radius: 0.25em;
+				border-top-left-radius: 0.25em;
+			}
+		}
+	}
+	.ui.two.column.stackable.grid {
+		.eleven.wide.column,
+		.five.wide.column {
+			padding: 0 !important;
+			margin-top: 0.5em !important;
+			margin-bottom: 0.5em !important;
+		}
+		/*.eleven.wide.column {
+			padding-top: 0!important;
+		}*/
+	}
+	.campaign-bg {
+		.ui.grid {
+			&.campaign-links {
+				> .column {
+					padding-left: 0 !important;
+					padding-right: 0 !important;
+				}
+			}
+			&.campaign-faq {
+				> .column {
+					padding-left: 0 !important;
+					padding-right: 0 !important;
+				}
+			}
+		}
+	}
+	.campaign-tiles {
+		.project-list {
+			.campaign-listing {
+				margin-left: 0;
+				margin-right: 0;
+			}
+		}
+	}
+	.ui.basic.segment.story-section {
+		.ui.upload.segment {
+			.ui.buttons {
+				.upld-vid,
+				.upld-img {
+					width: 100%;
+					margin-bottom: 5px;
+				}
+				.upld-vid {
+					border-top-right-radius: 0.25em;
+					border-bottom-right-radius: 0.25em;
+				}
+				.upld-img {
+					border-top-left-radius: 0.25em;
+					border-bottom-left-radius: 0.25em;
+				}
+			}
+			.or { display: none; }
+		}
+	}
+	
+	.ui.getstarted.segment {
+		.ui.grid {
+			.ui.f-currency-btn {
+				padding-bottom: 1em;
+			}
+		}
+	}
+	.ui.campaign-add-btn.btn.segment,
+	.ui.btn.nxt-step.segment {
+		float: none;
+		text-align: center;
+	}
+	.mainbody-wrap .ui.basic.background-wrap.segment {
+		padding: 0;
+	}
+}
+
+@media only screen and (max-width: 1100px) {
+	
+	.nav-wrap {
+		width: 100% !important;
+		margin: 0 !important;
+		.nav-header {
+			width: 100%;
+			.mobile-menu {
+				float: right;
+			}
+		}
+		.collapse { display: none; }
+		.collapse.in { 
+			/*overflow-y: auto;*/
+			display: block;
+		}
+		.collapsing {
+			height: 0px;
+			position: relative;
+			overflow: hidden;
+			-webkit-transition: height .35s ease;
+			transition: height .35s ease;
+		}
+		.nav-collapse {
+			width: 100%;
+			/*display: block;*/
+			/*display: none;*/
+
+			.nav-main-left {
+				width: 100%;
+				float: none;
+
+				a.item {
+					display: block;
+					width:100%;
+				}
+			}
+			.right.menu {
+				float: none;
+				width: 100%;
+
+				.item.collapsible {
+					width: 100%;
+				}
+			}
+		}
+	}
+}
