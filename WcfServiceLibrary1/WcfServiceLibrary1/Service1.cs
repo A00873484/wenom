@@ -6,6 +6,8 @@ using System.ServiceModel;
 using System.Text;
 using System.Data.SqlClient;
 using System.Data;
+using System.Web;
+using System.Net;
 
 namespace WcfServiceLibrary1
 {
@@ -52,8 +54,8 @@ namespace WcfServiceLibrary1
 
             //// Select from users table where userid = userid
             //// userid, user email, password
-
-
+            //WebRequest request = WebRequest.Create("http://localhost53930/test");
+            
             return userid;
         }
 
@@ -61,7 +63,8 @@ namespace WcfServiceLibrary1
         {
             // Create a connection to the "WeNomYou" SQL database located on the server
             SqlConnection myConnection = new SqlConnection("Data Source=c106ta0dei.database.windows.net,1433\"SQLSERVER;Initial Catalog=WeNomYouDB;User ID=buklaudev;Password=Mirela#1");
-            // Connect to the SQL database 
+        
+                // Connect to the SQL database 
             // Insert into users table
             // userid, user email, password, email
             SqlDataAdapter myCommand = new SqlDataAdapter("INSERT INTO Users (UserID, FirstName, LastName, Hash, Email) VALUES ('" +
@@ -71,7 +74,6 @@ namespace WcfServiceLibrary1
                 registrationData.PasswordHash + "', '" +
                 registrationData.Email + "')" 
                 , myConnection);
-            
         }
 
         public void updateUser(int userid, User user)
