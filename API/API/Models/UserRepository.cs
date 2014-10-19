@@ -5,10 +5,11 @@ using System.Web;
 
 namespace API.Models
 {
+
     public class UserRepository : IUserRepository
     {
         private List<User> users = new List<User>();
-        private int _nextId = 1;
+        private int _nextId = 3;
 
         public UserRepository()
         {

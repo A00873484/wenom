@@ -12,5 +12,6 @@ namespace API.Models
         public string Creator { get; set; }
         public string Nominee { get; set; }
         public bool Approved { get; set; }
+        public double Goal { get; set; }
     }
 }

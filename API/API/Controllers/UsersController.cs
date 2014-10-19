@@ -11,7 +11,8 @@ namespace API.Controllers
     public class UsersController : ApiController
     {
         static readonly IUserRepository repository = new UserRepository();
-
+        
+        
         /// <summary>
         /// Gets All Users
         /// </summary>
