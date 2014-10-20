@@ -209,6 +209,7 @@ body {
 
 .container {
 	min-height: 100%;
+	background : $body-bg;
 	h2 { font-size: 25px; }
 
 	.ui.basic.background.segment {
@@ -224,8 +225,7 @@ body {
 }
 
 .mainbody-wrap {
-	padding: 6% 0;
-	background : $body-bg ;
+	padding: 0 0 6% 0;
 
 	.btn.segment {
 		margin-top: 3%;

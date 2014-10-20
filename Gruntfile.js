@@ -130,7 +130,7 @@ module.exports = function(grunt) {
 			},
 		    sass: {
 		        files: '<%= project.sass %>/{,*/}*.{scss,sass}',
-		        tasks: ['clean:sass', 'concat:sass', 'sass:dev', 'cssmin', 'index:files', 'usebanner:inc'],
+		        tasks: ['clean:css', 'clean:sass', 'concat:sass', 'sass:dev', 'cssmin', 'index:files', 'usebanner:inc'],
 		        options: {
 		        	livereload: true
 		        }

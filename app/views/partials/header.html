@@ -14,8 +14,8 @@
 		<div class="nav-collapse collapse" ng-class="{'in': !navCollapsed}">
 			<div class="nav-main-left left menu"> <!-- ng-controller="CampaignStatusCtrl" -->
 				<a href="explore" class="item"> Explore </a>
-				<a ng-if="!campaign.entry_id" href="getstarted" class="item"> Start </a>
-				<a ng-if="campaign.entry_id" href="getstarted" class="item"> Continue </a>
+				<a ng-if="!campaign.entry_id" href="start" class="item"> Start </a>
+				<a ng-if="campaign.entry_id" href="continue" class="item"> Continue </a>
 			</div>
 
 			<!-- MENU RIGHT -->

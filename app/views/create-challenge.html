@@ -1,0 +1,130 @@
+<div ng-include src="'views/partials/header.html'"></div> <!-- ================= HEADER -->
+
+<!-- ============================================= GET STARTED BODY -->
+
+<div class="mainbody-wrap">
+	<div class="ui page grid">
+		<div class="ui basic background-wrap segment">
+
+			<!-- =============================================== CAMPAIGN SETUP HEADER -->
+			<div class="ui center aligned basic campaign-top-header segment">
+				<h1 class="ui header">Welcome to WeNomYou!</h1>
+				<p> Thanks for choosing us! Now lets get started with your campaign. </p>
+			</div>
+			
+			<form name="campaign_form">
+				<h2 class="ui black inverted block header">Create Challenge</h2>
+
+				<div class="ui basic getstarted segment">
+					<div class="ui two column stackable formbg grid">
+
+						<div class="five wide column">
+							<h3 class="ui header">Challenge Image </h3>
+						</div>
+						<div class="eleven wide column">
+							<div class="ui fluid form">
+								Drag and drop here
+								<br>
+								<br>
+								<br>
+								or
+								<br>
+								<br>
+								<button>Upload Image</button>
+							</div>
+						</div>
+
+						<div class="five wide column">
+							<h3 class="ui header">Challenge Name </h3>
+						</div>
+						<div class="eleven wide column">
+							<div class="ui fluid form">
+								<div class="field">
+									<input ng-class="{'has-error': campaign_form.title.$invalid}" type="text" name="title" ng-model="campaign.name" required>
+									<div class="ui red pointing above ui label" ng-show="campaign_form.title.$invalid">
+										<div ng-show="campaign_form.title.$error.required">Please provide the challenge name</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="five wide column">
+							<h3 class="ui header">Nominee Name</h3>
+						</div>
+						<div class="eleven wide column">
+							<div class="ui fluid form">
+								<div class="field">
+									<input ng-class="{'has-error': campaign_form.nominee_name.$invalid}" type="text" name="nominee_name" ng-model="campaign.nominee_name" required>
+									<div class="ui red pointing above ui label" ng-show="campaign_form.nominee_name.$invalid">
+										<div ng-show="campaign_form.nominee_name.$error.required">Please give the nominee name</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="five wide column">
+							<h3 class="ui header">Funding Goal</h3>
+						</div>
+						<div class="eleven wide column">
+							<div class="ui fluid form">
+								<input type="text" name="goal" ng-change="rationalizeFundingGoal(campaign.funding_goal)" ng-model="campaign.funding_goal" numbers-only>
+								<div class="ui red pointing above ui label" ng-show="campaign_form.goal.$dirty && campaign_form.goal.$invalid">
+									<div ng-show="campaign_form.goal.$error.number">Numbers only please!</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="five wide column">
+							<h3 class="ui header">Funding Date</h3>
+						</div>
+						<div class="eleven wide column">
+							<div class="ui fluid form">
+								<input type="text" name="goal" ng-change="rationalizeFundingGoal(campaign.funding_goal)" ng-model="campaign.funding_goal" numbers-only>
+							</div>
+						</div>
+
+						<div class="five wide column">
+							<h3 class="ui header">Funding Duration</h3>
+						</div>
+						<div class="six wide column">
+							<div class="ui fluid form">
+								<input type="text" name="goal" ng-change="rationalizeFundingGoal(campaign.funding_goal)" ng-model="campaign.funding_goal" numbers-only>
+							</div>
+						</div>
+						<div class="five wide column">
+							days (1~365)
+						</div>
+
+						<div class="five wide column">
+							<h3 class="ui header">Funding End Date</h3>
+						</div>
+						<div class="eleven wide column">
+							This campaign will end on ______________________
+						</div>
+
+						<div class="five wide column">
+							<h3 class="ui header">Description</h3>
+						</div>
+						<div class="eleven wide column">
+							WYSIWYG
+						</div>
+
+						<div class="five wide column">
+							<h3 class="ui header">Description Preview</h3>
+						</div>
+						<div class="eleven wide column">
+							<button>Toggle</button>
+						</div>						
+					</div> <!-- GRID END -->
+				</div>
+				<div class="ui right aligned basic btn nxt-step segment">
+					<a ng-href="{{campaign_setup_url}}">
+						<button accessible-form ng-click="saveData($event)" class="ui right labeled icon blue button"> Create Challenge <i class="right arrow icon"></i></button>
+					</a>
+				</div>
+			</form>
+		</div> <!-- WRAPPER END -->
+	</div>	
+</div> <!-- MAINBODY-WRAP END -->
+
+<div ng-include src="'views/partials/footer.html'"></div> <!-- ================= FOOTER -->

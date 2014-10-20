@@ -18,7 +18,16 @@ app.config(function($routeProvider, $locationProvider) {
 		controller: 'HomeCtrl'
 	}).when('/register', {
 		templateUrl: 'views/login-register.html',
+		controller: 'LoginRegCtrl',
 		title: 'Register'
+	}).when('/start', {
+		templateUrl: 'views/create-challenge.html',
+		controller: 'CreateChallengeCtrl',
+		title: 'Challenge Creation'
+	}).when('/continue', {
+		templateUrl: 'views/continue-challenge.html',
+		controller: 'CreateChallengeCtrl',
+		title: 'Continue Challenge Creation'
 	}).when('/login', {
 		templateUrl: 'views/login-register.html',
 		title: 'Login'
