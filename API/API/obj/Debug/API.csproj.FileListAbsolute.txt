@@ -40,3 +40,15 @@ D:\TechProWebApp\wenom\API\API\bin\System.Web.Optimization.dll
 D:\TechProWebApp\wenom\API\API\bin\WebGrease.dll
 D:\TechProWebApp\wenom\API\API\bin\Antlr3.Runtime.pdb
 D:\TechProWebApp\wenom\API\API\bin\System.Web.Optimization.xml
+D:\TechProWebApp\wenom\API\API\bin\System.Web.Helpers.dll
+D:\TechProWebApp\wenom\API\API\bin\System.Web.Mvc.dll
+D:\TechProWebApp\wenom\API\API\bin\System.Web.Razor.dll
+D:\TechProWebApp\wenom\API\API\bin\System.Web.WebPages.Deployment.dll
+D:\TechProWebApp\wenom\API\API\bin\System.Web.WebPages.dll
+D:\TechProWebApp\wenom\API\API\bin\System.Web.WebPages.Razor.dll
+D:\TechProWebApp\wenom\API\API\bin\System.Web.Helpers.xml
+D:\TechProWebApp\wenom\API\API\bin\System.Web.Mvc.xml
+D:\TechProWebApp\wenom\API\API\bin\System.Web.Razor.xml
+D:\TechProWebApp\wenom\API\API\bin\System.Web.WebPages.xml
+D:\TechProWebApp\wenom\API\API\bin\System.Web.WebPages.Deployment.xml
+D:\TechProWebApp\wenom\API\API\bin\System.Web.WebPages.Razor.xml

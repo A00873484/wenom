@@ -1,101 +1,128 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.Entity;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Net;
-using System.Net.Http;
-using System.Web.Http;
+using System.Web;
+using System.Web.Mvc;
 using API.Models;
 
 namespace API.Controllers
 {
-    public class UsersController : ApiController
+    public class UsersController : Controller
     {
-        static readonly IUserRepository repository = new UserRepository();
-        
-        
-        /// <summary>
-        /// Gets All Users
-        /// </summary>
-        /// <returns>All Users</returns>
-        public IEnumerable<User> GetAllUsers()
+        private WeNomYouDatabaseContext db = new WeNomYouDatabaseContext();
+
+        // GET: Users
+        public async Task<ActionResult> Index()
         {
-            return repository.GetAll();
+            return View(await db.Users.ToListAsync());
         }
 
-        /// <summary>
-        /// Gets the User
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns>The User</returns>
-        public User GetUser(int id)
+        // GET: Users/Details/5
+        public async Task<ActionResult> Details(int? id)
         {
-            User info = repository.Get(id);
-            if (info == null)
+            if (id == null)
             {
-                throw new HttpResponseException(HttpStatusCode.NotFound);
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            return info;
+            User user = await db.Users.FindAsync(id);
+            if (user == null)
+            {
+                return HttpNotFound();
+            }
+            return View(user);
         }
 
-        /// <summary>
-        /// Gets user by email
-        /// </summary>
-        /// <param name="email"></param>
-        /// <returns>The User</returns>
-        public IEnumerable<User> GetUserByEmail(string email)
+        // GET: Users/Create
+        public ActionResult Create()
         {
-            return repository.GetAll().Where(u => string.Equals(u.Email, email, StringComparison.OrdinalIgnoreCase));
+            return View();
         }
 
-        /// <summary>
-        /// Posts User in the url if the modelstate is valid
-        /// </summary>
-        /// <param name="info"></param>
-        /// <returns>Either the response that the user was posted successfully or an error response</returns>
-        public HttpResponseMessage PostUser(User info)
+        // POST: Users/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Create([Bind(Include = "Id,FirstName,LastName,PasswordHash,Email")] User user)
         {
             if (ModelState.IsValid)
             {
-                info = repository.Add(info);
-                var response = Request.CreateResponse<User>(HttpStatusCode.Created, info);
+                db.Users.Add(user);
+                await db.SaveChangesAsync();
+                return RedirectToAction("Index");
+            }
 
-                string uri = Url.Link("DefaultApi", new { id = info.Id });
-                response.Headers.Location = new Uri(uri);
-                return response;
-            }
-            else
-            {
-                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
-            }
+            return View(user);
         }
 
-
-        /// <summary>
-        /// Puts the User 
-        /// </summary>
-        /// <param name="id"></param>
-        /// <param name="user"></param>
-        public void PutUser(int id, User user)
+        // GET: Users/Edit/5
+        public async Task<ActionResult> Edit(int? id)
         {
-            user.Id = id;
-            if (!repository.Update(user))
+            if (id == null)
             {
-                throw new HttpResponseException(HttpStatusCode.NotFound);
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+            User user = await db.Users.FindAsync(id);
+            if (user == null)
+            {
+                return HttpNotFound();
+            }
+            return View(user);
         }
 
-        /// <summary>
-        /// Deletes the user
-        /// </summary>
-        /// <param name="id"></param>
-        public void DeleteUser(int id)
+        // POST: Users/Edit/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Edit([Bind(Include = "Id,FirstName,LastName,PasswordHash,Email")] User user)
         {
-            User info = repository.Get(id);
-            if(info == null)
+            if (ModelState.IsValid)
             {
-                throw new HttpResponseException(HttpStatusCode.NotFound);
+                db.Entry(user).State = EntityState.Modified;
+                await db.SaveChangesAsync();
+                return RedirectToAction("Index");
             }
-            repository.Remove(id);
+            return View(user);
+        }
+
+        // GET: Users/Delete/5
+        public async Task<ActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            User user = await db.Users.FindAsync(id);
+            if (user == null)
+            {
+                return HttpNotFound();
+            }
+            return View(user);
+        }
+
+        // POST: Users/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> DeleteConfirmed(int id)
+        {
+            User user = await db.Users.FindAsync(id);
+            db.Users.Remove(user);
+            await db.SaveChangesAsync();
+            return RedirectToAction("Index");
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                db.Dispose();
+            }
+            base.Dispose(disposing);
         }
     }
 }
