@@ -1,5 +1,8 @@
 'use strict';
 
+// Enable lines below to override console.log() statements for production
+// var console = {};
+// console.log = function(){};
 var app = angular.module('WeNomYou', [
 	'ngRoute',
 	'ui.bootstrap'
@@ -25,7 +28,7 @@ app.config(function($routeProvider, $locationProvider) {
 		controller: 'CreateChallengeCtrl',
 		title: 'Challenge Creation'
 	}).when('/continue', {
-		templateUrl: 'views/continue-challenge.html',
+		templateUrl: 'views/create-challenge.html',
 		controller: 'CreateChallengeCtrl',
 		title: 'Continue Challenge Creation'
 	}).when('/login', {

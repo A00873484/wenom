@@ -44,11 +44,24 @@ module.exports = function(grunt) {
 			directives: ['<%= project.dependencies %>/directives']
 		},
 		index: {
-			files: {
-				js: ['<%= project.app %>/combined.min.js'],
-				css: ['<%= project.css %>/style.min.css']
+			dev: {
+				files: {
+					js: [
+						'<%= project.app %>/app.js',
+						'<%= project.dependencies %>/**/**/*.js',
+						'<%= project.directives %>/*.js'
+					],
+					css: ['<%= project.css %>/style.css']
+				},
+				tasks: 'index:scripts'
 			},
-			tasks: 'index:scripts'
+			prod: {
+				files: {
+					js: ['<%= project.app %>/combined.js'],
+					css: ['<%= project.css %>/style.min.css']
+				},
+				tasks: 'index:scripts'
+			}
 		},
 		concat: {
 			js: {
@@ -105,44 +118,57 @@ module.exports = function(grunt) {
 			sass: ['<%= project.sass %>/style.scss']
 		},
 		watch: {
-			index: {
+			prod: { // For production
 				files: [
 					'<%= project.app %>/*.tpl',
 					'<%= project.app %>/views/*.html',
-					'<%= project.app %>/views/**/*.html'
-				],
-				tasks: ['index:files'],
-				options: {
-					livereload: true
-				}
-			},
-			js: {
-				files: [
+					'<%= project.app %>/views/**/*.html',
 					'<%= project.dependencies %>/**/**/*.js',
 					'<%= project.directives %>/*.js',
 					'<%= project.app %>/app.js',
 					'!<%= project.app %>/combined.*',
+					'<%= project.sass %>/{,*/}*.{scss,sass}'
 				],
-				tasks: ['clean:js', 'concat:js', 'uglify:js', 'index:files', 'usebanner:inc'],
+				tasks: [
+					'clean',
+					'concat',
+					'sass',
+					'uglify',
+					'cssmin',
+					'index:prod',
+					'usebanner:inc'
+				],
 				options: {
 					livereload: true
 				}
 			},
-		    sass: {
-		        files: '<%= project.sass %>/{,*/}*.{scss,sass}',
-		        tasks: ['clean:css', 'clean:sass', 'concat:sass', 'sass:dev', 'cssmin', 'index:files', 'usebanner:inc'],
-		        options: {
-		        	livereload: true
-		        }
-		    }
+			dev: { // For development
+				files: [
+					'<%= project.app %>/*.tpl',
+					'<%= project.app %>/views/*.html',
+					'<%= project.app %>/views/**/*.html',
+					'<%= project.dependencies %>/**/**/*.js',
+					'<%= project.directives %>/*.js',
+					'<%= project.app %>/app.js',
+					'!<%= project.app %>/combined.*',
+					'<%= project.sass %>/{,*/}*.{scss,sass}'
+				],
+				tasks: [
+					'clean',
+					'concat',
+					'sass',
+					'index:dev'
+				],
+				options: {
+					livereload: true
+				}
+			}
 		}
 	});
 
 	grunt.registerMultiTask('index', 'Create index.html', function() {
-		var scriptfiles = grunt.file.expand(this.data.js) || grunt._watch_changed_files;
-		var cssfiles = grunt.file.expand(this.data.css) || grunt._watch_changed_files;
-		console.log(scriptfiles);
-		console.log(cssfiles);
+		var scriptfiles = grunt.file.expand(this.data.files.js) || grunt._watch_changed_files;
+		var cssfiles = grunt.file.expand(this.data.files.css) || grunt._watch_changed_files;
 		var now = new Date().getTime();
 		var scripts_str = '';
 		var css_str = '';

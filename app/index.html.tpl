@@ -3,7 +3,7 @@
 <head>
 	<base href="/">
 	<title>WeNomYou</title>
-	<meta charset="UTF-8"></meta>
+	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
 	<script type="text/javascript" src="bower_components/angular/angular.min.js"></script>

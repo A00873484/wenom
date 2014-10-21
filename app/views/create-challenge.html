@@ -54,9 +54,9 @@
 						<div class="eleven wide column">
 							<div class="ui fluid form">
 								<div class="field">
-									<input ng-class="{'has-error': campaign_form.nominee_name.$invalid}" type="text" name="nominee_name" ng-model="campaign.nominee_name" required>
-									<div class="ui red pointing above ui label" ng-show="campaign_form.nominee_name.$invalid">
-										<div ng-show="campaign_form.nominee_name.$error.required">Please give the nominee name</div>
+									<input ng-class="{'has-error': campaign_form.nominee.$invalid}" type="text" name="nominee" ng-model="campaign.nominee" required>
+									<div class="ui red pointing above ui label" ng-show="campaign_form.nominee.$invalid">
+										<div ng-show="campaign_form.nominee.$error.required">Please give the nominee name</div>
 									</div>
 								</div>
 							</div>
@@ -67,7 +67,7 @@
 						</div>
 						<div class="eleven wide column">
 							<div class="ui fluid form">
-								<input type="text" name="goal" ng-change="rationalizeFundingGoal(campaign.funding_goal)" ng-model="campaign.funding_goal" numbers-only>
+								<input type="text" name="goal" ng-model="campaign.goal" numbers-only>
 								<div class="ui red pointing above ui label" ng-show="campaign_form.goal.$dirty && campaign_form.goal.$invalid">
 									<div ng-show="campaign_form.goal.$error.number">Numbers only please!</div>
 								</div>
@@ -75,11 +75,11 @@
 						</div>
 
 						<div class="five wide column">
-							<h3 class="ui header">Funding Date</h3>
+							<h3 class="ui header">Funding Start Date</h3>
 						</div>
 						<div class="eleven wide column">
 							<div class="ui fluid form">
-								<input type="text" name="goal" ng-change="rationalizeFundingGoal(campaign.funding_goal)" ng-model="campaign.funding_goal" numbers-only>
+								<input type="text" name="goal" ng-model="campaign.start_date" numbers-only>
 							</div>
 						</div>
 
@@ -88,7 +88,7 @@
 						</div>
 						<div class="six wide column">
 							<div class="ui fluid form">
-								<input type="text" name="goal" ng-change="rationalizeFundingGoal(campaign.funding_goal)" ng-model="campaign.funding_goal" numbers-only>
+								<input type="text" name="goal" ng-model="campaign.duration" numbers-only>
 							</div>
 						</div>
 						<div class="five wide column">
