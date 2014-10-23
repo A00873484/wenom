@@ -5,7 +5,8 @@
 // console.log = function(){};
 var app = angular.module('WeNomYou', [
 	'ngRoute',
-	'ui.bootstrap'
+	'ui.bootstrap',
+	'textAngular'
 ]);
 
 app.constant('API_URL', {

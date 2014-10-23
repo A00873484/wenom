@@ -259,15 +259,94 @@ button[disabled=disabled], button:disabled {
   background-color: #564F8A !important;
 }
 
-/* ===================== WYSIWYG */
+/* ===================== TEXTANGULAR TOOLBAR STYLING */
+
 .ng-isolate-scope.ta-root {
 	margin-bottom: 3%;
 	.btn-toolbar {
-		background: #ccc;
+		button {
+			border-radius: 0;
+		}
+	}
+	.ta-toolbar {
+		.btn {
+			display: inline-block;
+			padding: 6px 12px;
+			margin: 0;
+			font-size: 14px;
+			font-weight: 400;
+			line-height: 1.42857143;
+			text-align: center;
+			white-space: nowrap;
+			vertical-align: middle;
+			cursor: pointer;
+			-webkit-user-select: none;
+			-moz-user-select: none;
+			-ms-user-select: none;
+			user-select: none;
+			background-image: none;
+			border: 1px solid #CCC;
+			background-color: white;
+
+			&[disabled=disabled], &:disabled {
+				font-color: #EEE;
+				-webkit-box-shaodow: 0;
+				box-shadow: none !important;
+				background-color: #EEE !important;
+			}
+
+			&:hover {
+				background-color: #DDD;
+			}
+
+			&.active {
+				outline: 0;
+				background-image: none;
+				-webkit-box-shadow: inset 0 3px 5px rgba(0,0,0,.125);
+				box-shadow: inset 0 3px 5px rgba(0,0,0,.125);
+			}
+		}
 	}
 	.ta-editor {
-		background: #fff;
+		border: 1px solid #DDD;
 	}
+
+	.btn-group, .btn-group-vertical {
+		margin-right: 5px;
+		position: relative;
+		display: inline-block;
+		vertical-align: middle;
+	}
+}
+
+/* ===================== BLOCKQUOTE STYLING */
+
+blockquote {
+  margin: 1.5em 10px;
+  padding: 0.5em 10px;
+  quotes: "\201C""\201D""\2018""\2019";
+}
+
+blockquote:before {
+  color: #ccc;
+  content: open-quote;
+  font-size: 4em;
+  line-height: 0.1em;
+  margin-right: 0.25em;
+  vertical-align: -0.4em;
+}
+
+blockquote:after {
+	color: #ccc;
+	content: close-quote;
+	font-size: 4em;
+	line-height: 0.1em;
+	margin-left: 0.25em;
+	vertical-align: -0.4em;	
+}
+
+blockquote p {
+  display: inline;
 }
 
 /* ===================== OVERRIDE SEMANTIC'S HACKY FORM ERRORS */

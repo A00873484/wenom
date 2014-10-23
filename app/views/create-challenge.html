@@ -106,14 +106,16 @@
 							<h3 class="ui header">Description</h3>
 						</div>
 						<div class="eleven wide column">
-							WYSIWYG
+							<div text-angular ng-model="campaign.description" ta-toolbar-class="btn-toolbar" ta-toolbar-group-class="btn-group" ta-toolbar-button-class="btn btn-default" ta-toolbar-button-active-class="active" ta-toolbar="[['h1','h2','h3','p','pre','quote'],['bold','italics','underline'],['ul','ol'],['justifyLeft','justifyCenter','justifyRight'],['indent','outdent'],['insertImage','insertLink','insertVideo']]"></div>
 						</div>
 
-						<div class="five wide column">
+						<div class="five wide column" ng-show="campaign.description">
 							<h3 class="ui header">Description Preview</h3>
 						</div>
-						<div class="eleven wide column">
-							<button>Toggle</button>
+						<div class="eleven wide column" ng-show="campaign.description">
+							<div ng-show="!toggleDescriptPreview" ng-click="toggleDescriptPreview = !toggleDescriptPreview">Show</div>
+							<div ng-show="toggleDescriptPreview" ng-click="toggleDescriptPreview = !toggleDescriptPreview">Hide</div>
+							<div ng-show="toggleDescriptPreview" ta-bind ng-model="campaign.description"></div>
 						</div>						
 					</div> <!-- GRID END -->
 				</div>

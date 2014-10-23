@@ -1,11 +1,3 @@
-/*
- * WeNomYou
- * Project dependencies for the WeNomYou project
- * @author Jay Huang, Daniel Engelhard, Enoch Yip
- * @version 0.0.0
- * License: BSD-2-Clause
- */
-
 'use strict';
 
 // Enable lines below to override console.log() statements for production
@@ -13,7 +5,8 @@
 // console.log = function(){};
 var app = angular.module('WeNomYou', [
 	'ngRoute',
-	'ui.bootstrap'
+	'ui.bootstrap',
+	'textAngular'
 ]);
 
 app.constant('API_URL', {
