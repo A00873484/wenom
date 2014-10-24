@@ -12,12 +12,14 @@
 	<script type="text/javascript" src="bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
 	<script type="text/javascript" src="bower_components/ng-file-upload/angular-file-upload-shim.min.js"></script>
 	<script type="text/javascript" src="bower_components/ng-file-upload/angular-file-upload.min.js"></script>
+	<script type="text/javascript" src="bower_components/ngQuickDate/dist/ng-quick-date.min.js"></script>
 	<script type="text/javascript" src="bower_components/semantic-ui/build/packaged/javascript/semantic.min.js"></script>
 	<script type="text/javascript" src="bower_components/textAngular/dist/textAngular-sanitize.min.js"></script>
 	<script type="text/javascript" src="bower_components/textAngular/dist/textAngular.min.js"></script>
 	<link rel="stylesheet" href="bower_components/semantic-ui/build/packaged/css/semantic.min.css">
 	<!-- <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css"> -->
 	<link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.min.css">
+	<link rel="stylesheet" href="bower_components/ngQuickDate/dist/ng-quick-date.css">
 	<%= scripts %>
 	<%= css %>
 </head>

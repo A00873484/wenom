@@ -79,7 +79,8 @@
 						</div>
 						<div class="eleven wide column">
 							<div class="ui fluid form">
-								<input type="text" name="goal" ng-model="campaign.start_date" numbers-only>
+								<!-- <input type="text" name="goal" ng-model="campaign.start_date" numbers-only> -->
+								<quick-datepicker date-format='EEEE, MMMM d, yyyy' ng-model='campaign.start_date' date-filter='noPastDates' disable-timepicker="true"></quick-datepicker>
 							</div>
 						</div>
 

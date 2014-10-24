@@ -7,7 +7,8 @@ var app = angular.module('WeNomYou', [
 	'ngRoute',
 	'ui.bootstrap',
 	'textAngular',
-	'angularFileUpload'
+	'angularFileUpload',
+	'ngQuickDate'
 ]);
 
 app.constant('API_URL', {
@@ -65,6 +66,17 @@ app.controller('MainCtrl', function($scope, API_URL) {
 		    	console.log(data);
 		    });
 		}
+	};
+
+	$scope.noPastDates = function(d) {
+		var today = new Date();
+
+		today.setHours(0);
+		today.setMinutes(0);
+		today.setSeconds(0);
+		today.setMilliseconds(0);
+
+		return (d >= today);
 	};
 });;app.service('CreateChallengeService', function($location, $rootScope) {
 	var Challenge = {

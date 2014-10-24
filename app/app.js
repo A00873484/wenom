@@ -7,7 +7,8 @@ var app = angular.module('WeNomYou', [
 	'ngRoute',
 	'ui.bootstrap',
 	'textAngular',
-	'angularFileUpload'
+	'angularFileUpload',
+	'ngQuickDate'
 ]);
 
 app.constant('API_URL', {
