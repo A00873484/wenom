@@ -26,5 +26,7 @@ namespace WebAppTest.Models
 
         [Required, Display(Name = "Goal")]
         public double Goal { get; set; }
+
+
     }
 }
