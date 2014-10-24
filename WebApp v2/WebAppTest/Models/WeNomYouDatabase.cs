@@ -6,9 +6,9 @@ using System.Web;
 
 namespace WebAppTest.Models
 {
-    public class WeNomYouDatabaseContext : DbContext
+    public class WeNomYouDatabase: DbContext
     {
-        public WeNomYouDatabaseContext() : base("API") { }
+        public WeNomYouDatabase() : base("WebAppTest") { }
         public DbSet<User> Users { get; set; }
         public DbSet<Challenge> Challenges { get; set; }
     }

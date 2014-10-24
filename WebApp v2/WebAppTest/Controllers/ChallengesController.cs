@@ -13,7 +13,7 @@ namespace WebAppTest.Controllers
 {
     public class ChallengesController : Controller
     {
-        private WeNomYouDatabaseContext db = new WeNomYouDatabaseContext();
+        private WeNomYouDatabase db = new WeNomYouDatabase();
 
         // GET: Challenges
         public async Task<ActionResult> Index()
@@ -47,7 +47,7 @@ namespace WebAppTest.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "Id,Name,Creator,Nominee,Approved,Goal")] Challenge challenge)
+        public async Task<ActionResult> Create([Bind(Include = "Id,Name,Creator,Nominee,Approved,Discription,Goal")] Challenge challenge)
         {
             if (ModelState.IsValid)
             {
@@ -79,7 +79,7 @@ namespace WebAppTest.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Id,Name,Creator,Nominee,Approved,Goal")] Challenge challenge)
+        public async Task<ActionResult> Edit([Bind(Include = "Id,Name,Creator,Nominee,Approved,Discription,Goal")] Challenge challenge)
         {
             if (ModelState.IsValid)
             {

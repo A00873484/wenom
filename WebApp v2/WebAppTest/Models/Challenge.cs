@@ -13,6 +13,9 @@ namespace WebAppTest.Models
         [Required, StringLength(200), Display(Name = "Name")]
         public string Name { get; set; }
 
+        [Required, StringLength(10000), Display(Name = "Description")]
+        public string Discription { get; set; }
+
         [Required, StringLength(200), Display(Name = "Creator")]
         public string Creator { get; set; }
 

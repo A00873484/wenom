@@ -171,8 +171,7 @@
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\User.cs" />
-    <Compile Include="Models\WeNomYouDatabaseContext.cs" />
-    <Compile Include="Models\WeNomYouDatabaseInitializer.cs" />
+    <Compile Include="Models\WeNomYouDatabase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>

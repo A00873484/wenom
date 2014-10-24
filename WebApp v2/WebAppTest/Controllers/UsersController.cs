@@ -13,7 +13,18 @@ namespace WebAppTest.Controllers
 {
     public class UsersController : Controller
     {
-        private WeNomYouDatabaseContext db = new WeNomYouDatabaseContext();
+        private WeNomYouDatabase db = new WeNomYouDatabase();
+
+        //For signup/sign in
+        //sign up: get all users from database
+        //         filter by username
+        //         count results
+        //              if count>0
+        //                  username already exists
+        //                  post error/somethign
+        //              else
+        //                  create and add user
+        // 
 
         // GET: Users
         public async Task<ActionResult> Index()
