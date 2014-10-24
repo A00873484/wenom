@@ -1084,8 +1084,9 @@ blockquote p {
 		border: 2px dashed #AAA;
 		width: 100%;
 		max-width: 640px;
+		width: 480px;
 		height: auto;
-		margin: 0 auto;
+		// margin: 0 auto;
 
 		&.file-drag {
 			border: 2px dashed #111;
@@ -1101,6 +1102,7 @@ blockquote p {
 	 	> span {
 	 		font-weight: bold;
 	 		font-size: 2em;
+	 		text-align: center;
 	 		text-transform: uppercase;
 	 		color: #AAA;
 	 		display: block;

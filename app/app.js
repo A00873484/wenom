@@ -6,7 +6,8 @@
 var app = angular.module('WeNomYou', [
 	'ngRoute',
 	'ui.bootstrap',
-	'textAngular'
+	'textAngular',
+	'angularFileUpload'
 ]);
 
 app.constant('API_URL', {

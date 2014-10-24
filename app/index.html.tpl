@@ -10,6 +10,8 @@
 	<script type="text/javascript" src="bower_components/angular-route/angular-route.min.js"></script>
 	<script type="text/javascript" src="bower_components/angular-bootstrap/ui-bootstrap.min.js"></script>
 	<script type="text/javascript" src="bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+	<script type="text/javascript" src="bower_components/ng-file-upload/angular-file-upload-shim.min.js"></script>
+	<script type="text/javascript" src="bower_components/ng-file-upload/angular-file-upload.min.js"></script>
 	<script type="text/javascript" src="bower_components/semantic-ui/build/packaged/javascript/semantic.min.js"></script>
 	<script type="text/javascript" src="bower_components/textAngular/dist/textAngular-sanitize.min.js"></script>
 	<script type="text/javascript" src="bower_components/textAngular/dist/textAngular.min.js"></script>

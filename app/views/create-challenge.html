@@ -23,14 +23,14 @@
 						</div>
 						<div class="eleven wide column">
 							<div class="ui fluid form">
-								Drag and drop here
-								<br>
-								<br>
+								<div class="campaign-thumbnail" ng-file-drop="onFileSelect($files)">
+									<span>Drag and drop here</span>
+									<img src="http://placehold.it/480x480">
+								</div>
 								<br>
 								or
 								<br>
-								<br>
-								<button>Upload Image</button>
+								<div class="ui blue button" ng-file-select="onFileSelect($files)">Upload Image</div>
 							</div>
 						</div>
 

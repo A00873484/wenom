@@ -26,6 +26,7 @@
     "angular-cookie": "~4.0.6",
     "textAngular": "~1.2.2",
     "font-awesome": "~4.2.0",
-    "bootstrap": "~3.2.0"
+    "bootstrap": "~3.2.0",
+    "ng-file-upload": "~1.6.12"
   }
 }
