@@ -5,7 +5,7 @@
 		<!-- MENU LEFT -->
 		<div class="nav-header">
 			<div class="navlogo left menu">
-				<a href="/" id="logo" class="item">WeNomYou</a>
+				<a href="home" id="logo" class="item">WeNomYou</a>
 			</div>
 				<a class="item mobile-menu" ng-init="navCollapsed = true" ng-click="navCollapsed = !navCollapsed"><i class="reorder icon"></i></a>
 		</div>
@@ -21,7 +21,7 @@
 			<!-- MENU RIGHT -->
 			<div class="right menu">
 				<div class="item collapsible user-greeting" ng-if="User.isLoggedIn()">
-					Welcome, {{curruser.first_name}}!
+					Welcome back, {{curruser.first_name}}!
 				</div>
 				
 				<div class="ui dropdown item collapsible" ng-if="User.isLoggedIn()">
