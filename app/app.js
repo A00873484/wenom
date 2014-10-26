@@ -8,24 +8,46 @@ var app = angular.module('WeNomYou', [
 	'ui.bootstrap',
 	'textAngular',
 	'angularFileUpload',
-	'ngQuickDate'
+	'ngQuickDate',
+	'angularMoment',
+	'restangular',
+	'ipCookie'
 ]);
 
 app.constant('API_URL', {
-	url:"http://localhost",
-	loc: '/api/v1/'
+	url:"http://apitest.younom.me",
+	loc: '/api/'
 });
 
-app.config(function($routeProvider, $locationProvider) {
-	$locationProvider.html5Mode(true);
+app.run(function($rootScope, $route, $location, $templateCache) {
+	// Disable route caching
+	$rootScope.$on('$routeChangeStart', function(event, next, current) {
+		if (typeof(current) !== 'undefined') {
+			$templateCache.remove(current.templateUrl);
+		}
+	});
+
+	// Handle dynamic URLs via route
+	// Set page title depending on whether the route has a title specified
+	$rootScope.site_title = 'WeNomYou';
+	$rootScope.$on('$routeChangeSuccess', function() {
+		$rootScope.page_title = !angular.isUndefined($route.current.title) ? $route.current.title + ' | ' + $rootScope.site_title : $rootScope.site_title;
+	});
+});
+
+app.config(function($routeProvider, $locationProvider, RestangularProvider, API_URL) {
+	$locationProvider.html5Mode(true); 	// Enable HTML5 mode for Angular hashbang-based URL routing
+	RestangularProvider.setBaseUrl(API_URL.url + API_URL.loc); // Set base URL for Restangular requests
 	$routeProvider
 	.when('/', {
 		templateUrl: 'views/index.html',
 		controller: 'HomeCtrl'
 	}).when('/register', {
 		templateUrl: 'views/login-register.html',
-		controller: 'LoginRegCtrl',
 		title: 'Register'
+	}).when('/login', {
+		templateUrl: 'views/login-register.html',
+		title: 'Login'
 	}).when('/start', {
 		templateUrl: 'views/create-challenge.html',
 		controller: 'CreateChallengeCtrl',
@@ -34,14 +56,35 @@ app.config(function($routeProvider, $locationProvider) {
 		templateUrl: 'views/create-challenge.html',
 		controller: 'CreateChallengeCtrl',
 		title: 'Continue Challenge Creation'
-	}).when('/login', {
-		templateUrl: 'views/login-register.html',
-		title: 'Login'
+	}).when('/continue', {
+		templateUrl: 'views/create-challenge.html',
+		controller: 'CreateChallengeCtrl',
+		title: 'Continue Challenge Creation'
+	}).when('/explore', {
+		templateUrl: 'views/explore.html',
+		controller: 'ExploreCtrl',
+		title: 'Explore Challenges'
 	}).otherwise({
 		redirectTo: '/'
 	});
 });
 
-app.controller('MainCtrl', function($scope, API_URL) {
-	$scope.server = API_URL.url;
+// set Restangular to use setFullResponse on specific services (to read headers)
+app.factory('RestFullResponse', function(Restangular) {
+	return Restangular.withConfig(function(RestangularConfigurer) {
+    	RestangularConfigurer.setFullResponse(true);
+	});
+});
+
+app.controller('MainCtrl', function($scope, API_URL, $rootScope, UserService, $timeout) {
+	$scope.User = UserService;
+	window.a = $rootScope.challenges = $rootScope.challenges || [];
+	window.b = $rootScope.users = $rootScope.users || [];
+	$rootScope.users.push({
+		auth_token: "FAKEDATADELETE",
+		email: "jay@jayhuang.org",
+		first_name: "Jay",
+		password: "google",
+		password_confirm: "google"
+	});
 });

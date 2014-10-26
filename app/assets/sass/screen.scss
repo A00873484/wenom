@@ -55,16 +55,17 @@ body {
 /*================================================
 	GLOBAL CHANGES
 ================================================*/
-
-.ui.successful.progress {
-	padding: 1px;
-	border-radius: 10px;
-	height: 15px;
-
-	.bar {
-		border-radius: 20px;
+.ui.progress {
+	background-color: #EEE;
+	border: none;
+	border-radius: 20px;
+	&.successful {
+		height: 10px;
+		line-height: 0;
+		padding: 1px;
 	}
 }
+
 .ui.three.stackable.column.relaxed.grid { text-align: center; }
 .ui.button { text-transform: none; }
 a { text-decoration: none; }
@@ -510,20 +511,22 @@ blockquote p {
 		}
 	}
 	.campaign-listing {
-		margin-bottom: 4.5em;
+		// margin-bottom: 4.5em;
 		.content {
-			min-height: 200px;
+			// min-height: 200px;
 			.name,
 			.description {
 				word-break: break-word;
 			}
 		}
 		.campaign-stats {
-			padding: 0.5em;
+			padding: 0.5em 0.5em 0;
 			overflow: auto;
-
+			margin: 0 auto;
 			.meta {
+				text-align: center;
 				margin-top: 0.25em;
+				width: 100%;
 			}
 		}
 	}
@@ -624,39 +627,61 @@ blockquote p {
 	.search-input {
 		width: 100%;
 	}
+
 	.ui.menu.project-sidebar-list {
 		width: 100%;
 		border-radius: 6px;
 	}
+
 	.campaign-tiles {
 		.project-list {
 			margin: 0;
 
 			.campaign-listing {
-				margin-bottom: 4.5em;
-
+				min-height: 0;
+				// margin-bottom: 4.5em;
+				
+				.image {
+					z-index: 1;
+					width: 100%;
+					max-height: 149px;
+				}
 				.item:hover {
 					box-shadow: none !important;
 				}
+
 				.content {
-					min-height: 150px;
+					position: relative;
+					top: -40px;
+					height: 40px;
+					text-align: center;
+					z-index: 2;
+					font-size: 0.9em;
+					background-color: rgba(200, 200, 200, 0.7);
+					// min-height: 150px;
 					.ui.image {
 						width: 100%;
 						height: auto;
 					}
 					.name,
 					.description {
-						word-break: break-word;
+						white-space: nowrap;
+						text-overflow: ellipsis;
+						overflow: hidden;
 					}
 				}
-				.campaign-stats {
-					padding: 0.5em;
-					overflow: auto;
 
+				.campaign-stats {
+					padding: 0.5em 0.5em 0;
+					overflow: auto;
+					margin: 0 auto;
 					.meta {
+						text-align: center;
 						margin-top: 0.25em;
+						width: 100%;
 					}
 				}
+
 				.extra {
 					width: initial;
 					left: 0;
@@ -900,32 +925,33 @@ blockquote p {
 .mainbody-wrap {
 	.ui.basic.campaign-top-header.segment { margin: 50px 0;}
 	.file-info { font-size: 0.9em; color: #555555; }
+	.thumbnail-container{
+		text-align: center;
+	}
 	.campaign-thumbnail {
 		border: 2px dashed #AAA;
 		width: 100%;
-		max-width: 640px;
-		width: 480px;
-		height: auto;
-		// margin: 0 auto;
+		max-width: 480px;
+		height: 348px;
+		margin: 0 auto;
 
 		&.file-drag {
-			border: 2px dashed #111;
-			background-color: black;
+			border: 2px solid red;
 		}
 
 	 	img {
-	 		max-width: 640px;
-			height: auto;
+	 		max-width: 480px;
+			height: 320px;
 			width: 100%;
 	 	}
 
 	 	> span {
 	 		font-weight: bold;
-	 		font-size: 2em;
-	 		text-align: center;
+	 		font-size: 1.5em;
 	 		text-transform: uppercase;
 	 		color: #AAA;
 	 		display: block;
+	 		text-align: center;
 	 		background-color: #CCC;
 	 	}
 	}

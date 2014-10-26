@@ -1,0 +1,96 @@
+<div class="ui basic explore-head segment">
+	<div ng-include src="'views/partials/header.html'"></div> <!-- ================= HEADER -->
+	<!-- ============================================= EXPLORE HEAD BANNER-->
+	<h1 class="ui center aligned header"> Explore and discover exciting challenges!</h1>
+</div> <!-- EXPLORE HEAD BANNER -->
+
+<!-- ============================================= EXPLORE CATEGORIES -->
+<div class="mainbody-wrap">
+	<div class="ui page grid">
+		<div class="column">
+			<div class="ui two column stackable header grid">
+				<div class="left aligned floated column">
+					<div class="ui huge explore breadcrumb">
+						<a href="explore" class="active section"> Explore </a>
+						<div class="divider"> / </div>
+					</div>
+				</div> <!-- COLUMN END -->
+
+				<div class="right aligned floated column">
+					<div class="ui dropdown sort">
+						<div class="text"> Sort By </div>
+						<i class="dropdown icon"></i>
+							<div class="menu">
+								<a class="item" ng-click="updateSort('display_priority,-featured')"> Featured </a>
+								<a class="item" ng-click="updateSort('-created')"> Newest </a>
+								<a class="item" ng-click="updateSort('created')"> Oldest </a>
+							</div>
+					</div>
+				</div>
+			</div> <!-- GRID END -->
+			
+			<div class="ui two column stackable grid">
+				<div class="four wide column">
+					<div class="ui vertical menu project-sidebar-list">
+						<div class="header item"> Filter by challenge name </div>
+						<div class="item">
+							<div class="ui icon input search-input">
+								<input type="text" keyboard-poster="" post-function="searchTitles" placeholder="Search..." ng-model="searchchallengeName" list="cities">
+								<i class="search icon"></i>
+								<div>
+								</div>
+							</div>
+						</div> <!-- ITEM END -->
+						<div class="header item"> Filter by nominee name </div>
+						<div class="item">
+							<div class="ui icon input search-input">
+								<input type="text" keyboard-poster="" post-function="searchTitles" placeholder="Search..." ng-model="searchchallengeName" list="cities">
+								<i class="search icon"></i>
+								<div>
+								</div>
+							</div>
+						</div> <!-- ITEM END -->
+					</div>
+				</div>
+				<div class="twelve wide column campaign-tiles">
+					<div ng-hide="challenges.length" class="ui warning message">
+						<div class="header">
+							No matching challenges found.
+						</div>
+					</div>
+					<div ng-show="challenges" class="ui three stackable items project-list">
+						<a class="item campaign-listing" ng-href="#" ng-repeat="challenge in challenges">
+							<div class="item">
+								<div ng-show="challenge.featured" class="ui right corner blue label"><i class="star icon"></i></div>
+									<div class="image">
+										<img ng-show="!challenge.image" src="http://placehold.it/428x285&text=Image+unavailable" class="ui image">
+										<img ng-show="challenge.image" ng-src="{{challenge.image}}" class="ui image">
+									</div>
+								<div class="content">
+									<div class="name"> {{challenge.name}} </div>
+<!-- 									<div class="meta" am-time-ago="challenge.created"></div>
+									<p class="description">
+										{{challenge.description}}
+									</p> -->
+								</div>
+
+								<div class="campaign-stats">
+									<div class="ui successful progress">
+										<div class="bar" style="width: {{(challenge.funded_amount || 0) / (challenge.goal || 1) * 100 | number: 0}}%"></div>
+									</div>
+									<div class="meta">Funding: ${{challenge.goal}} ({{(challenge.funded_amount || 0) / (challenge.goal || 1) * 100 | number: 0}})%</div>
+								</div>
+							</div>
+						</a> <!-- ITEM -->
+					</div>
+				</div> <!-- COLUMN END -->
+			</div> <!-- TWO COLUMN GRID END -->
+
+<!-- 			<div class="ui basic center aligned segment">
+				<pagination ng-show="sortOrFilters.pagination.currentpage" ng-model="sortOrFilters.page" max-size="10" total-items="getTotalItems()" boundary-links="true" rotate="false" items-per-page="sortOrFilters.pagination.entriesperpage" previous-text="<" next-text=">" first-text="<<" last-text=">>"></pagination>
+			</div> -->
+		</div>
+	</div> <!-- CATEGORY-BG SEGMENT END -->
+</div>
+
+<div ng-include src="'views/partials/footer.html'"></div> <!-- ================= FOOTER -->

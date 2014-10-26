@@ -5,22 +5,8 @@
 	<div class="ui page grid">
 		<div class="ui column">
 			<div class="ui center aligned two column stackable grid">
-				<div class="twelve wide column">
-					<div ng-show="confirmation.confirmed" class="ui success message twelve wide column">
-						<i class="loading icon"></i>
-						{{confirmation.confirmed.message}}
-					</div>
-					<div ng-show="confirmation.errors" class="ui error message twelve wide column">
-						<i class="close icon" ng-click="confirmation.errors = null;"></i>
-						<ul ng-repeat="error in confirmation.errors">
-							<li ng-repeat="item in error">
-								{{item.message}}
-							</li>
-						</ul>
-					</div>
-				</div>
 				<div class="six wide column">
-					<form name="login_form" class="ui login form segment" id="login"> <!-- ng-controller="LoginCtrl" -->
+					<form name="login_form" class="ui login form segment" id="login" ng-controller="LoginCtrl">
 						<div class="top-head">
 							<h3 class="ui header"> Log in </h3>
 							<p> If you already have an account please login to continue. </p>
@@ -33,14 +19,12 @@
 								<div class="header">
 									Login failed
 								</div>
-								<ul ng-repeat="error in formData.errors" class="list">
-									<li ng-repeat="item in error">{{item.message}}</li>
-								</ul>
+								<li ng-repeat="error in formData.errors" class="list">{{error.message}}</li>
 							</div>
 						</div>
 						<div class="field">
 							<label> Email </label>
-							<input type="email" name="email" placeholder="Email" ng-model="formData.email">
+							<input type="email" name="email" ng-class="{'has-error': !login_form.email.$dirty}" placeholder="Email" ng-model="formData.email" required>
 							<div class="ui red pointing above ui label" ng-show="login_form.email.$dirty && login_form.email.$invalid">
 							    <div ng-show="login_form.email.$error.required">Please enter your email</div>
 							    <div ng-show="login_form.email.$error.email">Please enter a valid email</div>
@@ -48,7 +32,7 @@
 						</div>
 						<div class="field">
 							<label> Password </label>
-							<input type="password" name="password" placeholder="Password" ng-minlength="6" ng-model="formData.password">
+							<input type="password" name="password" ng-class="{'has-error': !login_form.password.$dirty}" placeholder="Password" ng-minlength="6" ng-model="formData.password" required>
 							<div class="ui red pointing above ui label" ng-show="login_form.password.$dirty && login_form.password.$invalid">
 							    <div ng-show="login_form.password.$error.required">Please enter your password</div>
 							    <div ng-show="login_form.password.$error.minlength">Your password must be at least 6 characters</div>
@@ -56,7 +40,7 @@
 						</div>
 
 						<div class="ui basic login-register-btn segment">
-							<button ng-click="submit()" class="ui fluid green login button"> Log in</button>
+							<button ng-click="login($event)" class="ui fluid green login button">Log in</button>
 						</div>
 					</form> <!-- FORM END -->
 					
@@ -64,14 +48,14 @@
 
 			<!-- ============================================= REGISTER FORM -->
 				<div class="six wide column">
-					<form name="register_form" class="ui register form segment" id="register" ng-submit="submit()"> <!-- ng-controller="RegisterCtrl"  -->
+					<form name="register_form" class="ui register form segment" id="register" ng-submit="submit()" ng-controller="RegCtrl">
 						<div class="top-head">
 							<h3 class="ui header"> New to WeNomYou? </h3>
 							<p> Please fill out the form to create a new account. </p>
 							<div ng-show="formData.successful" class="ui success message">
 								{{formData.successful.message}}
 							</div>
-							<div ng-show="formData.errors" class="ui error message">
+							<!-- <div ng-show="formData.errors" class="ui error message">
 								<i class="close icon" ng-click="formData.errors = null;"></i>
 								<div class="header">
 									Registration failed
@@ -79,12 +63,12 @@
 								<ul ng-repeat="error in formData.errors" class="list">
 									<li ng-repeat="item in error">{{item.message}}</li>
 								</ul>
-							</div>
+							</div> -->
 						</div>
 
 						<div class="field">
 							<label> First Name </label>
-							<input type="text" name="first_name" placeholder="First Name" ng-model="formData.first_name">
+							<input type="text" name="first_name" ng-class="{'has-error': !register_form.first_name.$dirty}" placeholder="First Name" ng-model="formData.first_name" required>
 							<div class="ui red pointing above ui label" ng-show="register_form.first_name.$dirty && register_form.first_name.$invalid">
 							    <div ng-show="register_form.first_name.$error.required">Please enter your first name</div>
 							</div>
@@ -92,14 +76,11 @@
 
 						<div class="field">
 							<label> Last Name </label>
-							<input type="text" name="last_name" placeholder="Last Name" ng-model="formData.last_name" required="">
-							<div class="ui red pointing above ui label" ng-show="register_form.last_name.$dirty && register_form.last_name.$invalid">
-							    <div ng-show="register_form.last_name.$error.required">Please enter your last name</div>
-							</div>
+							<input type="text" name="last_name" placeholder="Last Name" ng-model="formData.last_name">
 						</div>
 						<div class="field">
 							<label> Email </label>
-							<input type="email" name="email" placeholder="Email" ng-model="formData.email">
+							<input type="email" name="email" ng-class="{'has-error': !register_form.email.$dirty}" placeholder="Email" ng-model="formData.email" required>
 							<div class="ui red pointing above ui label" ng-show="register_form.email.$dirty && register_form.email.$invalid">
 							    <div ng-show="register_form.email.$error.required">Please enter your email</div>
 							    <div ng-show="register_form.email.$error.email">Please enter a valid email</div>
@@ -108,7 +89,7 @@
 
 						<div class="field">
 							<label> Password </label>
-							<input type="password" id="registerpass" name="password" placeholder="Password" ng-minlength="6" ng-model="formData.password">
+							<input type="password" id="registerpass" ng-class="{'has-error': !register_form.password.$dirty}" name="password" placeholder="Password" ng-minlength="6" ng-model="formData.password" required>
 							<div class="ui red pointing above ui label" ng-show="register_form.password.$dirty && register_form.password.$invalid">
 								<div ng-show="register_form.password.$error.required">Please enter your password</div>
 								<div ng-show="register_form.password.$error.minlength">Your password must be at least 6 characters</div>
@@ -117,15 +98,15 @@
 
 						<div class="field">
 							<label> Confirm Password </label>
-							<input type="password" name="password_confirm" placeholder="Confirm Password" data-match="formData.password" ng-model="formData.password_confirm">
-							<div class="ui red pointing above ui label" ng-show="register_form.password_confirm.$dirty && register_form.password_confirm.$invalid && !register_form.name.$focused">
+							<input type="password" name="password_confirm" placeholder="Confirm Password" data-match="formData.password" ng-model="formData.password_confirm" required>
+							<div class="ui red pointing above ui label" ng-show="register_form.password.$dirty && register_form.password_confirm.$invalid">
 								<div ng-show="register_form.password_confirm.$error.required">Please confirm your password</div>
 								<div ng-show="register_form.password_confirm.$error.match">Passwords do not match</div>
 							</div>
 						</div>
 
 						<div class="ui basic login-register-btn segment">
-							<button class="ui fluid green register button"> Create an Account </button>
+							<button ng-click="createAccount($event)" class="ui fluid green register button">Create an Account</button>
 						</div>
 					</form> <!-- FORM END -->
 				</div>
