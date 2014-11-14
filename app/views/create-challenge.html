@@ -39,7 +39,7 @@
 						<div class="eleven wide column">
 							<div class="ui fluid form">
 								<div class="field">
-									<input ng-class="{'has-error': !challenge_form.title.$dirty}" type="text" name="title" ng-model="challenge.name" required>
+									<input ng-class="{'has-error': challenge_form.title.$invalid}" type="text" name="title" ng-model="challenge.name" required>
 									<div class="ui red pointing above ui label" ng-show="challenge_form.title.$invalid && challenge_form.title.$dirty">
 										<div ng-show="challenge_form.title.$error.required">Please provide the challenge name</div>
 									</div>
@@ -53,7 +53,7 @@
 						<div class="eleven wide column">
 							<div class="ui fluid form">
 								<div class="field">
-									<input ng-class="{'has-error': !challenge_form.nominee.$dirty}" type="text" name="nominee" ng-model="challenge.nominee" required>
+									<input ng-class="{'has-error': challenge_form.nominee.$invalid}" type="text" name="nominee" ng-model="challenge.nominee" required>
 									<div class="ui red pointing above ui label" ng-show="challenge_form.nominee.$invalid && challenge_form.nominee.$dirty">
 										<div ng-show="challenge_form.nominee.$error.required">Please provide the nominee name</div>
 									</div>
@@ -66,7 +66,7 @@
 						</div>
 						<div class="eleven wide column">
 							<div class="ui fluid form">
-								<input ng-class="{'has-error': !challenge_form.goal.$dirty}" type="text" name="goal" ng-model="challenge.goal" numbers-only required>
+								<input ng-class="{'has-error': challenge_form.goal.$invalid}" type="text" name="goal" ng-model="challenge.goal" numbers-only required>
 								<div class="ui red pointing above ui label" ng-show="challenge_form.goal.$invalid && challenge_form.goal.$dirty">
 									<div ng-show="challenge_form.goal.$error.required || !challenge.goal">Please provide a funding goal</div>
 									<div ng-show="challenge_form.goal.$error.number">Numbers only please!</div>
@@ -79,7 +79,7 @@
 						</div>
 						<div class="eleven wide column">
 							<div class="ui fluid form">
-								<quick-datepicker name="start_date" ng-class="{'has-error': !challenge_form.start_date.$dirty}" date-format='EEEE, MMMM d, yyyy' ng-model='challenge.start_date' date-filter='noPastDates' disable-timepicker="true"></quick-datepicker>
+								<quick-datepicker name="start_date" ng-class="{'has-error': !challenge.start_date}" date-format='EEEE, MMMM d, yyyy' ng-model='challenge.start_date' date-filter='noPastDates' disable-timepicker="true"></quick-datepicker>
 								<div class="ui red pointing above ui label" ng-show="!challenge.start_date && challenge_form.start_date.$dirty">
 									<div ng-show="!challenge.start_date">Please pick a start date</div>
 								</div>
@@ -91,7 +91,7 @@
 						</div>
 						<div class="eleven wide column">
 							<div class="ui fluid form">
-								<input type="text" name="duration" ng-class="{'has-error': !challenge_form.duration.$dirty}" ng-model="challenge.duration" 365-only required>
+								<input type="text" name="duration" ng-class="{'has-error': challenge_form.duration.$invalid}" ng-model="challenge.duration" 365-only required>
 								<div class="ui red pointing above ui label" ng-show="challenge_form.duration.$invalid && challenge_form.duration.$dirty">
 									<div ng-show="challenge_form.duration.$error.required">Please provide a duration</div>
 								</div>
@@ -109,7 +109,7 @@
 							<h3 class="ui header">Description</h3>
 						</div>
 						<div class="eleven wide column">
-							<div text-angular name="description" ng-class="{'has-error': !challenge_form.description.$dirty}" ng-model="challenge.description" ta-toolbar-class="btn-toolbar" ta-toolbar-group-class="btn-group" ta-toolbar-button-class="btn btn-default" ta-toolbar-button-active-class="active" ta-toolbar="[['h1','h2','h3','p','pre','quote'],['bold','italics','underline'],['ul','ol'],['justifyLeft','justifyCenter','justifyRight'],['indent','outdent'],['insertImage','insertLink','insertVideo']]" required></div>
+							<div text-angular name="description" ng-class="{'has-error': challenge_form.description.$invalid}" ng-model="challenge.description" ta-toolbar-class="btn-toolbar" ta-toolbar-group-class="btn-group" ta-toolbar-button-class="btn btn-default" ta-toolbar-button-active-class="active" ta-toolbar="[['h1','h2','h3','p','pre','quote'],['bold','italics','underline'],['ul','ol'],['justifyLeft','justifyCenter','justifyRight'],['indent','outdent'],['insertImage','insertLink','insertVideo']]" required></div>
 							<div class="ui red pointing above ui label" ng-show="challenge_form.description.$invalid && challenge_form.description.$dirty">
 								<div ng-show="challenge_form.description.$error.required">Please provide a description</div>
 							</div>

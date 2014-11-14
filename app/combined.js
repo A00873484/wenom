@@ -147,6 +147,15 @@ app.controller('MainCtrl', function($scope, API_URL, $rootScope, UserService, $t
 			}
 		}
 	}
+
+	$scope.noPastDates = function(d) {
+		var today = new Date();
+		today.setHours(0);
+		today.setMinutes(0);
+		today.setSeconds(0);
+		today.setMilliseconds(0);
+		return (d >= today);
+	}
 });;app.service('CreateChallengeService', function($location, $rootScope) {
 	var Challenge = {
 		id: '',
