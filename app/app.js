@@ -56,10 +56,10 @@ app.config(function($routeProvider, $locationProvider, RestangularProvider, API_
 		templateUrl: 'views/create-challenge.html',
 		controller: 'CreateChallengeCtrl',
 		title: 'Continue Challenge Creation'
-	}).when('/continue', {
-		templateUrl: 'views/create-challenge.html',
-		controller: 'CreateChallengeCtrl',
-		title: 'Continue Challenge Creation'
+	}).when('/challenge/:challengeid/:challengename?', {
+		templateUrl: 'views/challenge.html',
+		controller: 'ChallengeCtrl',
+		title: 'View Campaign'
 	}).when('/explore', {
 		templateUrl: 'views/explore.html',
 		controller: 'ExploreCtrl',
@@ -78,8 +78,8 @@ app.factory('RestFullResponse', function(Restangular) {
 
 app.controller('MainCtrl', function($scope, API_URL, $rootScope, UserService, $timeout) {
 	$scope.User = UserService;
-	window.a = $rootScope.challenges = $rootScope.challenges || [];
-	window.b = $rootScope.users = $rootScope.users || [];
+	$rootScope.challenges = $rootScope.challenges || [];
+	$rootScope.users = $rootScope.users || [];
 	$rootScope.users.push({
 		auth_token: "FAKEDATADELETE",
 		email: "jay@jayhuang.org",

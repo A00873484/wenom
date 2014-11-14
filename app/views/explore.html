@@ -59,7 +59,7 @@
 						</div>
 					</div>
 					<div ng-show="challenges" class="ui three stackable items project-list">
-						<a class="item campaign-listing" ng-href="#" ng-repeat="challenge in challenges">
+						<a class="item campaign-listing" ng-href="{{challenge.url + challenge.id}}" ng-repeat="challenge in challenges">
 							<div class="item">
 								<div ng-show="challenge.featured" class="ui right corner blue label"><i class="star icon"></i></div>
 									<div class="image">

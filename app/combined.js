@@ -64,10 +64,10 @@ app.config(function($routeProvider, $locationProvider, RestangularProvider, API_
 		templateUrl: 'views/create-challenge.html',
 		controller: 'CreateChallengeCtrl',
 		title: 'Continue Challenge Creation'
-	}).when('/continue', {
-		templateUrl: 'views/create-challenge.html',
-		controller: 'CreateChallengeCtrl',
-		title: 'Continue Challenge Creation'
+	}).when('/challenge/:challengeid/:challengename?', {
+		templateUrl: 'views/challenge.html',
+		controller: 'ChallengeCtrl',
+		title: 'View Campaign'
 	}).when('/explore', {
 		templateUrl: 'views/explore.html',
 		controller: 'ExploreCtrl',
@@ -86,8 +86,8 @@ app.factory('RestFullResponse', function(Restangular) {
 
 app.controller('MainCtrl', function($scope, API_URL, $rootScope, UserService, $timeout) {
 	$scope.User = UserService;
-	window.a = $rootScope.challenges = $rootScope.challenges || [];
-	window.b = $rootScope.users = $rootScope.users || [];
+	$rootScope.challenges = $rootScope.challenges || [];
+	$rootScope.users = $rootScope.users || [];
 	$rootScope.users.push({
 		auth_token: "FAKEDATADELETE",
 		email: "jay@jayhuang.org",
@@ -101,14 +101,17 @@ app.controller('MainCtrl', function($scope, API_URL, $rootScope, UserService, $t
 			return Restangular.one('users', userid).get();
 		}
 	}
+});;app.controller('ChallengeCtrl', function($routeParams, $scope, $rootScope) {
+	$routeParams;
+	$scope.challenge = $rootScope.challenges[$routeParams.challengeid - 1];
 });;app.controller('CreateChallengeCtrl', function($scope, CreateChallengeService, APIAuth, $timeout, $rootScope) {
 	// CreateChallengeService.enforceFormProgress(); // If the user hasn't started the challenge, send them back to the start
 	if(!$scope.challenge) CreateChallengeService.init(); // If this controller wasn't called with an existing challenge, cache the current (empty) data
 	$scope.challenge = CreateChallengeService;
 
-	if($rootScope.challenges.length) {
-		$scope.challenge.id = parseInt($rootScope.challenges[$rootScope.challenges.length - 1].id) + 1;
-	}
+	// if($rootScope.challenges.length) {
+	// 	$scope.challenge.id = parseInt($rootScope.challenges[$rootScope.challenges.length - 1].id) + 1;
+	// }
 
 	$scope.momentAdd = function(value, add, unit, format) {
 		add = add || 0;
@@ -309,7 +312,7 @@ app.directive('match', function () {
             };
         }
     };
-});;app.controller('ExploreCtrl', function($scope, $routeParams, $location, Restangular, $rootScope){
+});;app.controller('ExploreCtrl', function($scope, $routeParams, $location, Restangular, $rootScope, API_URL){
 	$scope.sortOrFilters = {
 		"sort": '',
 		"filters": {
@@ -322,7 +325,7 @@ app.directive('match', function () {
 		"pagination": {},
 		"page": null
 	}
-
+	var serverurl = 'http://techpro.local/';
 	// Temporary placeholders for challenge display, replace with data from API
 	var placeholderchallenges = [
 		{
@@ -330,6 +333,7 @@ app.directive('match', function () {
 			name: 'ALS ice bucket challenge',
 			created: 'Sat Oct 25 2014 00:55:23 GMT-0700 (Pacific Daylight Time)',
 			image: '',
+			url: serverurl + 'challenge/',
 			description: 'Description',
 			funded_amount: '19',
 			goal: '50'
@@ -339,6 +343,7 @@ app.directive('match', function () {
 			name: 'Swim in a volcano',
 			created: 'Wed Oct 29 2014 00:55:23 GMT-0700 (Pacific Daylight Time)',
 			image: '',
+			url: serverurl + 'challenge/',
 			description: 'Description',
 			funded_amount: '50000',
 			goal: '30000000'
@@ -348,6 +353,7 @@ app.directive('match', function () {
 			name: 'Ask a white girl to coffee!!!',
 			created: 'Fri Oct 24 2014 00:55:23 GMT-0700 (Pacific Daylight Time)',
 			image: '',
+			url: serverurl + 'challenge/',
 			description: 'Description',
 			funded_amount: '880000',
 			goal: '1000000'
@@ -357,6 +363,7 @@ app.directive('match', function () {
 			name: 'Super cool challenge',
 			created: 'Wed Oct 15 2014 00:55:23 GMT-0700 (Pacific Daylight Time)',
 			image: '',
+			url: serverurl + 'challenge/',
 			description: 'Description',
 			funded_amount: '5',
 			goal: '99'

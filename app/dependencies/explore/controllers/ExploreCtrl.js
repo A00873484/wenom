@@ -1,4 +1,4 @@
-app.controller('ExploreCtrl', function($scope, $routeParams, $location, Restangular, $rootScope){
+app.controller('ExploreCtrl', function($scope, $routeParams, $location, Restangular, $rootScope, API_URL){
 	$scope.sortOrFilters = {
 		"sort": '',
 		"filters": {
@@ -11,7 +11,7 @@ app.controller('ExploreCtrl', function($scope, $routeParams, $location, Restangu
 		"pagination": {},
 		"page": null
 	}
-
+	var serverurl = 'http://techpro.local/';
 	// Temporary placeholders for challenge display, replace with data from API
 	var placeholderchallenges = [
 		{
@@ -19,6 +19,7 @@ app.controller('ExploreCtrl', function($scope, $routeParams, $location, Restangu
 			name: 'ALS ice bucket challenge',
 			created: 'Sat Oct 25 2014 00:55:23 GMT-0700 (Pacific Daylight Time)',
 			image: '',
+			url: serverurl + 'challenge/',
 			description: 'Description',
 			funded_amount: '19',
 			goal: '50'
@@ -28,6 +29,7 @@ app.controller('ExploreCtrl', function($scope, $routeParams, $location, Restangu
 			name: 'Swim in a volcano',
 			created: 'Wed Oct 29 2014 00:55:23 GMT-0700 (Pacific Daylight Time)',
 			image: '',
+			url: serverurl + 'challenge/',
 			description: 'Description',
 			funded_amount: '50000',
 			goal: '30000000'
@@ -37,6 +39,7 @@ app.controller('ExploreCtrl', function($scope, $routeParams, $location, Restangu
 			name: 'Ask a white girl to coffee!!!',
 			created: 'Fri Oct 24 2014 00:55:23 GMT-0700 (Pacific Daylight Time)',
 			image: '',
+			url: serverurl + 'challenge/',
 			description: 'Description',
 			funded_amount: '880000',
 			goal: '1000000'
@@ -46,6 +49,7 @@ app.controller('ExploreCtrl', function($scope, $routeParams, $location, Restangu
 			name: 'Super cool challenge',
 			created: 'Wed Oct 15 2014 00:55:23 GMT-0700 (Pacific Daylight Time)',
 			image: '',
+			url: serverurl + 'challenge/',
 			description: 'Description',
 			funded_amount: '5',
 			goal: '99'
