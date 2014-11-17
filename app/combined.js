@@ -543,15 +543,35 @@ app.controller('RegCtrl', function($scope, UserService, $rootScope) {
 	}
 });;app.controller('CampaignStatusCtrl', function($scope, CreateChallengeService) {
 	$scope.campaign = CreateChallengeService;
-});;app.controller('ProfileCtrl', function($scope, $rootScope) {
-	window.a = $rootScope.curruser;
+});;app.controller('ProfileCtrl', function($scope, $rootScope, $timeout) {
+	$scope.user = $rootScope.curruser;
 
+	$scope.onFileSelect = function($files) {
+		$scope.selectedFiles = [];
+		$scope.dataUrls = [];
+		for (var i = 0; i < $files.length; i++) {
+			var $file = $files[i];
+			if ($file.type.indexOf('image') > -1) {
+				var fileReader = new FileReader();
+				fileReader.readAsDataURL($files[i]);
+				var loadFilePreview = function(fileReader, index) {
+					fileReader.onload = function(e) {
+						$timeout(function() {
+							$scope.user.image = $scope.dataUrls[index] = e.target.result;
+						});
+					}
+				}(fileReader, i);
+			}
+		}
+	}
 });;app.service('UserService', function($location, $http, ipCookie, Restangular, $timeout, $rootScope) {
 	var User = {
 		email: '',
 		first_name: '',
 		last_name: '',
-		auth_token: ''
+		auth_token: '',
+		about: '',
+		image: ''
 	}
 
 	// Caches the properties of the object so we can reset it later

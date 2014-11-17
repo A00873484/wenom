@@ -3,7 +3,9 @@ app.service('UserService', function($location, $http, ipCookie, Restangular, $ti
 		email: '',
 		first_name: '',
 		last_name: '',
-		auth_token: ''
+		auth_token: '',
+		about: '',
+		image: ''
 	}
 
 	// Caches the properties of the object so we can reset it later
