@@ -29,7 +29,7 @@
 					<i class="setting icon"></i>
 					<div class="menu">
 						<a ng-if="User.portal_admin" class="item" href="/admin/dashboard"> Admin Dashboard </a>
-						<a ng-if="User.isLoggedIn()" class="item" href="/admin/dashboard"> Edit Profile </a>
+						<a ng-if="User.isLoggedIn()" class="item" href="/profile"> Edit Profile </a>
 						<a ng-if="User.isLoggedIn()" class="item" ng-click="User.setLoggedOut()">Logout</a>
 					</div>
 					<!-- <i data-loading class="loading icon"></i> -->

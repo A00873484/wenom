@@ -359,13 +359,13 @@ button[disabled=disabled], button:disabled {
 
 	li.active{
 		z-index: 500;
-		border-bottom:3px solid $main-color;
+		// border-bottom:3px solid $main-color;
 		background-color: transparent;
 		-webkit-box-shadow: none;
 		box-shadow: none;
 
-		border-color: #6ECFF5!important;
-		color: #6ECFF5!important;
+		// border-color: #6ECFF5!important;
+		// color: #6ECFF5!important;
 	}
 
 	/*li:first-child a{
@@ -915,7 +915,7 @@ blockquote p {
 			}
 
 		}
-		.ui.campaign.divider { width: 100%; margin: 20px auto; }
+		.ui.challenge.divider { width: 100%; margin: 20px auto; }
 		.ui.two.column.header.grid { a { color: #6ECFF5; } }
 		/* =================== HEADER */
 
@@ -928,7 +928,7 @@ blockquote p {
 			a { color: #555; }
 		}
 			
-		.ui.campaign-info {
+		.ui.challenge-info {
 			margin-top: 0; 
 			border-radius: 0 0 5px 5px;
 
@@ -978,10 +978,10 @@ blockquote p {
 				}
 			}
 		}
-		.ui.basic.campaign-header.segment {
+		.ui.basic.challenge-header.segment {
 			margin-bottom: 0;
 			padding-bottom: 0;
-			& .campaign-links {
+			& .challenge-links {
 				word-break: break-word;
 				& .link-heading {
 					margin-top: 0;
@@ -996,11 +996,11 @@ blockquote p {
 			}
 		}
 
-		.ui.basic.campaign-story.segment {
+		.ui.basic.challenge-story.segment {
 			margin: 0 auto;
 			padding-top: 0;
 			p.caption { font-style: italic; margin-bottom: 20px; }
-			.ui.center.aligned.basic.campaign-social-media.segment { 
+			.ui.center.aligned.basic.challenge-social-media.segment { 
 				p { color: #ccc; margin: 0 20px 20px 20px; }
 			}
 		}

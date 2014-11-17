@@ -60,6 +60,10 @@ app.config(function($routeProvider, $locationProvider, RestangularProvider, API_
 		templateUrl: 'views/challenge.html',
 		controller: 'ChallengeCtrl',
 		title: 'View Campaign'
+	}).when('/profile', {
+		templateUrl: 'views/edit-profile.html',
+		controller: 'ProfileCtrl',
+		title: 'View Campaign'
 	}).when('/explore', {
 		templateUrl: 'views/explore.html',
 		controller: 'ExploreCtrl',

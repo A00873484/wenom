@@ -1,11 +1,3 @@
-/*
- * WeNomYou
- * Project dependencies for the WeNomYou project
- * @author Jay Huang, Daniel Engelhard, Enoch Yip
- * @version 0.0.0
- * License: BSD-2-Clause
- */
-
 'use strict';
 
 // Enable lines below to override console.log() statements for production
@@ -68,6 +60,10 @@ app.config(function($routeProvider, $locationProvider, RestangularProvider, API_
 		templateUrl: 'views/challenge.html',
 		controller: 'ChallengeCtrl',
 		title: 'View Campaign'
+	}).when('/profile', {
+		templateUrl: 'views/edit-profile.html',
+		controller: 'ProfileCtrl',
+		title: 'View Campaign'
 	}).when('/explore', {
 		templateUrl: 'views/explore.html',
 		controller: 'ExploreCtrl',
@@ -102,16 +98,16 @@ app.controller('MainCtrl', function($scope, API_URL, $rootScope, UserService, $t
 		}
 	}
 });;app.controller('ChallengeCtrl', function($routeParams, $scope, $rootScope) {
-	$routeParams;
 	$scope.challenge = $rootScope.challenges[$routeParams.challengeid - 1];
+	$rootScope.page_title = !angular.isUndefined($scope.challenge.name) ? $scope.challenge.name + ' - ' + $rootScope.site_title : $rootScope.site_title;
 });;app.controller('CreateChallengeCtrl', function($scope, CreateChallengeService, APIAuth, $timeout, $rootScope) {
 	// CreateChallengeService.enforceFormProgress(); // If the user hasn't started the challenge, send them back to the start
 	if(!$scope.challenge) CreateChallengeService.init(); // If this controller wasn't called with an existing challenge, cache the current (empty) data
 	$scope.challenge = CreateChallengeService;
 
-	// if($rootScope.challenges.length) {
-	// 	$scope.challenge.id = parseInt($rootScope.challenges[$rootScope.challenges.length - 1].id) + 1;
-	// }
+	if($rootScope.challenges.length) {
+		$scope.challenge.id = parseInt($rootScope.challenges[$rootScope.challenges.length - 1].id) + 1;
+	}
 
 	$scope.momentAdd = function(value, add, unit, format) {
 		add = add || 0;
@@ -169,6 +165,7 @@ app.controller('MainCtrl', function($scope, API_URL, $rootScope, UserService, $t
 		description: '',
 		nominee: '',
 		goal: '0',
+		url: 'http://techpro.local/challenge/',
 		funded_amount: '0',
 		start_date: '',
 		duration: '',
@@ -312,6 +309,32 @@ app.directive('match', function () {
             };
         }
     };
+});
+
+app.filter('noFractionCurrency',
+	['$filter', '$locale',
+	function(filter, locale) {
+		var currencyFilter = filter('currency');
+		var formats = locale.NUMBER_FORMATS;
+		return function(amount, currencySymbol) {
+			var value = currencyFilter(amount, currencySymbol);
+			if(value) {
+				var sep = value.indexOf(formats.DECIMAL_SEP);
+				if(amount >= 0) { 
+					return value.substring(0, sep);
+				}
+				return value.substring(0, sep) + ')';
+			} else {
+				return amount;
+			}
+		};
+	}]
+);
+
+app.filter('formatDate', function() {
+	return function(input, formatting) {
+		return moment(input).format(formatting);
+	}
 });;app.controller('ExploreCtrl', function($scope, $routeParams, $location, Restangular, $rootScope, API_URL){
 	$scope.sortOrFilters = {
 		"sort": '',
@@ -334,7 +357,7 @@ app.directive('match', function () {
 			created: 'Sat Oct 25 2014 00:55:23 GMT-0700 (Pacific Daylight Time)',
 			image: '',
 			url: serverurl + 'challenge/',
-			description: 'Description',
+			description: "Dump ice on yourself and pretend you're making a positive impact.",
 			funded_amount: '19',
 			goal: '50'
 		},
@@ -344,7 +367,7 @@ app.directive('match', function () {
 			created: 'Wed Oct 29 2014 00:55:23 GMT-0700 (Pacific Daylight Time)',
 			image: '',
 			url: serverurl + 'challenge/',
-			description: 'Description',
+			description: 'Self explanatory.',
 			funded_amount: '50000',
 			goal: '30000000'
 		},
@@ -354,7 +377,7 @@ app.directive('match', function () {
 			created: 'Fri Oct 24 2014 00:55:23 GMT-0700 (Pacific Daylight Time)',
 			image: '',
 			url: serverurl + 'challenge/',
-			description: 'Description',
+			description: '2T? (;',
 			funded_amount: '880000',
 			goal: '1000000'
 		},
@@ -364,7 +387,7 @@ app.directive('match', function () {
 			created: 'Wed Oct 15 2014 00:55:23 GMT-0700 (Pacific Daylight Time)',
 			image: '',
 			url: serverurl + 'challenge/',
-			description: 'Description',
+			description: "",
 			funded_amount: '5',
 			goal: '99'
 		},
@@ -520,6 +543,9 @@ app.controller('RegCtrl', function($scope, UserService, $rootScope) {
 	}
 });;app.controller('CampaignStatusCtrl', function($scope, CreateChallengeService) {
 	$scope.campaign = CreateChallengeService;
+});;app.controller('ProfileCtrl', function($scope, $rootScope) {
+	window.a = $rootScope.curruser;
+
 });;app.service('UserService', function($location, $http, ipCookie, Restangular, $timeout, $rootScope) {
 	var User = {
 		email: '',
@@ -560,7 +586,7 @@ app.controller('RegCtrl', function($scope, UserService, $rootScope) {
 	}
 
 	User.isLoggedIn = function() {
-		window.user = $rootScope.curruser = $rootScope.curruser ? $rootScope.curruser : {};
+		$rootScope.curruser = $rootScope.curruser ? $rootScope.curruser : {};
 		if(!ipCookie('wenomyou.user'))
 			return false; // Returning the cookie will cause infinite $digest cycles. Return false if loggedin cookie is gone
 		else {

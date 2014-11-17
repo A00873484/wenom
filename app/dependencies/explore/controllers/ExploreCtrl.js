@@ -20,7 +20,7 @@ app.controller('ExploreCtrl', function($scope, $routeParams, $location, Restangu
 			created: 'Sat Oct 25 2014 00:55:23 GMT-0700 (Pacific Daylight Time)',
 			image: '',
 			url: serverurl + 'challenge/',
-			description: 'Description',
+			description: "Dump ice on yourself and pretend you're making a positive impact.",
 			funded_amount: '19',
 			goal: '50'
 		},
@@ -30,7 +30,7 @@ app.controller('ExploreCtrl', function($scope, $routeParams, $location, Restangu
 			created: 'Wed Oct 29 2014 00:55:23 GMT-0700 (Pacific Daylight Time)',
 			image: '',
 			url: serverurl + 'challenge/',
-			description: 'Description',
+			description: 'Self explanatory.',
 			funded_amount: '50000',
 			goal: '30000000'
 		},
@@ -40,7 +40,7 @@ app.controller('ExploreCtrl', function($scope, $routeParams, $location, Restangu
 			created: 'Fri Oct 24 2014 00:55:23 GMT-0700 (Pacific Daylight Time)',
 			image: '',
 			url: serverurl + 'challenge/',
-			description: 'Description',
+			description: '2T? (;',
 			funded_amount: '880000',
 			goal: '1000000'
 		},
@@ -50,7 +50,7 @@ app.controller('ExploreCtrl', function($scope, $routeParams, $location, Restangu
 			created: 'Wed Oct 15 2014 00:55:23 GMT-0700 (Pacific Daylight Time)',
 			image: '',
 			url: serverurl + 'challenge/',
-			description: 'Description',
+			description: "",
 			funded_amount: '5',
 			goal: '99'
 		},

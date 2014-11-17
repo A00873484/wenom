@@ -38,7 +38,7 @@ app.service('UserService', function($location, $http, ipCookie, Restangular, $ti
 	}
 
 	User.isLoggedIn = function() {
-		window.user = $rootScope.curruser = $rootScope.curruser ? $rootScope.curruser : {};
+		$rootScope.curruser = $rootScope.curruser ? $rootScope.curruser : {};
 		if(!ipCookie('wenomyou.user'))
 			return false; // Returning the cookie will cause infinite $digest cycles. Return false if loggedin cookie is gone
 		else {

@@ -1,0 +1,131 @@
+<div ng-include src="'views/partials/header.html'"></div> <!-- ================= HEADER -->
+
+<!-- ============================================= GET STARTED BODY -->
+
+<div class="mainbody-wrap">
+	<div class="ui page grid">
+		<div class="ui basic background-wrap segment">
+
+			<!-- =============================================== CHALLENGE SETUP HEADER -->
+			<div class="ui center aligned basic segment">
+				<h1 class="ui header">Edit Profile</h1>
+			</div>
+			
+			<form name="profile_form">
+				<!-- <h2 class="ui black inverted block header">Edit Profile</h2> -->
+
+				<div class="ui basic getstarted segment">
+					<div class="ui two column stackable formbg grid">
+
+						<div class="five wide column">
+							<h3 class="ui header">Profile Image</h3>
+						</div>
+						<div class="eleven wide column">
+							<div class="ui fluid form thumbnail-container">
+								<div class="campaign-thumbnail" ng-file-drag-over-class="file-drag" ng-file-drop="onFileSelect($files)">
+									<span>Drag and drop here</span>
+									<img ng-show="selectedFiles == null" src="http://placehold.it/480x320">
+									<img ng-show="selectedFiles != null" ng-src="{{dataUrls[0]}}"> 
+								</div>
+								  <div class="ui horizontal divider">OR</div>
+								<div class="ui blue center button" ng-file-select="onFileSelect($files)">Upload Image</div>
+							</div>
+						</div>
+
+						<div class="five wide column">
+							<h3 class="ui header">First Name</h3>
+						</div>
+						<div class="eleven wide column">
+							<div class="ui fluid form">
+								<div class="field">
+									<input ng-class="{'has-error': profile_form.title.$invalid}" type="text" name="title" ng-model="challenge.name" required>
+									<div class="ui red pointing above ui label" ng-show="profile_form.title.$invalid && profile_form.title.$dirty">
+										<div ng-show="profile_form.title.$error.required">Please provide the challenge name</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="five wide column">
+							<h3 class="ui header">Last Name</h3>
+						</div>
+						<div class="eleven wide column">
+							<div class="ui fluid form">
+								<div class="field">
+									<input ng-class="{'has-error': profile_form.nominee.$invalid}" type="text" name="nominee" ng-model="challenge.nominee" required>
+									<div class="ui red pointing above ui label" ng-show="profile_form.nominee.$invalid && profile_form.nominee.$dirty">
+										<div ng-show="profile_form.nominee.$error.required">Please provide the nominee name</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="five wide column">
+							<h3 class="ui header">Email</h3>
+						</div>
+						<div class="eleven wide column">
+							<div class="ui fluid form">
+								<input ng-class="{'has-error': profile_form.goal.$invalid}" type="text" name="goal" ng-model="challenge.goal" numbers-only required>
+								<div class="ui red pointing above ui label" ng-show="profile_form.goal.$invalid && profile_form.goal.$dirty">
+									<div ng-show="profile_form.goal.$error.required || !challenge.goal">Please provide a funding goal</div>
+									<div ng-show="profile_form.goal.$error.number">Numbers only please!</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="five wide column">
+							<h3 class="ui header">Password</h3>
+						</div>
+						<div class="eleven wide column">
+							<div class="ui fluid form">
+								<quick-datepicker name="start_date" ng-class="{'has-error': !challenge.start_date}" date-format='EEEE, MMMM d, yyyy' ng-model='challenge.start_date' date-filter='noPastDates' disable-timepicker="true"></quick-datepicker>
+								<div class="ui red pointing above ui label" ng-show="!challenge.start_date && profile_form.start_date.$dirty">
+									<div ng-show="!challenge.start_date">Please pick a start date</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="five wide column">
+							<h3 class="ui header">Confirm Password</h3>
+						</div>
+						<div class="eleven wide column">
+							<div class="ui fluid form">
+								<input type="text" name="duration" ng-class="{'has-error': profile_form.duration.$invalid}" ng-model="challenge.duration" 365-only required>
+								<div class="ui red pointing above ui label" ng-show="profile_form.duration.$invalid && profile_form.duration.$dirty">
+									<div ng-show="profile_form.duration.$error.required">Please provide a duration</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="five wide column">
+							<h3 class="ui header">About You</h3>
+						</div>
+						<div class="eleven wide column">
+							What makes you awesome? Tell people why they should be donating to your challenges.
+							<div text-angular name="description" ng-class="{'has-error': profile_form.description.$invalid}" ng-model="challenge.description" ta-toolbar-class="btn-toolbar" ta-toolbar-group-class="btn-group" ta-toolbar-button-class="btn btn-default" ta-toolbar-button-active-class="active" ta-toolbar="[['h1','h2','h3','p','pre','quote'],['bold','italics','underline'],['ul','ol'],['justifyLeft','justifyCenter','justifyRight'],['indent','outdent'],['insertImage','insertLink','insertVideo']]" required></div>
+							<div class="ui red pointing above ui label" ng-show="profile_form.description.$invalid && profile_form.description.$dirty">
+								<div ng-show="profile_form.description.$error.required">Please provide a description</div>
+							</div>
+						</div>
+
+						<div class="five wide column" ng-show="challenge.description">
+							<h3 class="ui header">Description Preview</h3>
+						</div>
+						<div class="eleven wide column" ng-show="challenge.description">
+							<div ng-show="!toggleDescriptPreview" ng-click="toggleDescriptPreview = !toggleDescriptPreview">Show</div>
+							<div ng-show="toggleDescriptPreview" ng-click="toggleDescriptPreview = !toggleDescriptPreview">Hide</div>
+							<div ng-show="toggleDescriptPreview" ta-bind ng-model="challenge.description"></div>
+						</div>						
+					</div> <!-- GRID END -->
+				</div>
+				<div class="ui right aligned basic btn nxt-step segment">
+					<a ng-href="explore">
+						<button accessible-form ng-click="saveData($event)" class="ui right labeled icon blue button"> Create Challenge <i class="right arrow icon"></i></button>
+					</a>
+				</div>
+			</form>
+		</div> <!-- WRAPPER END -->
+	</div>	
+</div> <!-- MAINBODY-WRAP END -->
+
+<div ng-include src="'views/partials/footer.html'"></div> <!-- ================= FOOTER -->

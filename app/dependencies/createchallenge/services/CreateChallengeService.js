@@ -8,6 +8,7 @@ app.service('CreateChallengeService', function($location, $rootScope) {
 		description: '',
 		nominee: '',
 		goal: '0',
+		url: 'http://techpro.local/challenge/',
 		funded_amount: '0',
 		start_date: '',
 		duration: '',

@@ -102,3 +102,29 @@ app.directive('match', function () {
         }
     };
 });
+
+app.filter('noFractionCurrency',
+	['$filter', '$locale',
+	function(filter, locale) {
+		var currencyFilter = filter('currency');
+		var formats = locale.NUMBER_FORMATS;
+		return function(amount, currencySymbol) {
+			var value = currencyFilter(amount, currencySymbol);
+			if(value) {
+				var sep = value.indexOf(formats.DECIMAL_SEP);
+				if(amount >= 0) { 
+					return value.substring(0, sep);
+				}
+				return value.substring(0, sep) + ')';
+			} else {
+				return amount;
+			}
+		};
+	}]
+);
+
+app.filter('formatDate', function() {
+	return function(input, formatting) {
+		return moment(input).format(formatting);
+	}
+});

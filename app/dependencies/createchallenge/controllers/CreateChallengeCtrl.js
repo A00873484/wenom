@@ -3,9 +3,9 @@ app.controller('CreateChallengeCtrl', function($scope, CreateChallengeService, A
 	if(!$scope.challenge) CreateChallengeService.init(); // If this controller wasn't called with an existing challenge, cache the current (empty) data
 	$scope.challenge = CreateChallengeService;
 
-	// if($rootScope.challenges.length) {
-	// 	$scope.challenge.id = parseInt($rootScope.challenges[$rootScope.challenges.length - 1].id) + 1;
-	// }
+	if($rootScope.challenges.length) {
+		$scope.challenge.id = parseInt($rootScope.challenges[$rootScope.challenges.length - 1].id) + 1;
+	}
 
 	$scope.momentAdd = function(value, add, unit, format) {
 		add = add || 0;
