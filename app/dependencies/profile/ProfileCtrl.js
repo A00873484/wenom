@@ -1,5 +1,18 @@
 app.controller('ProfileCtrl', function($scope, $rootScope, $timeout) {
 	$scope.user = $rootScope.curruser;
+	$scope.newpass = [];
+
+	$scope.saveData = function($event) {
+		var invalid_elements = $('form, ng-form').find('.ng-invalid,.has-error');
+		if (invalid_elements.length > 0) {
+			if($event) {
+				$event.preventDefault();
+				$event.stopPropagation();
+			}
+			return;
+		}
+		console.log('success');
+	}
 
 	$scope.onFileSelect = function($files) {
 		$scope.selectedFiles = [];

@@ -38,9 +38,9 @@
 						<div class="eleven wide column">
 							<div class="ui fluid form">
 								<div class="field">
-									<input ng-class="{'has-error': profile_form.title.$invalid}" type="text" name="title" ng-model="challenge.name" required>
-									<div class="ui red pointing above ui label" ng-show="profile_form.title.$invalid && profile_form.title.$dirty">
-										<div ng-show="profile_form.title.$error.required">Please provide the challenge name</div>
+									<input ng-class="{'has-error': profile_form.first_name.$invalid}" type="text" name="first_name" ng-model="user.name" required>
+									<div class="ui red pointing above ui label" ng-show="profile_form.first_name.$invalid && profile_form.first_name.$dirty">
+										<div ng-show="profile_form.first_name.$error.required">Please provide your first name</div>
 									</div>
 								</div>
 							</div>
@@ -52,10 +52,7 @@
 						<div class="eleven wide column">
 							<div class="ui fluid form">
 								<div class="field">
-									<input ng-class="{'has-error': profile_form.nominee.$invalid}" type="text" name="nominee" ng-model="challenge.nominee" required>
-									<div class="ui red pointing above ui label" ng-show="profile_form.nominee.$invalid && profile_form.nominee.$dirty">
-										<div ng-show="profile_form.nominee.$error.required">Please provide the nominee name</div>
-									</div>
+									<input ng-class="{'has-error': profile_form.last_name.$invalid}" type="text" name="last_name" ng-model="user.last_name">
 								</div>
 							</div>
 						</div>
@@ -65,34 +62,46 @@
 						</div>
 						<div class="eleven wide column">
 							<div class="ui fluid form">
-								<input ng-class="{'has-error': profile_form.goal.$invalid}" type="text" name="goal" ng-model="challenge.goal" numbers-only required>
-								<div class="ui red pointing above ui label" ng-show="profile_form.goal.$invalid && profile_form.goal.$dirty">
-									<div ng-show="profile_form.goal.$error.required || !challenge.goal">Please provide a funding goal</div>
-									<div ng-show="profile_form.goal.$error.number">Numbers only please!</div>
+								<input ng-class="{'has-error': profile_form.email.$invalid}" type="email" name="email" ng-model="user.email" required>
+								<div class="ui red pointing above ui label" ng-show="profile_form.email.$invalid && profile_form.email.$dirty">
+									<div ng-show="profile_form.email.$error.required">Please provide an email</div>
+							    	<div ng-show="profile_form.email.$error.email">Please enter a valid email</div>
 								</div>
 							</div>
 						</div>
 
 						<div class="five wide column">
-							<h3 class="ui header">Password</h3>
+							<h3 class="ui header">Change Password</h3>
 						</div>
 						<div class="eleven wide column">
 							<div class="ui fluid form">
-								<quick-datepicker name="start_date" ng-class="{'has-error': !challenge.start_date}" date-format='EEEE, MMMM d, yyyy' ng-model='challenge.start_date' date-filter='noPastDates' disable-timepicker="true"></quick-datepicker>
-								<div class="ui red pointing above ui label" ng-show="!challenge.start_date && profile_form.start_date.$dirty">
-									<div ng-show="!challenge.start_date">Please pick a start date</div>
+								<div class="ui slider checkbox">
+									<input type="checkbox" id="changepass" ng-click="togglePass = !togglePass">
+									<label for="changepass">Toggle this button to change your password</label>
 								</div>
 							</div>
 						</div>
 
-						<div class="five wide column">
+						<div ng-show="togglePass" class="five wide column">
+							<h3 class="ui header">New Password</h3>
+						</div>
+						<div ng-show="togglePass" class="eleven wide column">
+							<div class="ui fluid form">
+								<input ng-class="{'has-error': profile_form.password.$invalid}" type="password" name="password" ng-model="newpass[0]" ng-minlength="6"></input>
+								<div class="ui red pointing above ui label" ng-show="profile_form.password.$invalid && profile_form.password.$dirty">
+									<div ng-show="profile_form.password.$error.minlength">Your password must be at least 6 characters</div>
+								</div>
+							</div>
+						</div>
+
+						<div ng-show="togglePass" class="five wide column">
 							<h3 class="ui header">Confirm Password</h3>
 						</div>
-						<div class="eleven wide column">
+						<div ng-show="togglePass" class="eleven wide column">
 							<div class="ui fluid form">
-								<input type="text" name="duration" ng-class="{'has-error': profile_form.duration.$invalid}" ng-model="challenge.duration" 365-only required>
-								<div class="ui red pointing above ui label" ng-show="profile_form.duration.$invalid && profile_form.duration.$dirty">
-									<div ng-show="profile_form.duration.$error.required">Please provide a duration</div>
+								<input ng-class="{'has-error': profile_form.passwordconf.$invalid && newpass[0]}" type="password" ng-model="newpass[1]" data-match="newpass[0]" name="passwordconf" ng-required="newpass[0]">
+								<div class="ui red pointing above ui label" ng-show="profile_form.passwordconf.$invalid && newpass[0]">
+									<div ng-show="profile_form.passwordconf.$error.match || profile_form.passwordconf.$error.required">Passwords do not match</div>
 								</div>
 							</div>
 						</div>
@@ -102,16 +111,13 @@
 						</div>
 						<div class="eleven wide column">
 							What makes you awesome? Tell people why they should be donating to your challenges.
-							<div text-angular name="description" ng-class="{'has-error': profile_form.description.$invalid}" ng-model="challenge.description" ta-toolbar-class="btn-toolbar" ta-toolbar-group-class="btn-group" ta-toolbar-button-class="btn btn-default" ta-toolbar-button-active-class="active" ta-toolbar="[['h1','h2','h3','p','pre','quote'],['bold','italics','underline'],['ul','ol'],['justifyLeft','justifyCenter','justifyRight'],['indent','outdent'],['insertImage','insertLink','insertVideo']]" required></div>
-							<div class="ui red pointing above ui label" ng-show="profile_form.description.$invalid && profile_form.description.$dirty">
-								<div ng-show="profile_form.description.$error.required">Please provide a description</div>
-							</div>
+							<div text-angular name="about" ng-class="{'has-error': profile_form.about.$invalid}" ng-model="user.about" ta-toolbar-class="btn-toolbar" ta-toolbar-group-class="btn-group" ta-toolbar-button-class="btn btn-default" ta-toolbar-button-active-class="active" ta-toolbar="[['h1','h2','h3','p','pre','quote'],['bold','italics','underline'],['ul','ol'],['justifyLeft','justifyCenter','justifyRight'],['indent','outdent'],['insertImage','insertLink','insertVideo']]"></div>
 						</div>
 
-						<div class="five wide column" ng-show="challenge.description">
+						<div class="five wide column" ng-show="user.about">
 							<h3 class="ui header">Description Preview</h3>
 						</div>
-						<div class="eleven wide column" ng-show="challenge.description">
+						<div class="eleven wide column" ng-show="user.about">
 							<div ng-show="!toggleDescriptPreview" ng-click="toggleDescriptPreview = !toggleDescriptPreview">Show</div>
 							<div ng-show="toggleDescriptPreview" ng-click="toggleDescriptPreview = !toggleDescriptPreview">Hide</div>
 							<div ng-show="toggleDescriptPreview" ta-bind ng-model="challenge.description"></div>
@@ -120,7 +126,7 @@
 				</div>
 				<div class="ui right aligned basic btn nxt-step segment">
 					<a ng-href="explore">
-						<button accessible-form ng-click="saveData($event)" class="ui right labeled icon blue button"> Create Challenge <i class="right arrow icon"></i></button>
+						<button accessible-form ng-click="saveData($event)" class="ui right labeled icon blue button"> Update Profile <i class="right arrow icon"></i></button>
 					</a>
 				</div>
 			</form>
