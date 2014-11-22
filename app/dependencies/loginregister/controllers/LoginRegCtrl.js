@@ -15,12 +15,13 @@ app.controller('LoginCtrl', function($scope, UserService, $rootScope, $location,
 		// }
 
 		APIAuth.login($scope.formData).then(function(success) {
-			console.log(success);
+			console.log(success.data);
+			UserService.setLoggedIn(success.data);
 		}, function(fail) {
 			console.log(fail.data);
 		});
 
-		$scope.formData.errors.push({"message":"Invalid credentials, try again"});
+		// $scope.formData.errors.push({"message":"Invalid credentials, try again"});
 	}
 });
 
