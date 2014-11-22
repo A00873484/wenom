@@ -15,8 +15,8 @@ var app = angular.module('WeNomYou', [
 ]);
 
 app.constant('API_URL', {
-	url:"http://apitest.younom.me",
-	loc: '/api/'
+	url: 'http://apitest.younom.me',
+	loc: '/apiservice.svc/'
 });
 
 app.run(function($rootScope, $route, $location, $templateCache) {
@@ -80,7 +80,7 @@ app.factory('RestFullResponse', function(Restangular) {
 	});
 });
 
-app.controller('MainCtrl', function($scope, API_URL, $rootScope, UserService, $timeout) {
+app.controller('MainCtrl', function($scope, API_URL, $rootScope, UserService, $timeout, Restangular, APIAuth) {
 	$scope.User = UserService;
 	$rootScope.challenges = $rootScope.challenges || [];
 	$rootScope.users = $rootScope.users || [];
@@ -91,10 +91,49 @@ app.controller('MainCtrl', function($scope, API_URL, $rootScope, UserService, $t
 		password: "google",
 		password_confirm: "google"
 	});
+
+	window.a = function() {
+		// Send request
+		var acc = {"email":"jay@jayhuang.org", "password":"google"};
+		Restangular.all('register').post(acc).then(
+			function(success) {
+				console.log(success.data);
+			},
+			function(fail) {
+				console.log(fail);
+			});
+	}
+
+	// window.b = function() {
+	// 	APIAuth.getUser().then(function(success) {
+	// 		console.log(success);
+	// 		window.c = success;
+	// 	},
+	// 	function(fail) {
+	// 		console.log(fail);
+	// 	});
+	// }
 });;app.factory('APIAuth', function(Restangular) {
 	return {
+		// Get users
 		getUser: function(userid) {
-			return Restangular.one('users', userid).get();
+			return Restangular.all('getUsers').getList();
+		},
+
+		// Register user, takes:
+		// firstname
+		// lastname
+		// email
+		// password
+		register: function(userObj) {
+			return Restangular.one('register').customPOST(userObj);
+		},
+
+		// Login user, takes:
+		// email
+		// password
+		login: function(credsObj) {
+			return Restangular.one('login').customPOST(credsObj);
 		}
 	}
 });;app.controller('ChallengeCtrl', function($routeParams, $scope, $rootScope) {
@@ -508,42 +547,50 @@ app.filter('formatDate', function() {
 	}, true);
 });;app.controller('HomeCtrl', function($scope) {
 	$scope.hi = "Hello";
-});;app.controller('LoginCtrl', function($scope, UserService, $rootScope, $location) {
+});;app.controller('LoginCtrl', function($scope, UserService, $rootScope, $location, APIAuth) {
 	$scope.login = function($event) {
 		if(!$scope.formData) UserService.init(); // Cache current data
 		$scope.formData = $scope.formData ? $scope.formData : UserService;
 
-		$scope.formData.errors = [];
-		if(!$rootScope.users.length) {
-			$scope.formData.errors.push({"message":"Please register first"});
-			return;
-		} else {
-			// var user = '';
-			$rootScope.users.forEach(function(user) {
-				if(user.email == $scope.formData.email && user.password == $scope.formData.password)
-					UserService.setLoggedIn(user);
-			});
-		}
+		// $scope.formData.errors = [];
+		// if(!$rootScope.users.length) {
+		// 	$scope.formData.errors.push({"message":"Please register first"});
+		// 	return;
+		// } else {
+		// 	$rootScope.users.forEach(function(user) {
+		// 		if(user.email == $scope.formData.email && user.password == $scope.formData.password)
+		// 			UserService.setLoggedIn(user);
+		// 	});
+		// }
+
+		APIAuth.login($scope.formData).then(function(success) {
+			console.log(success);
+		}, function(fail) {
+			console.log(fail.data);
+		});
 
 		$scope.formData.errors.push({"message":"Invalid credentials, try again"});
 	}
 });
 
-app.controller('RegCtrl', function($scope, UserService, $rootScope) {
+app.controller('RegCtrl', function($scope, UserService, $rootScope, APIAuth) {
 	$scope.createAccount = function($event) {
 		if(!$scope.formData) UserService.init(); // Cache current data
 		$scope.formData = $scope.formData ? $scope.formData : UserService;
-
-		$scope.formData = $scope.formData ? $scope.formData : UserService;
-		$scope.formData.auth_token = "FAKEDATADELETE";
-		$rootScope.users.push(angular.copy($scope.formData));
+		APIAuth.register($scope.formData).then(function(success) {
+			console.log(success.data);
+		}, function(fail) {
+			console.log(fail.data);
+		});
+		// $scope.formData.auth_token = "FAKEDATADELETE";
+		// $rootScope.users.push(angular.copy($scope.formData));
 		$scope.register_form.$setUntouched(); // Don't show any validation errors
-		$scope.formData.successful = {"message":"Account created, please login now!"};
+		// $scope.formData.successful = {"message":"Account created, please login now!"};
 		UserService.reset(); // Success, reset the form
 	}
 });;app.controller('CampaignStatusCtrl', function($scope, CreateChallengeService) {
 	$scope.campaign = CreateChallengeService;
-});;app.controller('ProfileCtrl', function($scope, $rootScope, $timeout) {
+});;app.controller('ProfileCtrl', function($scope, $rootScope, $timeout, Restangular) {
 	$scope.user = $rootScope.curruser;
 	$scope.newpass = [];
 

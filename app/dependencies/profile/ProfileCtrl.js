@@ -1,4 +1,4 @@
-app.controller('ProfileCtrl', function($scope, $rootScope, $timeout) {
+app.controller('ProfileCtrl', function($scope, $rootScope, $timeout, Restangular) {
 	$scope.user = $rootScope.curruser;
 	$scope.newpass = [];
 

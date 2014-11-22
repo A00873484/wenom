@@ -15,8 +15,8 @@ var app = angular.module('WeNomYou', [
 ]);
 
 app.constant('API_URL', {
-	url:"http://apitest.younom.me",
-	loc: '/api/'
+	url: 'http://apitest.younom.me',
+	loc: '/apiservice.svc/'
 });
 
 app.run(function($rootScope, $route, $location, $templateCache) {
@@ -80,7 +80,7 @@ app.factory('RestFullResponse', function(Restangular) {
 	});
 });
 
-app.controller('MainCtrl', function($scope, API_URL, $rootScope, UserService, $timeout) {
+app.controller('MainCtrl', function($scope, API_URL, $rootScope, UserService, $timeout, Restangular, APIAuth) {
 	$scope.User = UserService;
 	$rootScope.challenges = $rootScope.challenges || [];
 	$rootScope.users = $rootScope.users || [];
@@ -91,4 +91,26 @@ app.controller('MainCtrl', function($scope, API_URL, $rootScope, UserService, $t
 		password: "google",
 		password_confirm: "google"
 	});
+
+	window.a = function() {
+		// Send request
+		var acc = {"email":"jay@jayhuang.org", "password":"google"};
+		Restangular.all('register').post(acc).then(
+			function(success) {
+				console.log(success.data);
+			},
+			function(fail) {
+				console.log(fail);
+			});
+	}
+
+	// window.b = function() {
+	// 	APIAuth.getUser().then(function(success) {
+	// 		console.log(success);
+	// 		window.c = success;
+	// 	},
+	// 	function(fail) {
+	// 		console.log(fail);
+	// 	});
+	// }
 });

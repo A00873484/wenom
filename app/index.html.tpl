@@ -25,6 +25,7 @@
 	<!-- <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css"> -->
 	<link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.min.css">
 	<link rel="stylesheet" href="bower_components/ngQuickDate/dist/ng-quick-date.css">
+	<link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
 	<%= scripts %>
 	<%= css %>
 </head>
