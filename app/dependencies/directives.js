@@ -19,6 +19,16 @@ app.directive('numbersOnly', function(){
 	};
 });
 
+app.filter('inArray', function($filter){
+    return function(list, arrayFilter, element){
+        if(arrayFilter){
+            return $filter("filter")(list, function(listItem){
+                return arrayFilter.indexOf(listItem[element]) != -1;
+            });
+        }
+    };
+});
+
 // Same as numbersOnly directive, but also limits the number to up to 365 only. If it's any more, set to 365
 app.directive('365Only', function(){
 	return {
@@ -40,8 +50,29 @@ app.directive('365Only', function(){
 	};
 });
 
+// Sends keystrokes to a designated endpoint
+app.directive('keyboardPoster', function($parse, $timeout){
+	var DELAY_BEFORE_FIRING = 100;
+	return function(scope, elem, attrs) {
+
+		var element = angular.element(elem)[0];
+		var currentTimeout = null;
+		element.oninput = function() {
+			var model = $parse(attrs.postFunction);
+			var poster = model(scope);
+
+			if(currentTimeout) {
+				$timeout.cancel(currentTimeout)
+			}
+			currentTimeout = $timeout(function(){
+				poster(angular.element(element).val());
+			}, DELAY_BEFORE_FIRING)
+		}
+	}
+});
+
 // On button click, check if the nearest form has any fields that are invalid, then scrolls and focuses the first of those fields
-app.directive('accessibleForm', function () {
+app.directive('accessibleForm', function() {
     return {
         scope: true,
         link: function (scope, element, attrs) {

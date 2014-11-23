@@ -30,6 +30,7 @@
 	<%= css %>
 </head>
 <body ng-controller="MainCtrl">
-	<div class="container ng-view"></div>
+	<div class="container ng-view wrapper"></div>
+	<div ng-include src="'views/partials/footer.html'"></div> <!-- ================= FOOTER -->
 </body>
 </html>

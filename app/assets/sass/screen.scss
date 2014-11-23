@@ -17,6 +17,9 @@ $main-color: #0aa5df;
 /*================================================
 	BACKGROUND STYLES
 ================================================*/
+* {
+	margin: 0;
+}
 
 html,
 body {
@@ -44,11 +47,27 @@ body {
 	}
 }
 
-.mainbody-wrap {
+.wrapper {
 	padding: 0 0 6% 0;
+	min-height: 100%;
+	margin: 0 auto 80px;
 
 	.btn.segment {
 		margin-top: 3%;
+	}
+}
+
+#footer-wrap, .push {
+	height: 80px;
+}
+
+#footer-wrap {
+	.ui.grid {
+		margin: 0;
+	}
+	.column {
+		height: 80px;
+		line-height: 80px;
 	}
 }
 
@@ -1544,7 +1563,6 @@ blockquote p {
 	margin: 0;
 	background: #333;
 	color: #fff;
-	position: absolute;
 
 	.footer-content {
 		max-width: 960px;
@@ -1562,17 +1580,17 @@ blockquote p {
 	a:hover { color: #ccc; }
 	.header { color: #6ECFF5; }
 
-	.ui.footer.bottom {
-		.column:first-child {
-			float: left;
-		}
-		.column:last-child {
-			float: right;
-		}
-		.column.bottom {
-			text-align: center;
-		}
-	}
+	// .ui.footer.bottom {
+	// 	.column:first-child {
+	// 		float: left;
+	// 	}
+	// 	.column:last-child {
+	// 		float: right;
+	// 	}
+	// 	.column.bottom {
+	// 		text-align: center;
+	// 	}
+	// }
 }
 
 /*================================================

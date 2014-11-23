@@ -67,42 +67,60 @@ app.config(function($routeProvider, $locationProvider, RestangularProvider, API_
 	}).when('/explore', {
 		templateUrl: 'views/explore.html',
 		controller: 'ExploreCtrl',
-		title: 'Explore Challenges'
+		title: 'Explore Challenges',
+		reloadOnSearch: false
+	}).when('/admin', {
+		templateUrl: 'views/admin.html',
+		controller: 'AdminCtrl',
+		title: 'Administration',
 	}).otherwise({
 		redirectTo: '/'
 	});
 });
 
-// set Restangular to use setFullResponse on specific services (to read headers)
-app.factory('RestFullResponse', function(Restangular) {
-	return Restangular.withConfig(function(RestangularConfigurer) {
-    	RestangularConfigurer.setFullResponse(true);
-	});
+app.factory('authHttpInterceptor', function($q, $location, $injector) {
+	return {
+		// Set auth token for all requests
+		request: function(config) {
+			var User = $injector.get('UserService');
+			if($location.path().split("/")[1] !== 'login')
+    			config.headers["X-Auth-Token"] = User.auth_token;
+    		return config;
+  		},
+		// Ensure auth token is still valid
+  		responseError: function(response) {
+  			var User = $injector.get('UserService');
+  			if(response.status === 401 && response.data.code === "invalid_auth_token") {
+				User.setLoggedOut();
+			}
+			return $q.reject(response);
+  		}
+	};
 });
 
 app.controller('MainCtrl', function($scope, API_URL, $rootScope, UserService, $timeout, Restangular, APIAuth) {
-	$scope.User = UserService;
+	window.user = $rootScope.curruser = $scope.User = UserService;
 	$rootScope.challenges = $rootScope.challenges || [];
-	$rootScope.users = $rootScope.users || [];
-	$rootScope.users.push({
-		auth_token: "FAKEDATADELETE",
-		email: "jay@jayhuang.org",
-		first_name: "Jay",
-		password: "google",
-		password_confirm: "google"
-	});
+	// $rootScope.users = $rootScope.users || [];
+	// $rootScope.users.push({
+	// 	auth_token: "FAKEDATADELETE",
+	// 	email: "jay@jayhuang.org",
+	// 	first_name: "Jay",
+	// 	password: "google",
+	// 	password_confirm: "google"
+	// });
 
-	window.a = function() {
-		// Send request
-		var acc = {"email":"jay@jayhuang.org", "password":"google"};
-		Restangular.all('register').post(acc).then(
-			function(success) {
-				console.log(success.data);
-			},
-			function(fail) {
-				console.log(fail);
-			});
-	}
+	// window.a = function() {
+	// 	// Send request
+	// 	var acc = {"email":"jay@jayhuang.org", "password":"google"};
+	// 	Restangular.all('register').post(acc).then(
+	// 		function(success) {
+	// 			console.log(success.data);
+	// 		},
+	// 		function(fail) {
+	// 			console.log(fail);
+	// 		});
+	// }
 
 	// window.b = function() {
 	// 	APIAuth.getUser().then(function(success) {
@@ -113,6 +131,8 @@ app.controller('MainCtrl', function($scope, API_URL, $rootScope, UserService, $t
 	// 		console.log(fail);
 	// 	});
 	// }
+});;app.controller('AdminCtrl', function($scope) {
+	console.log('In admin');
 });;app.factory('APIAuth', function(Restangular) {
 	return {
 		// Get users
@@ -266,6 +286,16 @@ app.directive('numbersOnly', function(){
 	};
 });
 
+app.filter('inArray', function($filter){
+    return function(list, arrayFilter, element){
+        if(arrayFilter){
+            return $filter("filter")(list, function(listItem){
+                return arrayFilter.indexOf(listItem[element]) != -1;
+            });
+        }
+    };
+});
+
 // Same as numbersOnly directive, but also limits the number to up to 365 only. If it's any more, set to 365
 app.directive('365Only', function(){
 	return {
@@ -287,8 +317,29 @@ app.directive('365Only', function(){
 	};
 });
 
+// Sends keystrokes to a designated endpoint
+app.directive('keyboardPoster', function($parse, $timeout){
+	var DELAY_BEFORE_FIRING = 100;
+	return function(scope, elem, attrs) {
+
+		var element = angular.element(elem)[0];
+		var currentTimeout = null;
+		element.oninput = function() {
+			var model = $parse(attrs.postFunction);
+			var poster = model(scope);
+
+			if(currentTimeout) {
+				$timeout.cancel(currentTimeout)
+			}
+			currentTimeout = $timeout(function(){
+				poster(angular.element(element).val());
+			}, DELAY_BEFORE_FIRING)
+		}
+	}
+});
+
 // On button click, check if the nearest form has any fields that are invalid, then scrolls and focuses the first of those fields
-app.directive('accessibleForm', function () {
+app.directive('accessibleForm', function() {
     return {
         scope: true,
         link: function (scope, element, attrs) {
@@ -378,15 +429,11 @@ app.filter('formatDate', function() {
 	$scope.sortOrFilters = {
 		"sort": '',
 		"filters": {
-			"category": {},
-			"location": '',
-			"title": ''
-		},
-		"page_entries": 30,
-		"page_limit": 100,
-		"pagination": {},
-		"page": null
+			"nominee": '',
+			"challenge": ''
+		}
 	}
+	processParams();
 	var serverurl = 'http://techpro.local/';
 	// Temporary placeholders for challenge display, replace with data from API
 	var placeholderchallenges = [
@@ -395,6 +442,7 @@ app.filter('formatDate', function() {
 			name: 'ALS ice bucket challenge',
 			created: 'Sat Oct 25 2014 00:55:23 GMT-0700 (Pacific Daylight Time)',
 			image: '',
+			nominee: 'Enoch Yip',
 			url: serverurl + 'challenge/',
 			description: "Dump ice on yourself and pretend you're making a positive impact.",
 			funded_amount: '19',
@@ -405,6 +453,7 @@ app.filter('formatDate', function() {
 			name: 'Swim in a volcano',
 			created: 'Wed Oct 29 2014 00:55:23 GMT-0700 (Pacific Daylight Time)',
 			image: '',
+			nominee: 'Danny Lieu',
 			url: serverurl + 'challenge/',
 			description: 'Self explanatory.',
 			funded_amount: '50000',
@@ -415,6 +464,7 @@ app.filter('formatDate', function() {
 			name: 'Ask a white girl to coffee!!!',
 			created: 'Fri Oct 24 2014 00:55:23 GMT-0700 (Pacific Daylight Time)',
 			image: '',
+			nominee: 'Thanh Lai',
 			url: serverurl + 'challenge/',
 			description: '2T? (;',
 			funded_amount: '880000',
@@ -425,6 +475,7 @@ app.filter('formatDate', function() {
 			name: 'Super cool challenge',
 			created: 'Wed Oct 15 2014 00:55:23 GMT-0700 (Pacific Daylight Time)',
 			image: '',
+			nominee: 'Daniel Engelhard',
 			url: serverurl + 'challenge/',
 			description: "",
 			funded_amount: '5',
@@ -439,6 +490,7 @@ app.filter('formatDate', function() {
 	}
 
 	$scope.challenges = $rootScope.challenges;
+	filterChallenges();
 	// Restangular.one('portal').all('category').getList().then(function(success) {
 	// 	$scope.categories = success;
 	// 	$scope.categories.forEach(function(category) {
@@ -448,16 +500,38 @@ app.filter('formatDate', function() {
 	// });
 
 	// Takes a property name for category or a boolean. If it's a boolean, it will set all category filters to that value.
-	$scope.updateCategoryFilters = function(category) {
-		if(typeof category === "boolean") {
-			for(var property in $scope.sortOrFilters.filters.category) {
-				$scope.sortOrFilters.filters.category[property] = category;
-			}
-			$scope.sortOrFilters.page = 1;
-		} else if (category) {
-			$scope.sortOrFilters.filters.category[category] = !$scope.sortOrFilters.filters.category[category];
-			$scope.sortOrFilters.page = 1;
-		}
+	// $scope.updateCategoryFilters = function(category) {
+	// 	if(typeof category === "boolean") {
+	// 		for(var property in $scope.sortOrFilters.filters.category) {
+	// 			$scope.sortOrFilters.filters.category[property] = category;
+	// 		}
+	// 		$scope.sortOrFilters.page = 1;
+	// 	} else if (category) {
+	// 		$scope.sortOrFilters.filters.category[category] = !$scope.sortOrFilters.filters.category[category];
+	// 		$scope.sortOrFilters.page = 1;
+	// 	}
+	// }
+
+	function filterChallenges() {
+		updateFilteredIds();
+	}
+
+	function updateFilteredIds() {
+		$scope.filteredIds = [];
+		var challengeval = $scope.sortOrFilters.filters.challenge || '';
+		var nomineeval = $scope.sortOrFilters.filters.nominee || ''
+		$scope.challenges.forEach(function(challenge) {
+			if(isMatch(challengeval, challenge.name) && isMatch(nomineeval, challenge.nominee))
+				$scope.filteredIds.push(challenge.id);
+		});
+	}
+
+	function isMatch(searchVal, searchData) {
+		if(!searchVal) return true; // Empty filter, return true
+		if(!searchData) return false; // No data to match, return false
+		searchVal = searchVal.replace(/\s+/g, ' ').toLowerCase();
+		searchData = searchData.replace(/\s+/g, ' ').toLowerCase();
+		return !!~searchData.indexOf(searchVal);
 	}
 
 	$scope.updateSort = function(sort) {
@@ -465,17 +539,24 @@ app.filter('formatDate', function() {
 	}
 
 	// Set pagination limit based on the smallest of either page limit, or totalentries, depending on entriesperpage
-	$scope.getTotalItems = function() {
-		var desiredtotal = $scope.sortOrFilters.pagination.entriesperpage * $scope.sortOrFilters.page_limit;
-		if(desiredtotal > $scope.sortOrFilters.pagination.totalentries)
-			return $scope.sortOrFilters.pagination.totalentries;
-		else
-			return desiredtotal;
+	// $scope.getTotalItems = function() {
+	// 	var desiredtotal = $scope.sortOrFilters.pagination.entriesperpage * $scope.sortOrFilters.page_limit;
+	// 	if(desiredtotal > $scope.sortOrFilters.pagination.totalentries)
+	// 		return $scope.sortOrFilters.pagination.totalentries;
+	// 	else
+	// 		return desiredtotal;
+	// }
+
+	// Look up matching campaign via challenge
+	$scope.searchChallenge = function(term) {
+		$scope.sortOrFilters.filters.challenge = term ? term : '';
+		filterChallenges();
 	}
 
-	// Look up matching campaign via title
-	$scope.searchTitles = function(term) {
-		$scope.sortOrFilters.filters.title = term ? term : '';
+	// Look up matching campaign via nominee name
+	$scope.searchNominee = function(term) {
+		$scope.sortOrFilters.filters.nominee = term ? term : '';
+		filterChallenges();
 	}
 
 	// Update the URL everytime a filter is applied to allow the user to utilize deep linking
@@ -483,16 +564,16 @@ app.filter('formatDate', function() {
 		// var firstpage = ($routeParams.page == 1 || $scope.sortOrFilters.page == 1); // Is this the first page?
 		// var pageparam = firstpage ? null : $scope.sortOrFilters.page;   // Clear the page param or set page param
 
-		// // Angular has a bug where passing an object in routeProvider's search param results
-		// // in printing [object Object] in the url bar. Avoiding that by using an array instead.
+		// Angular has a bug where passing an object in routeProvider's search param results
+		// in printing [object Object] in the url bar. Avoiding that by using an array instead.
 		// var categories = [];
 		// for(var property in $scope.sortOrFilters.filters.category) {
 		// 	if($scope.sortOrFilters.filters.category[property]) categories.push(property);
 		// }
 
 		// $location.search('category', categories);
-		// $location.search('location', $scope.sortOrFilters.filters.location || null);
-		// $location.search('name', $scope.sortOrFilters.filters.title || null);
+		$location.search('nominee', $scope.sortOrFilters.filters.nominee || null);
+		$location.search('challenge', $scope.sortOrFilters.filters.challenge || null);
 		// $location.search('sort', $scope.sortOrFilters.sort || null);
 		// $location.search('page', pageparam);
 	}
@@ -526,23 +607,27 @@ app.filter('formatDate', function() {
 
 		// $scope.sortOrFilters.filters.location = $routeParams.location || $scope.sortOrFilters.filters.location;
 		// $scope.sortOrFilters.filters.title = $routeParams.name || $scope.sortOrFilters.filters.title;
+		$scope.sortOrFilters.filters.challenge = $routeParams.challenge || $scope.sortOrFilters.filters.challenge;
+		$scope.sortOrFilters.filters.nominee = $routeParams.nominee || $scope.sortOrFilters.filters.nominee;
+		$scope.filterchallengename = $scope.sortOrFilters.filters.challenge;
+		$scope.filternomineename = $scope.sortOrFilters.filters.nominee;
 		// $scope.sortOrFilters.sort = $routeParams.sort || $scope.sortOrFilters.sort;
 		// $scope.sortOrFilters.page = $routeParams.page || 1;
 	}
 
 	// If page for paging is no longer the same, update campaign listings
-	$scope.$watch("sortOrFilters.page", function(newVal, oldVal){
-	  	if(newVal !== oldVal) {
-	  		updateURL();
-	  		updateCampaignListing($scope.sortOrFilters);
-	  	}
-	});
+	// $scope.$watch("sortOrFilters.page", function(newVal, oldVal){
+	//   	if(newVal !== oldVal) {
+	//   		updateURL();
+	//   		// updateCampaignListing($scope.sortOrFilters);
+	//   	}
+	// });
 
 	// If there are any sorting or filter changes, update campaign listing and location bar
 	$scope.$watch('[sortOrFilters.sort, sortOrFilters.filters]', function(newVal, oldVal) {
 		if(!angular.equals(newVal, oldVal)) {
 			updateURL();
-			updateCampaignListing($scope.sortOrFilters);
+			// updateCampaignListing($scope.sortOrFilters);
 		}
 	}, true);
 });;app.controller('HomeCtrl', function($scope) {
@@ -564,7 +649,6 @@ app.filter('formatDate', function() {
 		// }
 
 		APIAuth.login($scope.formData).then(function(success) {
-			console.log(success.data);
 			UserService.setLoggedIn(success.data);
 		}, function(fail) {
 			console.log(fail.data);
@@ -589,8 +673,11 @@ app.controller('RegCtrl', function($scope, UserService, $rootScope, APIAuth) {
 		// $scope.formData.successful = {"message":"Account created, please login now!"};
 		UserService.reset(); // Success, reset the form
 	}
-});;app.controller('CampaignStatusCtrl', function($scope, CreateChallengeService) {
+});;app.controller('NavCtrl', function($scope, CreateChallengeService, $location) {
 	$scope.campaign = CreateChallengeService;
+	$scope.isActive = function (viewLocation) { 
+        return $location.path().indexOf(viewLocation) == 0;
+    };
 });;app.controller('ProfileCtrl', function($scope, $rootScope, $timeout, Restangular) {
 	$scope.user = $rootScope.curruser;
 	$scope.newpass = [];
@@ -626,6 +713,7 @@ app.controller('RegCtrl', function($scope, UserService, $rootScope, APIAuth) {
 		}
 	}
 });;app.service('UserService', function($location, $http, ipCookie, Restangular, $timeout, $rootScope) {
+	$rootScope.curruser = $rootScope.curruser ? $rootScope.curruser : {};
 	var User = {
 		email: '',
 		first_name: '',
@@ -667,7 +755,6 @@ app.controller('RegCtrl', function($scope, UserService, $rootScope, APIAuth) {
 	}
 
 	User.isLoggedIn = function() {
-		$rootScope.curruser = $rootScope.curruser ? $rootScope.curruser : {};
 		if(!ipCookie('wenomyou.user'))
 			return false; // Returning the cookie will cause infinite $digest cycles. Return false if loggedin cookie is gone
 		else {
@@ -681,7 +768,7 @@ app.controller('RegCtrl', function($scope, UserService, $rootScope, APIAuth) {
 		if(!data) return false;
 
 		copyObjectProperties(data, User);
-		ipCookie('wenomyou.user', data, {expires: 239, expirationUnit: 'minutes'}); // Server currently sets token expiry to 4 hours, prompt re-log before that
+		ipCookie('wenomyou.user', data, {expires: 239, expirationUnit: 'minutes'}); // Server currently sets token expiry to 24 hours, prompt re-log before that
 		$rootScope.curruser = angular.copy(data);
 		$location.path('/explore');
 		return true;

@@ -67,42 +67,60 @@ app.config(function($routeProvider, $locationProvider, RestangularProvider, API_
 	}).when('/explore', {
 		templateUrl: 'views/explore.html',
 		controller: 'ExploreCtrl',
-		title: 'Explore Challenges'
+		title: 'Explore Challenges',
+		reloadOnSearch: false
+	}).when('/admin', {
+		templateUrl: 'views/admin.html',
+		controller: 'AdminCtrl',
+		title: 'Administration',
 	}).otherwise({
 		redirectTo: '/'
 	});
 });
 
-// set Restangular to use setFullResponse on specific services (to read headers)
-app.factory('RestFullResponse', function(Restangular) {
-	return Restangular.withConfig(function(RestangularConfigurer) {
-    	RestangularConfigurer.setFullResponse(true);
-	});
+app.factory('authHttpInterceptor', function($q, $location, $injector) {
+	return {
+		// Set auth token for all requests
+		request: function(config) {
+			var User = $injector.get('UserService');
+			if($location.path().split("/")[1] !== 'login')
+    			config.headers["X-Auth-Token"] = User.auth_token;
+    		return config;
+  		},
+		// Ensure auth token is still valid
+  		responseError: function(response) {
+  			var User = $injector.get('UserService');
+  			if(response.status === 401 && response.data.code === "invalid_auth_token") {
+				User.setLoggedOut();
+			}
+			return $q.reject(response);
+  		}
+	};
 });
 
 app.controller('MainCtrl', function($scope, API_URL, $rootScope, UserService, $timeout, Restangular, APIAuth) {
-	$scope.User = UserService;
+	window.user = $rootScope.curruser = $scope.User = UserService;
 	$rootScope.challenges = $rootScope.challenges || [];
-	$rootScope.users = $rootScope.users || [];
-	$rootScope.users.push({
-		auth_token: "FAKEDATADELETE",
-		email: "jay@jayhuang.org",
-		first_name: "Jay",
-		password: "google",
-		password_confirm: "google"
-	});
+	// $rootScope.users = $rootScope.users || [];
+	// $rootScope.users.push({
+	// 	auth_token: "FAKEDATADELETE",
+	// 	email: "jay@jayhuang.org",
+	// 	first_name: "Jay",
+	// 	password: "google",
+	// 	password_confirm: "google"
+	// });
 
-	window.a = function() {
-		// Send request
-		var acc = {"email":"jay@jayhuang.org", "password":"google"};
-		Restangular.all('register').post(acc).then(
-			function(success) {
-				console.log(success.data);
-			},
-			function(fail) {
-				console.log(fail);
-			});
-	}
+	// window.a = function() {
+	// 	// Send request
+	// 	var acc = {"email":"jay@jayhuang.org", "password":"google"};
+	// 	Restangular.all('register').post(acc).then(
+	// 		function(success) {
+	// 			console.log(success.data);
+	// 		},
+	// 		function(fail) {
+	// 			console.log(fail);
+	// 		});
+	// }
 
 	// window.b = function() {
 	// 	APIAuth.getUser().then(function(success) {

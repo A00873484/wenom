@@ -1,4 +1,5 @@
 app.service('UserService', function($location, $http, ipCookie, Restangular, $timeout, $rootScope) {
+	$rootScope.curruser = $rootScope.curruser ? $rootScope.curruser : {};
 	var User = {
 		email: '',
 		first_name: '',
@@ -40,7 +41,6 @@ app.service('UserService', function($location, $http, ipCookie, Restangular, $ti
 	}
 
 	User.isLoggedIn = function() {
-		$rootScope.curruser = $rootScope.curruser ? $rootScope.curruser : {};
 		if(!ipCookie('wenomyou.user'))
 			return false; // Returning the cookie will cause infinite $digest cycles. Return false if loggedin cookie is gone
 		else {
@@ -54,7 +54,7 @@ app.service('UserService', function($location, $http, ipCookie, Restangular, $ti
 		if(!data) return false;
 
 		copyObjectProperties(data, User);
-		ipCookie('wenomyou.user', data, {expires: 239, expirationUnit: 'minutes'}); // Server currently sets token expiry to 4 hours, prompt re-log before that
+		ipCookie('wenomyou.user', data, {expires: 239, expirationUnit: 'minutes'}); // Server currently sets token expiry to 24 hours, prompt re-log before that
 		$rootScope.curruser = angular.copy(data);
 		$location.path('/explore');
 		return true;
