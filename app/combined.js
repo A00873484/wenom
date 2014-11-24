@@ -154,9 +154,10 @@ app.controller('MainCtrl', function($scope, API_URL, $rootScope, UserService, $t
 	}
 
 	$scope.delete = function(user) {
-		console.log(user.first_name);
-		var index = $scope.users.indexOf(user);
-  		$scope.users.splice(index, 1);  
+		APIUser.deleteUser(user.id).then(function(success) {
+			var index = $scope.users.indexOf(user);
+	  		$scope.users.splice(index, 1);  
+		});
 	}
 });;app.factory('APIAuth', function(Restangular) {
 	return {
@@ -214,6 +215,10 @@ app.factory('APIUser', function(Restangular) {
 			return Restangular.one('getUsers').customGET();
 		},
 
+		getUser: function(id) {
+			return Restangular.one('getUser').customGET(id);
+		},
+
 		disableUser: function(id) {
 			return Restangular.one('changeUserStatus').customPOST({"id": id, "enabled": "false"});
 		},
@@ -224,16 +229,28 @@ app.factory('APIUser', function(Restangular) {
 
 		updateUser: function(userObj) {
 			return Restangular.one('editUser').customPOST(userObj);
-		} 
+		},
+
+		deleteUser: function(id) {
+			return Restangular.one('deleteUser').customPOST({"id": id});
+		}
 	}
-});;app.controller('ChallengeCtrl', function($routeParams, $scope, $rootScope, APIChallenge) {
+});;app.controller('ChallengeCtrl', function($routeParams, $scope, $rootScope, APIChallenge, APIUser) {
 	// $scope.challenge = $rootScope.challenges[$routeParams.challengeid - 1];
 	APIChallenge.getChallenge($routeParams.challengeid).then(function(success) {
-		$scope.challenge = success.data;
+		window.b = $scope.challenge = success.data;
+		$scope.challenge.ends = "12/6/2013 9:36:30 PM";
 		$rootScope.page_title = !angular.isUndefined($scope.challenge.name) ? $scope.challenge.name + ' - ' + $rootScope.site_title : $rootScope.site_title;
+		APIUser.getUser($scope.challenge.nominator).then(function(success) {
+			$scope.nominator = success.data;
+		});
 	}, function(fail) {
 		console.log(fail);
 	});
+
+	$scope.dateInPast = function(value) {
+		return moment(value) < moment(new Date());
+	}
 });;app.controller('CreateChallengeCtrl', function($scope, CreateChallengeService, APIAuth, $timeout, $rootScope, APIChallenge) {
 	// CreateChallengeService.enforceFormProgress(); // If the user hasn't started the challenge, send them back to the start
 	if(!$scope.challenge) CreateChallengeService.init(); // If this controller wasn't called with an existing challenge, cache the current (empty) data
@@ -260,7 +277,9 @@ app.factory('APIUser', function(Restangular) {
 			return;
 		}
 
-		APIChallenge.createChallenge($scope.challenge);
+		APIChallenge.createChallenge($scope.challenge).then(function(success) {
+
+		});
 		// $rootScope.challenges.push(angular.copy($scope.challenge));
 	}
 
@@ -304,7 +323,7 @@ app.factory('APIUser', function(Restangular) {
 		funded_amount: '0',
 		start_date: '',
 		challenge_length: '',
-		end_date: '',
+		ends: '',
 
 		// Caches the properties of the object so we can reset it later
 		init: function() {
@@ -370,6 +389,19 @@ app.filter('inArray', function($filter){
             });
         }
     };
+});
+
+// Requires moment.js
+app.filter('formatDate', function() {
+	return function(input, formatting) {
+		return moment(input).format(formatting);
+	}
+});
+
+app.filter('fromNow', function() {
+	return function(input) {
+		return moment(input).fromNow();
+	}
 });
 
 // Same as numbersOnly directive, but also limits the number to up to 365 only. If it's any more, set to 365
@@ -713,7 +745,6 @@ app.filter('formatDate', function() {
 	$scope.login = function($event) {
 		if(!$scope.formData) UserService.init(); // Cache current data
 		$scope.formData = $scope.formData ? $scope.formData : UserService;
-
 		$scope.formData.errors = [];
 		// if(!$rootScope.users.length) {
 		// 	$scope.formData.errors.push({"message":"Please register first"});
@@ -727,6 +758,7 @@ app.filter('formatDate', function() {
 
 		APIAuth.login($scope.formData).then(function(success) {
 			UserService.setLoggedIn(success.data);
+			console.log(success.data);
 		}, function(fail) {
 			console.log(fail.data);
 			$scope.formData.errors.push({"message":"Invalid credentials, try again"});
@@ -793,7 +825,7 @@ app.controller('RegCtrl', function($scope, UserService, $rootScope, APIAuth) {
 				var loadFilePreview = function(fileReader, index) {
 					fileReader.onload = function(e) {
 						$timeout(function() {
-							$scope.newuser.image = $scope.dataUrls[index] = e.target.result;
+							$scope.newuser.picture = $scope.dataUrls[index] = e.target.result;
 						});
 					}
 				}(fileReader, i);
@@ -819,7 +851,7 @@ app.controller('RegCtrl', function($scope, UserService, $rootScope, APIAuth) {
 		last_name: '',
 		auth_token: '',
 		about: '',
-		image: ''
+		picture: ''
 	}
 
 	// Caches the properties of the object so we can reset it later
@@ -849,7 +881,11 @@ app.controller('RegCtrl', function($scope, UserService, $rootScope, APIAuth) {
 
 	function copyObjectProperties(srcObj, destObj) {
 		for(var key in srcObj) {
-			destObj[key] = srcObj[key];
+			if(key != 'picture') {
+				destObj[key] = srcObj[key];
+			} else {
+				srcObj[key] = '';
+			}
 		}
 	}
 
@@ -867,8 +903,8 @@ app.controller('RegCtrl', function($scope, UserService, $rootScope, APIAuth) {
 		if(!data) return false;
 
 		copyObjectProperties(data, User);
-		ipCookie('wenomyou.user', data, {expires: 239, expirationUnit: 'minutes'}); // Server currently sets token expiry to 24 hours, prompt re-log before that
-		$rootScope.curruser = angular.copy(data);
+		console.log(ipCookie('wenomyou.user', data, {expires: 239, expirationUnit: 'minutes'})); // Server currently sets token expiry to 24 hours, prompt re-log before that
+		$rootScope.curruser = angular.copy(User);
 		$location.path('/explore');
 		return true;
 	}

@@ -35,7 +35,7 @@ app.controller('ProfileCtrl', function($scope, $rootScope, $timeout, Restangular
 				var loadFilePreview = function(fileReader, index) {
 					fileReader.onload = function(e) {
 						$timeout(function() {
-							$scope.newuser.image = $scope.dataUrls[index] = e.target.result;
+							$scope.newuser.picture = $scope.dataUrls[index] = e.target.result;
 						});
 					}
 				}(fileReader, i);

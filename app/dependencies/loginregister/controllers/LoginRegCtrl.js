@@ -2,7 +2,6 @@ app.controller('LoginCtrl', function($scope, UserService, $rootScope, $location,
 	$scope.login = function($event) {
 		if(!$scope.formData) UserService.init(); // Cache current data
 		$scope.formData = $scope.formData ? $scope.formData : UserService;
-
 		$scope.formData.errors = [];
 		// if(!$rootScope.users.length) {
 		// 	$scope.formData.errors.push({"message":"Please register first"});
@@ -16,6 +15,7 @@ app.controller('LoginCtrl', function($scope, UserService, $rootScope, $location,
 
 		APIAuth.login($scope.formData).then(function(success) {
 			UserService.setLoggedIn(success.data);
+			console.log(success.data);
 		}, function(fail) {
 			console.log(fail.data);
 			$scope.formData.errors.push({"message":"Invalid credentials, try again"});

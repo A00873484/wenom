@@ -11,7 +11,7 @@ app.service('CreateChallengeService', function($location, $rootScope) {
 		funded_amount: '0',
 		start_date: '',
 		challenge_length: '',
-		end_date: '',
+		ends: '',
 
 		// Caches the properties of the object so we can reset it later
 		init: function() {

@@ -29,6 +29,19 @@ app.filter('inArray', function($filter){
     };
 });
 
+// Requires moment.js
+app.filter('formatDate', function() {
+	return function(input, formatting) {
+		return moment(input).format(formatting);
+	}
+});
+
+app.filter('fromNow', function() {
+	return function(input) {
+		return moment(input).fromNow();
+	}
+});
+
 // Same as numbersOnly directive, but also limits the number to up to 365 only. If it's any more, set to 365
 app.directive('365Only', function(){
 	return {

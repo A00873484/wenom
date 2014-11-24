@@ -24,7 +24,9 @@ app.controller('CreateChallengeCtrl', function($scope, CreateChallengeService, A
 			return;
 		}
 
-		APIChallenge.createChallenge($scope.challenge);
+		APIChallenge.createChallenge($scope.challenge).then(function(success) {
+
+		});
 		// $rootScope.challenges.push(angular.copy($scope.challenge));
 	}
 

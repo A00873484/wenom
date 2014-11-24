@@ -18,8 +18,9 @@ app.controller('AdminCtrl', function($scope, APIUser) {
 	}
 
 	$scope.delete = function(user) {
-		console.log(user.first_name);
-		var index = $scope.users.indexOf(user);
-  		$scope.users.splice(index, 1);  
+		APIUser.deleteUser(user.id).then(function(success) {
+			var index = $scope.users.indexOf(user);
+	  		$scope.users.splice(index, 1);  
+		});
 	}
 });

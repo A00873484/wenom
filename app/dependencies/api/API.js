@@ -54,6 +54,10 @@ app.factory('APIUser', function(Restangular) {
 			return Restangular.one('getUsers').customGET();
 		},
 
+		getUser: function(id) {
+			return Restangular.one('getUser').customGET(id);
+		},
+
 		disableUser: function(id) {
 			return Restangular.one('changeUserStatus').customPOST({"id": id, "enabled": "false"});
 		},
@@ -64,6 +68,10 @@ app.factory('APIUser', function(Restangular) {
 
 		updateUser: function(userObj) {
 			return Restangular.one('editUser').customPOST(userObj);
-		} 
+		},
+
+		deleteUser: function(id) {
+			return Restangular.one('deleteUser').customPOST({"id": id});
+		}
 	}
 });

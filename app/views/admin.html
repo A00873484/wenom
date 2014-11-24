@@ -23,7 +23,10 @@
 						<td ng-show="!user.user_level" class="clickable" ng-click="delete(user)">Delete</td>
 						<td ng-show="user.user_level"></td>
 						<td ng-show="user.user_level"></td>
-						<td ng-repeat="(key, value) in user">{{value}}</td>
+						<td ng-repeat="(key, value) in user">
+							<span ng-if="key != 'picture'">{{value}}</span>
+							<span ng-if="key == 'picture'"><img ng-src="{{value}}" width="48px" height="32px"></span>
+						</td>
 					</tr>
 				</tbody>
 			</table>

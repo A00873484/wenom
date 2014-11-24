@@ -8,7 +8,12 @@
 			<div class="ui two column stackable challenge-header grid">
 				<div class="nine wide column">
 					<h1 class="ui header">{{challenge.name}}</h1>
-					<img ng-show="challenge.image" ng-src="{{challenge.image}}">
+					<img ng-show="challenge.picture" ng-src="{{challenge.picture}}" width="480px" height="320px">
+				</div> <!-- COLUMN END -->
+				<div class="four wide right floated column">
+					<br>
+					<h4 class="ui header">{{nominator.first_name + " " + nominator.last_name}}</h4>
+					<img ng-show="nominator.picture" ng-src="{{nominator.picture}}" width="120px" height="80px">
 				</div> <!-- COLUMN END -->
 			</div> <!-- HEADER GRID -->	
 
@@ -50,17 +55,17 @@
 										</div>
 									</div> <!-- LIST END -->
 
-									<div ng-show="challenge.runtime_days" class="ui f-days-left list"><!-- If it's not an ongoing campaign -->
+									<div ng-show="challenge.challenge_length" class="ui f-days-left list"><!-- If it's not an ongoing campaign -->
 										<div class="item">
-											<span class="c-value">{{challenge.ends}}</span>
+											<span class="c-value">End date: {{challenge.ends | fromNow}}</span>
 										</div>
-										<div class="item">
+										<!-- <div class="item">
 											<em class="c-meta">
-												{{challenge.ends}} 
+												{{challenge.ends | fromNow}} 
 												<span ng-if="!dateInPast(challenge.ends)">to go</span>
 												<span ng-if="dateInPast(challenge.ends)">ago</span>
 											</em>
-										</div>
+										</div> -->
 										<div class="f-duration">
 											<p ng-if="!dateInPast(challenge.ends)"> This campaign started on {{challenge.created | formatDate:"MMM DD YYYY"}} and will close on {{challenge.ends | formatDate:"MMMM DD YYYY (h:mma)"}}. </p>
 											<p ng-if="dateInPast(challenge.ends)"> This campaign has closed, funding is no longer available. </p>

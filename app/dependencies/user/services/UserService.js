@@ -6,7 +6,7 @@ app.service('UserService', function($location, $http, ipCookie, Restangular, $ti
 		last_name: '',
 		auth_token: '',
 		about: '',
-		image: ''
+		picture: ''
 	}
 
 	// Caches the properties of the object so we can reset it later
@@ -36,7 +36,11 @@ app.service('UserService', function($location, $http, ipCookie, Restangular, $ti
 
 	function copyObjectProperties(srcObj, destObj) {
 		for(var key in srcObj) {
-			destObj[key] = srcObj[key];
+			if(key != 'picture') {
+				destObj[key] = srcObj[key];
+			} else {
+				srcObj[key] = '';
+			}
 		}
 	}
 
@@ -54,8 +58,8 @@ app.service('UserService', function($location, $http, ipCookie, Restangular, $ti
 		if(!data) return false;
 
 		copyObjectProperties(data, User);
-		ipCookie('wenomyou.user', data, {expires: 239, expirationUnit: 'minutes'}); // Server currently sets token expiry to 24 hours, prompt re-log before that
-		$rootScope.curruser = angular.copy(data);
+		console.log(ipCookie('wenomyou.user', data, {expires: 239, expirationUnit: 'minutes'})); // Server currently sets token expiry to 24 hours, prompt re-log before that
+		$rootScope.curruser = angular.copy(User);
 		$location.path('/explore');
 		return true;
 	}
