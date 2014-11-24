@@ -1,6 +1,6 @@
 app.controller('AdminCtrl', function($scope, APIUser) {
 	APIUser.getUsers().then(function(success) {
-		window.a = $scope.users = success.data;
+		$scope.users = success.data;
 	}, function(fail) {
 		console.log(fail);
 	});
@@ -18,6 +18,8 @@ app.controller('AdminCtrl', function($scope, APIUser) {
 	}
 
 	$scope.delete = function(user) {
-		console.log(user.name);
+		console.log(user.first_name);
+		var index = $scope.users.indexOf(user);
+  		$scope.users.splice(index, 1);  
 	}
 });
