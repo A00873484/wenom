@@ -3,12 +3,31 @@
 <!-- ============================================= GET STARTED BODY -->
 
 <div class="mainbody-wrap">
-	<div class="ui page grid">
-		<div class="ui basic background-wrap segment">
-			<div class="ui center aligned basic campaign-top-header segment">
-				<h1 class="ui header">Administration</h1>
-			</div>
-		</div> <!-- BACKGROUND WRAP END -->
-	</div>
+	<div class="ui basic segment">
+		<div class="ui center aligned basic campaign-top-header segment">
+			<h1 class="ui header">Administration</h1>
+		</div>
+		<div class="ui compact table admin-dashboard">
+			<table>
+				<thead>
+					<tr>
+						<th>Click to disable/enable</th>
+						<th>Click to delete</th>
+						<th ng-repeat="(key, value) in users[0]">{{key}}</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="user in users">
+						<td ng-show="user.disabled && !user.user_level" class="clickable" ng-click="toggleDisabled(user)">Enable</td>
+						<td ng-show="!user.disabled && !user.user_level" class="clickable" ng-click="toggleDisabled(user)">Disable</td>
+						<td ng-show="!user.user_level" class="clickable" ng-click="delete(user)">Delete</td>
+						<td ng-show="user.user_level"></td>
+						<td ng-show="user.user_level"></td>
+						<td ng-repeat="(key, value) in user">{{value}}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div> <!-- BACKGROUND WRAP END -->
 	<div class="push"></div>
 </div>

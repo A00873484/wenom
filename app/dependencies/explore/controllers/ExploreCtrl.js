@@ -1,4 +1,5 @@
-app.controller('ExploreCtrl', function($scope, $routeParams, $location, Restangular, $rootScope, API_URL){
+app.controller('ExploreCtrl', function($scope, $routeParams, $location, Restangular, $rootScope, API_URL, APIChallenge){
+	var placeholderchallenges;
 	$scope.sortOrFilters = {
 		"sort": '',
 		"filters": {
@@ -7,63 +8,63 @@ app.controller('ExploreCtrl', function($scope, $routeParams, $location, Restangu
 		}
 	}
 	processParams();
-	var serverurl = 'http://techpro.local/';
+	APIChallenge.getChallenges().then(function(success) {
+		placeholderchallenges = success.data;
+		$rootScope.challenges = placeholderchallenges;
+		$scope.challenges = $rootScope.challenges;
+		filterChallenges();
+		console.log(success.data);
+	}, function(fail) {
+		console.log(fail);
+	});
 	// Temporary placeholders for challenge display, replace with data from API
-	var placeholderchallenges = [
-		{
-			id: '1',
-			name: 'ALS ice bucket challenge',
-			created: 'Sat Oct 25 2014 00:55:23 GMT-0700 (Pacific Daylight Time)',
-			image: '',
-			nominee: 'Enoch Yip',
-			url: serverurl + 'challenge/',
-			description: "Dump ice on yourself and pretend you're making a positive impact.",
-			funded_amount: '19',
-			goal: '50'
-		},
-		{
-			id: '2',
-			name: 'Swim in a volcano',
-			created: 'Wed Oct 29 2014 00:55:23 GMT-0700 (Pacific Daylight Time)',
-			image: '',
-			nominee: 'Danny Lieu',
-			url: serverurl + 'challenge/',
-			description: 'Self explanatory.',
-			funded_amount: '50000',
-			goal: '30000000'
-		},
-		{
-			id: '3',
-			name: 'Ask a white girl to coffee!!!',
-			created: 'Fri Oct 24 2014 00:55:23 GMT-0700 (Pacific Daylight Time)',
-			image: '',
-			nominee: 'Thanh Lai',
-			url: serverurl + 'challenge/',
-			description: '2T? (;',
-			funded_amount: '880000',
-			goal: '1000000'
-		},
-		{
-			id: '4',
-			name: 'Super cool challenge',
-			created: 'Wed Oct 15 2014 00:55:23 GMT-0700 (Pacific Daylight Time)',
-			image: '',
-			nominee: 'Daniel Engelhard',
-			url: serverurl + 'challenge/',
-			description: "",
-			funded_amount: '5',
-			goal: '99'
-		},
-	];
+	// var placeholderchallenges = [
+	// 	{
+	// 		id: '1',
+	// 		name: 'ALS ice bucket challenge',
+	// 		created: 'Sat Oct 25 2014 00:55:23 GMT-0700 (Pacific Daylight Time)',
+	// 		image: '',
+	// 		nominee: 'Enoch Yip',
+	// 		url: serverurl + 'challenge/',
+	// 		description: "Dump ice on yourself and pretend you're making a positive impact.",
+	// 		funded_amount: '19',
+	// 		goal: '50'
+	// 	},
+	// 	{
+	// 		id: '2',
+	// 		name: 'Swim in a volcano',
+	// 		created: 'Wed Oct 29 2014 00:55:23 GMT-0700 (Pacific Daylight Time)',
+	// 		image: '',
+	// 		nominee: 'Danny Lieu',
+	// 		url: serverurl + 'challenge/',
+	// 		description: 'Self explanatory.',
+	// 		funded_amount: '50000',
+	// 		goal: '30000000'
+	// 	},
+	// 	{
+	// 		id: '3',
+	// 		name: 'Ask a white girl to coffee!!!',
+	// 		created: 'Fri Oct 24 2014 00:55:23 GMT-0700 (Pacific Daylight Time)',
+	// 		image: '',
+	// 		nominee: 'Thanh Lai',
+	// 		url: serverurl + 'challenge/',
+	// 		description: '2T? (;',
+	// 		funded_amount: '880000',
+	// 		goal: '1000000'
+	// 	},
+	// 	{
+	// 		id: '4',
+	// 		name: 'Super cool challenge',
+	// 		created: 'Wed Oct 15 2014 00:55:23 GMT-0700 (Pacific Daylight Time)',
+	// 		image: '',
+	// 		nominee: 'Daniel Engelhard',
+	// 		url: serverurl + 'challenge/',
+	// 		description: "",
+	// 		funded_amount: '5',
+	// 		goal: '99'
+	// 	},
+	// ];
 
-	if($rootScope.challenges.length <= 1) {
-		placeholderchallenges.forEach(function(challenge) {
-			$rootScope.challenges.push(challenge);
-		});
-	}
-
-	$scope.challenges = $rootScope.challenges;
-	filterChallenges();
 	// Restangular.one('portal').all('category').getList().then(function(success) {
 	// 	$scope.categories = success;
 	// 	$scope.categories.forEach(function(category) {

@@ -1,4 +1,4 @@
-app.service('UserService', function($location, $http, ipCookie, Restangular, $timeout, $rootScope) {
+app.service('UserService', function($location, $http, ipCookie, Restangular, $timeout, $rootScope, APIUser) {
 	$rootScope.curruser = $rootScope.curruser ? $rootScope.curruser : {};
 	var User = {
 		email: '',

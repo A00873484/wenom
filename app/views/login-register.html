@@ -14,7 +14,7 @@
 								<i class="loading icon"></i>
 								{{formData.successful.message}}
 							</div>
-							<div ng-show="formData.errors" class="ui error message">
+							<div ng-show="formData.errors.length" class="ui error message">
 								<i class="close icon" ng-click="formData.errors = null;"></i>
 								<div class="header">
 									Login failed

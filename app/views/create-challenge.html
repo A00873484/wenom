@@ -91,18 +91,18 @@
 						</div>
 						<div class="eleven wide column">
 							<div class="ui fluid form">
-								<input type="text" name="duration" ng-class="{'has-error': challenge_form.duration.$invalid}" ng-model="challenge.duration" 365-only required>
-								<div class="ui red pointing above ui label" ng-show="challenge_form.duration.$invalid && challenge_form.duration.$dirty">
-									<div ng-show="challenge_form.duration.$error.required">Please provide a duration</div>
+								<input type="text" name="challenge_length" ng-class="{'has-error': challenge_form.challenge_length.$invalid}" ng-model="challenge.challenge_length" 365-only required>
+								<div class="ui red pointing above ui label" ng-show="challenge_form.challenge_length.$invalid && challenge_form.challenge_length.$dirty">
+									<div ng-show="challenge_form.challenge_length.$error.required">Please provide a duration</div>
 								</div>
 							</div>
 						</div>
 
-						<div class="five wide column" ng-show="challenge.start_date && challenge.duration">
+						<div class="five wide column" ng-show="challenge.start_date && challenge.challenge_length">
 							<h3 class="ui header">Funding End Date</h3>
 						</div>
-						<div class="eleven wide column" ng-show="challenge.start_date && challenge.duration">
-							This challenge will end on {{momentAdd(challenge.start_date, challenge.duration, 'days')}}
+						<div class="eleven wide column" ng-show="challenge.start_date && challenge.challenge_length">
+							This challenge will end on {{momentAdd(challenge.start_date, challenge.challenge_length, 'days')}}
 						</div>
 
 						<div class="five wide column">

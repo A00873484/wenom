@@ -3,15 +3,14 @@ app.service('CreateChallengeService', function($location, $rootScope) {
 		id: '',
 		status: '',
 		name: '',
-		image: '',
+		picture: '',
 		created: '',
 		description: '',
 		nominee: '',
 		goal: '0',
-		url: 'http://techpro.local/challenge/',
 		funded_amount: '0',
 		start_date: '',
-		duration: '',
+		challenge_length: '',
 		end_date: '',
 
 		// Caches the properties of the object so we can reset it later

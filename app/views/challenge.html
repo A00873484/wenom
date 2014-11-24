@@ -39,11 +39,11 @@
 									</div> <!-- LIST END -->
 
 									<div class="ui successful progress">
-										<div class="bar" style="width: {{challenge.funded_amount / (challenge.goal || 1) * 100 | number: 0}}%"></div>
+										<div class="bar" style="width: {{challenge.funded_amount || 0 / (challenge.goal || 1) * 100 | number: 0}}%"></div>
 									</div>
 									<div class="ui f-percent list">
 										<div class="item">
-											<span class="c-value"> {{challenge.funded_amount / (challenge.goal || 1) * 100 | number: 0}}% </span>
+											<span class="c-value"> {{challenge.funded_amount || 0 / (challenge.goal || 1) * 100 | number: 0}}% </span>
 										</div>
 										<div class="item">
 											<em class="c-meta"> Funded </em>

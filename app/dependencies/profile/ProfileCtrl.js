@@ -1,5 +1,6 @@
-app.controller('ProfileCtrl', function($scope, $rootScope, $timeout, Restangular) {
+app.controller('ProfileCtrl', function($scope, $rootScope, $timeout, Restangular, UserService, APIUser) {
 	$scope.user = $rootScope.curruser;
+	$scope.newuser = copyNotValues(UserService);
 	$scope.newpass = [];
 
 	$scope.saveData = function($event) {
@@ -11,7 +12,16 @@ app.controller('ProfileCtrl', function($scope, $rootScope, $timeout, Restangular
 			}
 			return;
 		}
-		console.log('success');
+		// if($scope.newpass[1]) {
+			$scope.newuser.password = 'google';//$scope.newpass[1];
+		// }
+
+		APIUser.updateUser($scope.newuser).then(function(success) {
+			UserService.updateUserData(success.data);
+			console.log(success.data);
+		}, function(fail) {
+			console.log(fail);
+		});
 	}
 
 	$scope.onFileSelect = function($files) {
@@ -25,11 +35,22 @@ app.controller('ProfileCtrl', function($scope, $rootScope, $timeout, Restangular
 				var loadFilePreview = function(fileReader, index) {
 					fileReader.onload = function(e) {
 						$timeout(function() {
-							$scope.user.image = $scope.dataUrls[index] = e.target.result;
+							$scope.newuser.image = $scope.dataUrls[index] = e.target.result;
 						});
 					}
 				}(fileReader, i);
 			}
 		}
 	}
+
+	function copyNotValues(obj) {
+        var newObj = angular.copy(obj);
+        for (prop in newObj) {
+            if(newObj.hasOwnProperty(prop))
+            {
+                newObj[prop] = '';
+            }
+        };
+        return newObj;
+    }
 });

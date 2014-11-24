@@ -74,6 +74,12 @@ body {
 /*================================================
 	GLOBAL CHANGES
 ================================================*/
+.clickable {
+	cursor: pointer;
+	color: blue;
+	text-decoration: underline;
+}
+
 .ui.progress {
 	background-color: #EEE;
 	border: none;
@@ -83,6 +89,23 @@ body {
 		line-height: 0;
 		padding: 1px;
 	}
+}
+
+#loading-bar .bar {
+  -webkit-transition: width 350ms;
+  -moz-transition: width 350ms;
+  -o-transition: width 350ms;
+  transition: width 350ms;
+
+  background: #29d;
+  position: fixed;
+  z-index: 10002;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  border-bottom-right-radius: 1px;
+  border-top-right-radius: 1px;
 }
 
 .ui.three.stackable.column.relaxed.grid { text-align: center; }

@@ -1,11 +1,11 @@
-app.controller('CreateChallengeCtrl', function($scope, CreateChallengeService, APIAuth, $timeout, $rootScope) {
+app.controller('CreateChallengeCtrl', function($scope, CreateChallengeService, APIAuth, $timeout, $rootScope, APIChallenge) {
 	// CreateChallengeService.enforceFormProgress(); // If the user hasn't started the challenge, send them back to the start
 	if(!$scope.challenge) CreateChallengeService.init(); // If this controller wasn't called with an existing challenge, cache the current (empty) data
 	$scope.challenge = CreateChallengeService;
 
-	if($rootScope.challenges.length) {
-		$scope.challenge.id = parseInt($rootScope.challenges[$rootScope.challenges.length - 1].id) + 1;
-	}
+	// if($rootScope.challenges.length) {
+	// 	$scope.challenge.id = parseInt($rootScope.challenges[$rootScope.challenges.length - 1].id) + 1;
+	// }
 
 	$scope.momentAdd = function(value, add, unit, format) {
 		add = add || 0;
@@ -23,7 +23,9 @@ app.controller('CreateChallengeCtrl', function($scope, CreateChallengeService, A
 			}
 			return;
 		}
-		$rootScope.challenges.push(angular.copy($scope.challenge));
+
+		APIChallenge.createChallenge($scope.challenge);
+		// $rootScope.challenges.push(angular.copy($scope.challenge));
 	}
 
 	$scope.onFileSelect = function($files) {
@@ -37,7 +39,7 @@ app.controller('CreateChallengeCtrl', function($scope, CreateChallengeService, A
 				var loadFilePreview = function(fileReader, index) {
 					fileReader.onload = function(e) {
 						$timeout(function() {
-							$scope.challenge.image = $scope.dataUrls[index] = e.target.result;
+							$scope.challenge.picture = $scope.dataUrls[index] = e.target.result;
 						});
 					}
 				}(fileReader, i);

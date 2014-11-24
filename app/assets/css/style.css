@@ -227,6 +227,12 @@ body {
 /*================================================
 	GLOBAL CHANGES
 ================================================*/
+.clickable {
+  cursor: pointer;
+  color: blue;
+  text-decoration: underline;
+}
+
 .ui.progress {
   background-color: #EEE;
   border: none;
@@ -236,6 +242,22 @@ body {
   height: 10px;
   line-height: 0;
   padding: 1px;
+}
+
+#loading-bar .bar {
+  -webkit-transition: width 350ms;
+  -moz-transition: width 350ms;
+  -o-transition: width 350ms;
+  transition: width 350ms;
+  background: #29d;
+  position: fixed;
+  z-index: 10002;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  border-bottom-right-radius: 1px;
+  border-top-right-radius: 1px;
 }
 
 .ui.three.stackable.column.relaxed.grid {
@@ -411,403 +433,403 @@ button[disabled=disabled], button:disabled {
 }
 
 .random-color:nth-child(1) {
-  background-color: #7f40bf;
+  background-color: #40aebf;
 }
 
 .random-color:nth-child(2) {
-  background-color: #bf6640;
-}
-
-.random-color:nth-child(3) {
-  background-color: #40bf4a;
-}
-
-.random-color:nth-child(4) {
-  background-color: #4073bf;
-}
-
-.random-color:nth-child(5) {
-  background-color: #bfb540;
-}
-
-.random-color:nth-child(6) {
-  background-color: #aebf40;
-}
-
-.random-color:nth-child(7) {
-  background-color: #bf406c;
-}
-
-.random-color:nth-child(8) {
-  background-color: #bf4073;
-}
-
-.random-color:nth-child(9) {
-  background-color: #bfb940;
-}
-
-.random-color:nth-child(10) {
-  background-color: #bf4051;
-}
-
-.random-color:nth-child(11) {
   background-color: #bf4044;
 }
 
-.random-color:nth-child(12) {
-  background-color: #4068bf;
+.random-color:nth-child(3) {
+  background-color: #40bf51;
 }
 
-.random-color:nth-child(13) {
-  background-color: #bf404a;
-}
-
-.random-color:nth-child(14) {
-  background-color: #40bf8c;
-}
-
-.random-color:nth-child(15) {
-  background-color: #bf9340;
-}
-
-.random-color:nth-child(16) {
-  background-color: #bf4a40;
-}
-
-.random-color:nth-child(17) {
-  background-color: #bfb740;
-}
-
-.random-color:nth-child(18) {
-  background-color: #bf4240;
-}
-
-.random-color:nth-child(19) {
-  background-color: #8cbf40;
-}
-
-.random-color:nth-child(20) {
-  background-color: #bf406c;
-}
-
-.random-color:nth-child(21) {
-  background-color: #404abf;
-}
-
-.random-color:nth-child(22) {
-  background-color: #a640bf;
-}
-
-.random-color:nth-child(23) {
-  background-color: #bf5b40;
-}
-
-.random-color:nth-child(24) {
-  background-color: #7dbf40;
-}
-
-.random-color:nth-child(25) {
-  background-color: #bf40bd;
-}
-
-.random-color:nth-child(26) {
-  background-color: #4053bf;
-}
-
-.random-color:nth-child(27) {
-  background-color: #7940bf;
-}
-
-.random-color:nth-child(28) {
-  background-color: #9b40bf;
-}
-
-.random-color:nth-child(29) {
-  background-color: #71bf40;
-}
-
-.random-color:nth-child(30) {
+.random-color:nth-child(4) {
   background-color: #bf4f40;
 }
 
-.random-color:nth-child(31) {
-  background-color: #bf8e40;
+.random-color:nth-child(5) {
+  background-color: #bf4057;
 }
 
-.random-color:nth-child(32) {
-  background-color: #406abf;
+.random-color:nth-child(6) {
+  background-color: #40bf9b;
 }
 
-.random-color:nth-child(33) {
-  background-color: #40bf60;
+.random-color:nth-child(7) {
+  background-color: #bf4079;
 }
 
-.random-color:nth-child(34) {
-  background-color: #bf7740;
+.random-color:nth-child(8) {
+  background-color: #9540bf;
 }
 
-.random-color:nth-child(35) {
-  background-color: #40bfa6;
+.random-color:nth-child(9) {
+  background-color: #406fbf;
 }
 
-.random-color:nth-child(36) {
-  background-color: #4059bf;
-}
-
-.random-color:nth-child(37) {
-  background-color: #40bf4a;
-}
-
-.random-color:nth-child(38) {
-  background-color: #7940bf;
-}
-
-.random-color:nth-child(39) {
-  background-color: #4075bf;
-}
-
-.random-color:nth-child(40) {
-  background-color: #bfa640;
-}
-
-.random-color:nth-child(41) {
-  background-color: #40bf99;
-}
-
-.random-color:nth-child(42) {
-  background-color: #7dbf40;
-}
-
-.random-color:nth-child(43) {
-  background-color: #40bf60;
-}
-
-.random-color:nth-child(44) {
-  background-color: #40bf99;
-}
-
-.random-color:nth-child(45) {
-  background-color: #bb40bf;
-}
-
-.random-color:nth-child(46) {
-  background-color: #bf40b5;
-}
-
-.random-color:nth-child(47) {
-  background-color: #ae40bf;
-}
-
-.random-color:nth-child(48) {
-  background-color: #bf40a6;
-}
-
-.random-color:nth-child(49) {
-  background-color: #bf4093;
-}
-
-.random-color:nth-child(50) {
-  background-color: #6040bf;
-}
-
-.random-color:nth-child(51) {
-  background-color: #7740bf;
-}
-
-.random-color:nth-child(52) {
-  background-color: #40bf5e;
-}
-
-.random-color:nth-child(53) {
+.random-color:nth-child(10) {
   background-color: #bfb340;
 }
 
-.random-color:nth-child(54) {
-  background-color: #b040bf;
+.random-color:nth-child(11) {
+  background-color: #bf4086;
 }
 
-.random-color:nth-child(55) {
-  background-color: #84bf40;
+.random-color:nth-child(12) {
+  background-color: #99bf40;
 }
 
-.random-color:nth-child(56) {
-  background-color: #4048bf;
+.random-color:nth-child(13) {
+  background-color: #40bf8e;
 }
 
-.random-color:nth-child(57) {
+.random-color:nth-child(14) {
+  background-color: #acbf40;
+}
+
+.random-color:nth-child(15) {
+  background-color: #40bf73;
+}
+
+.random-color:nth-child(16) {
+  background-color: #4088bf;
+}
+
+.random-color:nth-child(17) {
+  background-color: #4c40bf;
+}
+
+.random-color:nth-child(18) {
+  background-color: #bfbf40;
+}
+
+.random-color:nth-child(19) {
+  background-color: #9bbf40;
+}
+
+.random-color:nth-child(20) {
+  background-color: #86bf40;
+}
+
+.random-color:nth-child(21) {
+  background-color: #bf4080;
+}
+
+.random-color:nth-child(22) {
+  background-color: #40bf91;
+}
+
+.random-color:nth-child(23) {
+  background-color: #40bf8c;
+}
+
+.random-color:nth-child(24) {
   background-color: #bf4440;
 }
 
-.random-color:nth-child(58) {
-  background-color: #ac40bf;
-}
-
-.random-color:nth-child(59) {
-  background-color: #bf4066;
-}
-
-.random-color:nth-child(60) {
-  background-color: #ae40bf;
-}
-
-.random-color:nth-child(61) {
-  background-color: #bf7b40;
-}
-
-.random-color:nth-child(62) {
-  background-color: #40a2bf;
-}
-
-.random-color:nth-child(63) {
-  background-color: #4068bf;
-}
-
-.random-color:nth-child(64) {
-  background-color: #bf40b0;
-}
-
-.random-color:nth-child(65) {
-  background-color: #93bf40;
-}
-
-.random-color:nth-child(66) {
+.random-color:nth-child(25) {
   background-color: #bf5740;
 }
 
-.random-color:nth-child(67) {
-  background-color: #bf40b7;
-}
-
-.random-color:nth-child(68) {
-  background-color: #4095bf;
-}
-
-.random-color:nth-child(69) {
-  background-color: #7940bf;
-}
-
-.random-color:nth-child(70) {
-  background-color: #40a2bf;
-}
-
-.random-color:nth-child(71) {
+.random-color:nth-child(26) {
   background-color: #ae40bf;
 }
 
-.random-color:nth-child(72) {
-  background-color: #6fbf40;
+.random-color:nth-child(27) {
+  background-color: #40bf64;
 }
 
-.random-color:nth-child(73) {
-  background-color: #bf5e40;
+.random-color:nth-child(28) {
+  background-color: #88bf40;
 }
 
-.random-color:nth-child(74) {
-  background-color: #bf5e40;
+.random-color:nth-child(29) {
+  background-color: #ae40bf;
 }
 
-.random-color:nth-child(75) {
-  background-color: #84bf40;
+.random-color:nth-child(30) {
+  background-color: #40bf60;
 }
 
-.random-color:nth-child(76) {
-  background-color: #5dbf40;
-}
-
-.random-color:nth-child(77) {
-  background-color: #bd40bf;
-}
-
-.random-color:nth-child(78) {
-  background-color: #7d40bf;
-}
-
-.random-color:nth-child(79) {
-  background-color: #404fbf;
-}
-
-.random-color:nth-child(80) {
-  background-color: #bf40bd;
-}
-
-.random-color:nth-child(81) {
-  background-color: #bf409d;
-}
-
-.random-color:nth-child(82) {
-  background-color: #4071bf;
-}
-
-.random-color:nth-child(83) {
-  background-color: #408cbf;
-}
-
-.random-color:nth-child(84) {
-  background-color: #bdbf40;
-}
-
-.random-color:nth-child(85) {
-  background-color: #bf4084;
-}
-
-.random-color:nth-child(86) {
-  background-color: #4068bf;
-}
-
-.random-color:nth-child(87) {
-  background-color: #bf4040;
-}
-
-.random-color:nth-child(88) {
-  background-color: #40a6bf;
-}
-
-.random-color:nth-child(89) {
-  background-color: #bf4a40;
-}
-
-.random-color:nth-child(90) {
-  background-color: #97bf40;
-}
-
-.random-color:nth-child(91) {
-  background-color: #4044bf;
-}
-
-.random-color:nth-child(92) {
-  background-color: #40b5bf;
-}
-
-.random-color:nth-child(93) {
-  background-color: #408ebf;
-}
-
-.random-color:nth-child(94) {
-  background-color: #6cbf40;
-}
-
-.random-color:nth-child(95) {
+.random-color:nth-child(31) {
   background-color: #4095bf;
 }
 
-.random-color:nth-child(96) {
-  background-color: #4240bf;
+.random-color:nth-child(32) {
+  background-color: #bf4046;
 }
 
-.random-color:nth-child(97) {
-  background-color: #409fbf;
+.random-color:nth-child(33) {
+  background-color: #8440bf;
 }
 
-.random-color:nth-child(98) {
+.random-color:nth-child(34) {
+  background-color: #93bf40;
+}
+
+.random-color:nth-child(35) {
+  background-color: #bfaa40;
+}
+
+.random-color:nth-child(36) {
+  background-color: #40bf48;
+}
+
+.random-color:nth-child(37) {
+  background-color: #8c40bf;
+}
+
+.random-color:nth-child(38) {
+  background-color: #8cbf40;
+}
+
+.random-color:nth-child(39) {
+  background-color: #4440bf;
+}
+
+.random-color:nth-child(40) {
+  background-color: #bd40bf;
+}
+
+.random-color:nth-child(41) {
+  background-color: #bf8440;
+}
+
+.random-color:nth-child(42) {
+  background-color: #a4bf40;
+}
+
+.random-color:nth-child(43) {
+  background-color: #406abf;
+}
+
+.random-color:nth-child(44) {
   background-color: #5bbf40;
 }
 
-.random-color:nth-child(99) {
+.random-color:nth-child(45) {
+  background-color: #6840bf;
+}
+
+.random-color:nth-child(46) {
+  background-color: #8c40bf;
+}
+
+.random-color:nth-child(47) {
+  background-color: #bf4082;
+}
+
+.random-color:nth-child(48) {
+  background-color: #bfa240;
+}
+
+.random-color:nth-child(49) {
+  background-color: #bf4095;
+}
+
+.random-color:nth-child(50) {
+  background-color: #6440bf;
+}
+
+.random-color:nth-child(51) {
+  background-color: #4066bf;
+}
+
+.random-color:nth-child(52) {
+  background-color: #bf8440;
+}
+
+.random-color:nth-child(53) {
+  background-color: #40bf5b;
+}
+
+.random-color:nth-child(54) {
+  background-color: #bf409b;
+}
+
+.random-color:nth-child(55) {
+  background-color: #bfbf40;
+}
+
+.random-color:nth-child(56) {
+  background-color: #bf9b40;
+}
+
+.random-color:nth-child(57) {
   background-color: #bf40b0;
 }
 
+.random-color:nth-child(58) {
+  background-color: #40bfa4;
+}
+
+.random-color:nth-child(59) {
+  background-color: #95bf40;
+}
+
+.random-color:nth-child(60) {
+  background-color: #4051bf;
+}
+
+.random-color:nth-child(61) {
+  background-color: #40bf68;
+}
+
+.random-color:nth-child(62) {
+  background-color: #bf406a;
+}
+
+.random-color:nth-child(63) {
+  background-color: #bf7540;
+}
+
+.random-color:nth-child(64) {
+  background-color: #4086bf;
+}
+
+.random-color:nth-child(65) {
+  background-color: #86bf40;
+}
+
+.random-color:nth-child(66) {
+  background-color: #b240bf;
+}
+
+.random-color:nth-child(67) {
+  background-color: #40bf79;
+}
+
+.random-color:nth-child(68) {
+  background-color: #40bf44;
+}
+
+.random-color:nth-child(69) {
+  background-color: #406cbf;
+}
+
+.random-color:nth-child(70) {
+  background-color: #40bfbf;
+}
+
+.random-color:nth-child(71) {
+  background-color: #bf4075;
+}
+
+.random-color:nth-child(72) {
+  background-color: #bfb340;
+}
+
+.random-color:nth-child(73) {
+  background-color: #ae40bf;
+}
+
+.random-color:nth-child(74) {
+  background-color: #7940bf;
+}
+
+.random-color:nth-child(75) {
+  background-color: #bfa840;
+}
+
+.random-color:nth-child(76) {
+  background-color: #40bfb5;
+}
+
+.random-color:nth-child(77) {
+  background-color: #bfac40;
+}
+
+.random-color:nth-child(78) {
+  background-color: #bf5b40;
+}
+
+.random-color:nth-child(79) {
+  background-color: #40bbbf;
+}
+
+.random-color:nth-child(80) {
+  background-color: #bf6f40;
+}
+
+.random-color:nth-child(81) {
+  background-color: #bf9140;
+}
+
+.random-color:nth-child(82) {
+  background-color: #bf404f;
+}
+
+.random-color:nth-child(83) {
+  background-color: #bf8040;
+}
+
+.random-color:nth-child(84) {
+  background-color: #bf4064;
+}
+
+.random-color:nth-child(85) {
+  background-color: #40bf68;
+}
+
+.random-color:nth-child(86) {
+  background-color: #4dbf40;
+}
+
+.random-color:nth-child(87) {
+  background-color: #8a40bf;
+}
+
+.random-color:nth-child(88) {
+  background-color: #7540bf;
+}
+
+.random-color:nth-child(89) {
+  background-color: #bfa240;
+}
+
+.random-color:nth-child(90) {
+  background-color: #5540bf;
+}
+
+.random-color:nth-child(91) {
+  background-color: #bf4048;
+}
+
+.random-color:nth-child(92) {
+  background-color: #acbf40;
+}
+
+.random-color:nth-child(93) {
+  background-color: #60bf40;
+}
+
+.random-color:nth-child(94) {
+  background-color: #b240bf;
+}
+
+.random-color:nth-child(95) {
+  background-color: #409fbf;
+}
+
+.random-color:nth-child(96) {
+  background-color: #bf4073;
+}
+
+.random-color:nth-child(97) {
+  background-color: #4079bf;
+}
+
+.random-color:nth-child(98) {
+  background-color: #4440bf;
+}
+
+.random-color:nth-child(99) {
+  background-color: #40bf66;
+}
+
 .random-color:nth-child(100) {
-  background-color: #6cbf40;
+  background-color: #40bfae;
 }
 
 /* ===================== MULTI BACKGROUND COLOR */

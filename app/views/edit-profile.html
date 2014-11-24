@@ -33,7 +33,7 @@
 						<div class="eleven wide column">
 							<div class="ui fluid form">
 								<div class="field">
-									<input ng-class="{'has-error': profile_form.first_name.$invalid}" type="text" name="first_name" ng-model="user.name" required>
+									<input ng-class="{'has-error': profile_form.first_name.$invalid}" type="text" name="first_name" placeholder="{{user.first_name}}" ng-model="newuser.first_name" required>
 									<div class="ui red pointing above ui label" ng-show="profile_form.first_name.$invalid && profile_form.first_name.$dirty">
 										<div ng-show="profile_form.first_name.$error.required">Please provide your first name</div>
 									</div>
@@ -47,7 +47,7 @@
 						<div class="eleven wide column">
 							<div class="ui fluid form">
 								<div class="field">
-									<input ng-class="{'has-error': profile_form.last_name.$invalid}" type="text" name="last_name" ng-model="user.last_name">
+									<input ng-class="{'has-error': profile_form.last_name.$invalid}" type="text" name="last_name" placeholder="{{user.last_name}}" ng-model="newuser.last_name">
 								</div>
 							</div>
 						</div>
@@ -57,7 +57,7 @@
 						</div>
 						<div class="eleven wide column">
 							<div class="ui fluid form">
-								<input ng-class="{'has-error': profile_form.email.$invalid}" type="email" name="email" ng-model="user.email" required>
+								<input ng-class="{'has-error': profile_form.email.$invalid}" type="email" name="email" placeholder="{{user.email}}" ng-model="newuser.email" required>
 								<div class="ui red pointing above ui label" ng-show="profile_form.email.$invalid && profile_form.email.$dirty">
 									<div ng-show="profile_form.email.$error.required">Please provide an email</div>
 							    	<div ng-show="profile_form.email.$error.email">Please enter a valid email</div>
@@ -106,7 +106,7 @@
 						</div>
 						<div class="eleven wide column">
 							What makes you awesome? Tell people why they should be donating to your challenges.
-							<div text-angular name="about" ng-class="{'has-error': profile_form.about.$invalid}" ng-model="user.about" ta-toolbar-class="btn-toolbar" ta-toolbar-group-class="btn-group" ta-toolbar-button-class="btn btn-default" ta-toolbar-button-active-class="active" ta-toolbar="[['h1','h2','h3','p','pre','quote'],['bold','italics','underline'],['ul','ol'],['justifyLeft','justifyCenter','justifyRight'],['indent','outdent'],['insertImage','insertLink','insertVideo']]"></div>
+							<div text-angular name="about" placeholder="{{user.about}}" ng-class="{'has-error': profile_form.about.$invalid}" ng-model="newuser.about" ta-toolbar-class="btn-toolbar" ta-toolbar-group-class="btn-group" ta-toolbar-button-class="btn btn-default" ta-toolbar-button-active-class="active" ta-toolbar="[['h1','h2','h3','p','pre','quote'],['bold','italics','underline'],['ul','ol'],['justifyLeft','justifyCenter','justifyRight'],['indent','outdent'],['insertImage','insertLink','insertVideo']]"></div>
 						</div>
 
 						<div class="five wide column" ng-show="user.about">
@@ -120,9 +120,9 @@
 					</div> <!-- GRID END -->
 				</div>
 				<div class="ui right aligned basic btn nxt-step segment">
-					<a ng-href="explore">
+					<!-- <a ng-href="explore"> -->
 						<button accessible-form ng-click="saveData($event)" class="ui right labeled icon blue button"> Update Profile <i class="right arrow icon"></i></button>
-					</a>
+					<!-- </a> -->
 				</div>
 			</form>
 		</div> <!-- WRAPPER END -->

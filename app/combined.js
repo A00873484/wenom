@@ -11,7 +11,8 @@ var app = angular.module('WeNomYou', [
 	'ngQuickDate',
 	'angularMoment',
 	'restangular',
-	'ipCookie'
+	'ipCookie',
+	'angular-loading-bar'
 ]);
 
 app.constant('API_URL', {
@@ -35,7 +36,28 @@ app.run(function($rootScope, $route, $location, $templateCache) {
 	});
 });
 
-app.config(function($routeProvider, $locationProvider, RestangularProvider, API_URL) {
+app.factory('authHttpInterceptor', function($q, $location, $injector) {
+	return {
+		// Set auth token for all requests
+		request: function(config) {
+			var User = $injector.get('UserService');
+			if($location.path().split("/")[1] !== 'login')
+    			config.headers["X-Auth-Token"] = User.auth_token;
+    		return config;
+  		},
+		// Ensure auth token is still valid
+  		responseError: function(response) {
+  			var User = $injector.get('UserService');
+  			if(response.status === 401 && response.data.code === "invalid_auth_token") {
+				User.setLoggedOut();
+			}
+			return $q.reject(response);
+  		}
+	};
+});
+
+app.config(function($routeProvider, $httpProvider, $locationProvider, RestangularProvider, API_URL) {
+	$httpProvider.interceptors.push('authHttpInterceptor');
 	$locationProvider.html5Mode(true); 	// Enable HTML5 mode for Angular hashbang-based URL routing
 	RestangularProvider.setBaseUrl(API_URL.url + API_URL.loc); // Set base URL for Restangular requests
 	$routeProvider
@@ -78,29 +100,10 @@ app.config(function($routeProvider, $locationProvider, RestangularProvider, API_
 	});
 });
 
-app.factory('authHttpInterceptor', function($q, $location, $injector) {
-	return {
-		// Set auth token for all requests
-		request: function(config) {
-			var User = $injector.get('UserService');
-			if($location.path().split("/")[1] !== 'login')
-    			config.headers["X-Auth-Token"] = User.auth_token;
-    		return config;
-  		},
-		// Ensure auth token is still valid
-  		responseError: function(response) {
-  			var User = $injector.get('UserService');
-  			if(response.status === 401 && response.data.code === "invalid_auth_token") {
-				User.setLoggedOut();
-			}
-			return $q.reject(response);
-  		}
-	};
-});
-
 app.controller('MainCtrl', function($scope, API_URL, $rootScope, UserService, $timeout, Restangular, APIAuth) {
-	window.user = $rootScope.curruser = $scope.User = UserService;
+	$rootScope.curruser = $scope.User = UserService;
 	$rootScope.challenges = $rootScope.challenges || [];
+
 	// $rootScope.users = $rootScope.users || [];
 	// $rootScope.users.push({
 	// 	auth_token: "FAKEDATADELETE",
@@ -131,8 +134,28 @@ app.controller('MainCtrl', function($scope, API_URL, $rootScope, UserService, $t
 	// 		console.log(fail);
 	// 	});
 	// }
-});;app.controller('AdminCtrl', function($scope) {
-	console.log('In admin');
+});;app.controller('AdminCtrl', function($scope, APIUser) {
+	APIUser.getUsers().then(function(success) {
+		window.a = $scope.users = success.data;
+	}, function(fail) {
+		console.log(fail);
+	});
+
+	$scope.toggleDisabled = function(user) {
+		if(user.disabled) {
+			APIUser.enableUser(user.id).then(function(success){
+				user.disabled = 0;	
+			});
+		} else {
+			APIUser.disableUser(user.id).then(function(success) {
+				user.disabled = 1;
+			});
+		}
+	}
+
+	$scope.delete = function(user) {
+		console.log(user.name);
+	}
 });;app.factory('APIAuth', function(Restangular) {
 	return {
 		// Get users
@@ -156,17 +179,67 @@ app.controller('MainCtrl', function($scope, API_URL, $rootScope, UserService, $t
 			return Restangular.one('login').customPOST(credsObj);
 		}
 	}
-});;app.controller('ChallengeCtrl', function($routeParams, $scope, $rootScope) {
-	$scope.challenge = $rootScope.challenges[$routeParams.challengeid - 1];
-	$rootScope.page_title = !angular.isUndefined($scope.challenge.name) ? $scope.challenge.name + ' - ' + $rootScope.site_title : $rootScope.site_title;
-});;app.controller('CreateChallengeCtrl', function($scope, CreateChallengeService, APIAuth, $timeout, $rootScope) {
+});
+
+app.factory('APIChallenge', function(Restangular) {
+	return {
+		// Get challenges
+		getChallenges: function(userObj) {
+			return Restangular.one('getChallenges').customGET();
+		},
+
+		getChallenge: function(id) {
+			return Restangular.one('getChallenge').customGET(id);
+		},
+
+		// Create challenge
+		// nominee
+		// name
+		// goal
+		// description
+		// picture
+		// start_date
+		// challenge_length
+		createChallenge: function(challengeObj) {
+			return Restangular.one('createChallenge').customPOST(challengeObj);
+		}
+	}
+});
+
+app.factory('APIUser', function(Restangular) {
+	return {
+		getUsers: function() {
+			return Restangular.one('getUsers').customGET();
+		},
+
+		disableUser: function(id) {
+			return Restangular.one('changeUserStatus').customPOST({"id": id, "enabled": "false"});
+		},
+
+		enableUser: function(id) {
+			return Restangular.one('changeUserStatus').customPOST({"id": id, "enabled": "true"});
+		},
+
+		updateUser: function(userObj) {
+			return Restangular.one('editUser').customPOST(userObj);
+		} 
+	}
+});;app.controller('ChallengeCtrl', function($routeParams, $scope, $rootScope, APIChallenge) {
+	// $scope.challenge = $rootScope.challenges[$routeParams.challengeid - 1];
+	APIChallenge.getChallenge($routeParams.challengeid).then(function(success) {
+		$scope.challenge = success.data;
+		$rootScope.page_title = !angular.isUndefined($scope.challenge.name) ? $scope.challenge.name + ' - ' + $rootScope.site_title : $rootScope.site_title;
+	}, function(fail) {
+		console.log(fail);
+	});
+});;app.controller('CreateChallengeCtrl', function($scope, CreateChallengeService, APIAuth, $timeout, $rootScope, APIChallenge) {
 	// CreateChallengeService.enforceFormProgress(); // If the user hasn't started the challenge, send them back to the start
 	if(!$scope.challenge) CreateChallengeService.init(); // If this controller wasn't called with an existing challenge, cache the current (empty) data
 	$scope.challenge = CreateChallengeService;
 
-	if($rootScope.challenges.length) {
-		$scope.challenge.id = parseInt($rootScope.challenges[$rootScope.challenges.length - 1].id) + 1;
-	}
+	// if($rootScope.challenges.length) {
+	// 	$scope.challenge.id = parseInt($rootScope.challenges[$rootScope.challenges.length - 1].id) + 1;
+	// }
 
 	$scope.momentAdd = function(value, add, unit, format) {
 		add = add || 0;
@@ -184,7 +257,9 @@ app.controller('MainCtrl', function($scope, API_URL, $rootScope, UserService, $t
 			}
 			return;
 		}
-		$rootScope.challenges.push(angular.copy($scope.challenge));
+
+		APIChallenge.createChallenge($scope.challenge);
+		// $rootScope.challenges.push(angular.copy($scope.challenge));
 	}
 
 	$scope.onFileSelect = function($files) {
@@ -198,7 +273,7 @@ app.controller('MainCtrl', function($scope, API_URL, $rootScope, UserService, $t
 				var loadFilePreview = function(fileReader, index) {
 					fileReader.onload = function(e) {
 						$timeout(function() {
-							$scope.challenge.image = $scope.dataUrls[index] = e.target.result;
+							$scope.challenge.picture = $scope.dataUrls[index] = e.target.result;
 						});
 					}
 				}(fileReader, i);
@@ -219,15 +294,14 @@ app.controller('MainCtrl', function($scope, API_URL, $rootScope, UserService, $t
 		id: '',
 		status: '',
 		name: '',
-		image: '',
+		picture: '',
 		created: '',
 		description: '',
 		nominee: '',
 		goal: '0',
-		url: 'http://techpro.local/challenge/',
 		funded_amount: '0',
 		start_date: '',
-		duration: '',
+		challenge_length: '',
 		end_date: '',
 
 		// Caches the properties of the object so we can reset it later
@@ -425,7 +499,8 @@ app.filter('formatDate', function() {
 	return function(input, formatting) {
 		return moment(input).format(formatting);
 	}
-});;app.controller('ExploreCtrl', function($scope, $routeParams, $location, Restangular, $rootScope, API_URL){
+});;app.controller('ExploreCtrl', function($scope, $routeParams, $location, Restangular, $rootScope, API_URL, APIChallenge){
+	var placeholderchallenges;
 	$scope.sortOrFilters = {
 		"sort": '',
 		"filters": {
@@ -434,63 +509,63 @@ app.filter('formatDate', function() {
 		}
 	}
 	processParams();
-	var serverurl = 'http://techpro.local/';
+	APIChallenge.getChallenges().then(function(success) {
+		placeholderchallenges = success.data;
+		$rootScope.challenges = placeholderchallenges;
+		$scope.challenges = $rootScope.challenges;
+		filterChallenges();
+		console.log(success.data);
+	}, function(fail) {
+		console.log(fail);
+	});
 	// Temporary placeholders for challenge display, replace with data from API
-	var placeholderchallenges = [
-		{
-			id: '1',
-			name: 'ALS ice bucket challenge',
-			created: 'Sat Oct 25 2014 00:55:23 GMT-0700 (Pacific Daylight Time)',
-			image: '',
-			nominee: 'Enoch Yip',
-			url: serverurl + 'challenge/',
-			description: "Dump ice on yourself and pretend you're making a positive impact.",
-			funded_amount: '19',
-			goal: '50'
-		},
-		{
-			id: '2',
-			name: 'Swim in a volcano',
-			created: 'Wed Oct 29 2014 00:55:23 GMT-0700 (Pacific Daylight Time)',
-			image: '',
-			nominee: 'Danny Lieu',
-			url: serverurl + 'challenge/',
-			description: 'Self explanatory.',
-			funded_amount: '50000',
-			goal: '30000000'
-		},
-		{
-			id: '3',
-			name: 'Ask a white girl to coffee!!!',
-			created: 'Fri Oct 24 2014 00:55:23 GMT-0700 (Pacific Daylight Time)',
-			image: '',
-			nominee: 'Thanh Lai',
-			url: serverurl + 'challenge/',
-			description: '2T? (;',
-			funded_amount: '880000',
-			goal: '1000000'
-		},
-		{
-			id: '4',
-			name: 'Super cool challenge',
-			created: 'Wed Oct 15 2014 00:55:23 GMT-0700 (Pacific Daylight Time)',
-			image: '',
-			nominee: 'Daniel Engelhard',
-			url: serverurl + 'challenge/',
-			description: "",
-			funded_amount: '5',
-			goal: '99'
-		},
-	];
+	// var placeholderchallenges = [
+	// 	{
+	// 		id: '1',
+	// 		name: 'ALS ice bucket challenge',
+	// 		created: 'Sat Oct 25 2014 00:55:23 GMT-0700 (Pacific Daylight Time)',
+	// 		image: '',
+	// 		nominee: 'Enoch Yip',
+	// 		url: serverurl + 'challenge/',
+	// 		description: "Dump ice on yourself and pretend you're making a positive impact.",
+	// 		funded_amount: '19',
+	// 		goal: '50'
+	// 	},
+	// 	{
+	// 		id: '2',
+	// 		name: 'Swim in a volcano',
+	// 		created: 'Wed Oct 29 2014 00:55:23 GMT-0700 (Pacific Daylight Time)',
+	// 		image: '',
+	// 		nominee: 'Danny Lieu',
+	// 		url: serverurl + 'challenge/',
+	// 		description: 'Self explanatory.',
+	// 		funded_amount: '50000',
+	// 		goal: '30000000'
+	// 	},
+	// 	{
+	// 		id: '3',
+	// 		name: 'Ask a white girl to coffee!!!',
+	// 		created: 'Fri Oct 24 2014 00:55:23 GMT-0700 (Pacific Daylight Time)',
+	// 		image: '',
+	// 		nominee: 'Thanh Lai',
+	// 		url: serverurl + 'challenge/',
+	// 		description: '2T? (;',
+	// 		funded_amount: '880000',
+	// 		goal: '1000000'
+	// 	},
+	// 	{
+	// 		id: '4',
+	// 		name: 'Super cool challenge',
+	// 		created: 'Wed Oct 15 2014 00:55:23 GMT-0700 (Pacific Daylight Time)',
+	// 		image: '',
+	// 		nominee: 'Daniel Engelhard',
+	// 		url: serverurl + 'challenge/',
+	// 		description: "",
+	// 		funded_amount: '5',
+	// 		goal: '99'
+	// 	},
+	// ];
 
-	if($rootScope.challenges.length <= 1) {
-		placeholderchallenges.forEach(function(challenge) {
-			$rootScope.challenges.push(challenge);
-		});
-	}
-
-	$scope.challenges = $rootScope.challenges;
-	filterChallenges();
 	// Restangular.one('portal').all('category').getList().then(function(success) {
 	// 	$scope.categories = success;
 	// 	$scope.categories.forEach(function(category) {
@@ -637,7 +712,7 @@ app.filter('formatDate', function() {
 		if(!$scope.formData) UserService.init(); // Cache current data
 		$scope.formData = $scope.formData ? $scope.formData : UserService;
 
-		// $scope.formData.errors = [];
+		$scope.formData.errors = [];
 		// if(!$rootScope.users.length) {
 		// 	$scope.formData.errors.push({"message":"Please register first"});
 		// 	return;
@@ -652,6 +727,7 @@ app.filter('formatDate', function() {
 			UserService.setLoggedIn(success.data);
 		}, function(fail) {
 			console.log(fail.data);
+			$scope.formData.errors.push({"message":"Invalid credentials, try again"});
 		});
 
 		// $scope.formData.errors.push({"message":"Invalid credentials, try again"});
@@ -663,14 +739,14 @@ app.controller('RegCtrl', function($scope, UserService, $rootScope, APIAuth) {
 		if(!$scope.formData) UserService.init(); // Cache current data
 		$scope.formData = $scope.formData ? $scope.formData : UserService;
 		APIAuth.register($scope.formData).then(function(success) {
-			console.log(success.data);
+			// console.log(success.data);
+			$scope.formData.successful = {"message":"Account created, please login now!"};
 		}, function(fail) {
 			console.log(fail.data);
 		});
 		// $scope.formData.auth_token = "FAKEDATADELETE";
 		// $rootScope.users.push(angular.copy($scope.formData));
 		$scope.register_form.$setUntouched(); // Don't show any validation errors
-		// $scope.formData.successful = {"message":"Account created, please login now!"};
 		UserService.reset(); // Success, reset the form
 	}
 });;app.controller('NavCtrl', function($scope, CreateChallengeService, $location) {
@@ -678,8 +754,9 @@ app.controller('RegCtrl', function($scope, UserService, $rootScope, APIAuth) {
 	$scope.isActive = function (viewLocation) { 
         return $location.path().indexOf(viewLocation) == 0;
     };
-});;app.controller('ProfileCtrl', function($scope, $rootScope, $timeout, Restangular) {
+});;app.controller('ProfileCtrl', function($scope, $rootScope, $timeout, Restangular, UserService, APIUser) {
 	$scope.user = $rootScope.curruser;
+	$scope.newuser = copyNotValues(UserService);
 	$scope.newpass = [];
 
 	$scope.saveData = function($event) {
@@ -691,7 +768,16 @@ app.controller('RegCtrl', function($scope, UserService, $rootScope, APIAuth) {
 			}
 			return;
 		}
-		console.log('success');
+		// if($scope.newpass[1]) {
+			$scope.newuser.password = 'google';//$scope.newpass[1];
+		// }
+
+		APIUser.updateUser($scope.newuser).then(function(success) {
+			UserService.updateUserData(success.data);
+			console.log(success.data);
+		}, function(fail) {
+			console.log(fail);
+		});
 	}
 
 	$scope.onFileSelect = function($files) {
@@ -705,14 +791,25 @@ app.controller('RegCtrl', function($scope, UserService, $rootScope, APIAuth) {
 				var loadFilePreview = function(fileReader, index) {
 					fileReader.onload = function(e) {
 						$timeout(function() {
-							$scope.user.image = $scope.dataUrls[index] = e.target.result;
+							$scope.newuser.image = $scope.dataUrls[index] = e.target.result;
 						});
 					}
 				}(fileReader, i);
 			}
 		}
 	}
-});;app.service('UserService', function($location, $http, ipCookie, Restangular, $timeout, $rootScope) {
+
+	function copyNotValues(obj) {
+        var newObj = angular.copy(obj);
+        for (prop in newObj) {
+            if(newObj.hasOwnProperty(prop))
+            {
+                newObj[prop] = '';
+            }
+        };
+        return newObj;
+    }
+});;app.service('UserService', function($location, $http, ipCookie, Restangular, $timeout, $rootScope, APIUser) {
 	$rootScope.curruser = $rootScope.curruser ? $rootScope.curruser : {};
 	var User = {
 		email: '',

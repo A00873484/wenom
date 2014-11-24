@@ -3,7 +3,7 @@ app.controller('LoginCtrl', function($scope, UserService, $rootScope, $location,
 		if(!$scope.formData) UserService.init(); // Cache current data
 		$scope.formData = $scope.formData ? $scope.formData : UserService;
 
-		// $scope.formData.errors = [];
+		$scope.formData.errors = [];
 		// if(!$rootScope.users.length) {
 		// 	$scope.formData.errors.push({"message":"Please register first"});
 		// 	return;
@@ -18,6 +18,7 @@ app.controller('LoginCtrl', function($scope, UserService, $rootScope, $location,
 			UserService.setLoggedIn(success.data);
 		}, function(fail) {
 			console.log(fail.data);
+			$scope.formData.errors.push({"message":"Invalid credentials, try again"});
 		});
 
 		// $scope.formData.errors.push({"message":"Invalid credentials, try again"});
@@ -29,14 +30,14 @@ app.controller('RegCtrl', function($scope, UserService, $rootScope, APIAuth) {
 		if(!$scope.formData) UserService.init(); // Cache current data
 		$scope.formData = $scope.formData ? $scope.formData : UserService;
 		APIAuth.register($scope.formData).then(function(success) {
-			console.log(success.data);
+			// console.log(success.data);
+			$scope.formData.successful = {"message":"Account created, please login now!"};
 		}, function(fail) {
 			console.log(fail.data);
 		});
 		// $scope.formData.auth_token = "FAKEDATADELETE";
 		// $rootScope.users.push(angular.copy($scope.formData));
 		$scope.register_form.$setUntouched(); // Don't show any validation errors
-		// $scope.formData.successful = {"message":"Account created, please login now!"};
 		UserService.reset(); // Success, reset the form
 	}
 });

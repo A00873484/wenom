@@ -11,7 +11,8 @@ var app = angular.module('WeNomYou', [
 	'ngQuickDate',
 	'angularMoment',
 	'restangular',
-	'ipCookie'
+	'ipCookie',
+	'angular-loading-bar'
 ]);
 
 app.constant('API_URL', {
@@ -35,7 +36,28 @@ app.run(function($rootScope, $route, $location, $templateCache) {
 	});
 });
 
-app.config(function($routeProvider, $locationProvider, RestangularProvider, API_URL) {
+app.factory('authHttpInterceptor', function($q, $location, $injector) {
+	return {
+		// Set auth token for all requests
+		request: function(config) {
+			var User = $injector.get('UserService');
+			if($location.path().split("/")[1] !== 'login')
+    			config.headers["X-Auth-Token"] = User.auth_token;
+    		return config;
+  		},
+		// Ensure auth token is still valid
+  		responseError: function(response) {
+  			var User = $injector.get('UserService');
+  			if(response.status === 401 && response.data.code === "invalid_auth_token") {
+				User.setLoggedOut();
+			}
+			return $q.reject(response);
+  		}
+	};
+});
+
+app.config(function($routeProvider, $httpProvider, $locationProvider, RestangularProvider, API_URL) {
+	$httpProvider.interceptors.push('authHttpInterceptor');
 	$locationProvider.html5Mode(true); 	// Enable HTML5 mode for Angular hashbang-based URL routing
 	RestangularProvider.setBaseUrl(API_URL.url + API_URL.loc); // Set base URL for Restangular requests
 	$routeProvider
@@ -78,29 +100,10 @@ app.config(function($routeProvider, $locationProvider, RestangularProvider, API_
 	});
 });
 
-app.factory('authHttpInterceptor', function($q, $location, $injector) {
-	return {
-		// Set auth token for all requests
-		request: function(config) {
-			var User = $injector.get('UserService');
-			if($location.path().split("/")[1] !== 'login')
-    			config.headers["X-Auth-Token"] = User.auth_token;
-    		return config;
-  		},
-		// Ensure auth token is still valid
-  		responseError: function(response) {
-  			var User = $injector.get('UserService');
-  			if(response.status === 401 && response.data.code === "invalid_auth_token") {
-				User.setLoggedOut();
-			}
-			return $q.reject(response);
-  		}
-	};
-});
-
 app.controller('MainCtrl', function($scope, API_URL, $rootScope, UserService, $timeout, Restangular, APIAuth) {
-	window.user = $rootScope.curruser = $scope.User = UserService;
+	$rootScope.curruser = $scope.User = UserService;
 	$rootScope.challenges = $rootScope.challenges || [];
+
 	// $rootScope.users = $rootScope.users || [];
 	// $rootScope.users.push({
 	// 	auth_token: "FAKEDATADELETE",

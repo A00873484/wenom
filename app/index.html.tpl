@@ -21,10 +21,12 @@
 	<script type="text/javascript" src="bower_components/semantic-ui/build/packaged/javascript/semantic.min.js"></script>
 	<script type="text/javascript" src="bower_components/textAngular/dist/textAngular-sanitize.min.js"></script>
 	<script type="text/javascript" src="bower_components/textAngular/dist/textAngular.min.js"></script>
+	<script type="text/javascript" src="bower_components/angular-loading-bar/build/loading-bar.min.js"></script>
 	<link rel="stylesheet" href="bower_components/semantic-ui/build/packaged/css/semantic.css"> <!-- modified :1371 to work with ng-hide -->
 	<!-- <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css"> -->
 	<link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.min.css">
 	<link rel="stylesheet" href="bower_components/ngQuickDate/dist/ng-quick-date.css">
+	<link rel="stylesheet" href="bower_components/angular-loading-bar/build/loading-bar.min.css">
 	<link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
 	<%= scripts %>
 	<%= css %>

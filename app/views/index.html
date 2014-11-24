@@ -27,49 +27,37 @@
 	</div>
 </div> <!-- MASTER HEAD -->
 
-<!-- ============================================= PROMO -->
-<div class="ui center aligned basic promo segment"> <!-- ng-controller="ExploreCtrl" -->
-	<h1 class="ui center aligned header"> Be passionate, explore and share your challenges! </h1>
-	<a ng-href="explore?category={{category.id}}" ng-repeat="category in categories" class="ui random-color item huge label">
-		{{category.name}}
-	</a>
-</div>
-
 <!-- ============================================= RECENT PROJECTS -->
 <div id="recent-proj-wrap">
 	<div class="ui page grid">
-		<div ng-show="recentcampaigns.length" class="ui column">
-			<h2 class="ui left aligned header"><i class="time icon"></i> Recent Challenges </h2>	
+		<div ng-show="challenges" class="ui column" ng-controller="ExploreCtrl">
+			<h2 class="ui left aligned header"></i> Check out some challenges </h2>	
 			
-			<div class="ui three stackable items">
-				<a class="item campaign-listing" ng-href="{{'/' + campaign.uri_paths[0].path}}" ng-repeat="campaign in recentcampaigns | limitTo: 3">
-					<div class="item">
-						<div class="image">
-							<div class="ui right corner red label"><div class="text">New</div></div>
-							<img ng-repeat="file in campaign.files | filter:{region_id: RESOURCE_REGIONS.campaign.thumbnail} | orderBy:'-file_id' | limitTo: 1" ng-if="campaign.files[0].path_external" ng-src="{{server + '/image/h-421/' + file.path_external}}" class="ui image"/>
-							<img ng-if="!campaign.files[0].path_external" src="http://placehold.it/421x421&text=Image+unavailable" class="ui image"/>
-						</div> <!-- IMAGE -->
+					<div ng-show="challenges" class="ui three stackable items project-list">
+						<a class="item campaign-listing" ng-href="challenge/{{challenge.id}}" ng-repeat="challenge in challenges | inArray:filteredIds:'id' | orderBy:sortOrFilters.sort | limitTo: 3">
+							<div class="item">
+								<div ng-show="challenge.featured" class="ui right corner blue label"><i class="star icon"></i></div>
+									<div class="image">
+										<img ng-show="!challenge.image" src="http://placehold.it/428x285&text=Image+unavailable" class="ui image">
+										<img ng-show="challenge.image" ng-src="{{challenge.image}}" class="ui image">
+									</div>
+								<div class="content">
+									<div class="name"> {{challenge.name}} </div>
+<!-- 									<div class="meta" am-time-ago="challenge.created"></div>
+									<p class="description">
+										{{challenge.description}}
+									</p> -->
+								</div>
 
-						<div class="content">
-							<div class="meta" am-time-ago="campaign.created">{{campaign.created}}</div>
-							<div class="name">{{campaign.name}}</div>
-							
-							<p class="description">{{campaign.blurb}}</p>
-						</div>
-
-						<div class="campaign-stats">
-							<div class="ui successful progress">
-								<div class="bar" style="width: {{campaign.funded_amount / (campaign.funding_goal || 1) * 100 | number: 0}}%"></div>
+								<div class="campaign-stats">
+									<div class="ui successful progress">
+										<div class="bar" style="width: {{(challenge.funded_amount || 0) / (challenge.goal || 1) * 100 | number: 0}}%"></div>
+									</div>
+									<div class="meta">Funding: ${{challenge.goal}} ({{(challenge.funded_amount || 0) / (challenge.goal || 1) * 100 | number: 0}})%</div>
+								</div>
 							</div>
-							<div class="meta">{{campaign.funded_amount / (campaign.funding_goal || 1) * 100 | number: 0}}% Funded</div>
-						</div>
-
-						<div class="extra">
-							<i class="map marker icon"></i><span ng-repeat="city in campaign.cities">{{city.city_full}}</span>
-						</div> 
+						</a> <!-- ITEM -->
 					</div>
-				</a><!-- ITEM -->
-			</div>
 			
 		</div> 
 	</div>

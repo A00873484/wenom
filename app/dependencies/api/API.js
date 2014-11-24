@@ -22,3 +22,48 @@ app.factory('APIAuth', function(Restangular) {
 		}
 	}
 });
+
+app.factory('APIChallenge', function(Restangular) {
+	return {
+		// Get challenges
+		getChallenges: function(userObj) {
+			return Restangular.one('getChallenges').customGET();
+		},
+
+		getChallenge: function(id) {
+			return Restangular.one('getChallenge').customGET(id);
+		},
+
+		// Create challenge
+		// nominee
+		// name
+		// goal
+		// description
+		// picture
+		// start_date
+		// challenge_length
+		createChallenge: function(challengeObj) {
+			return Restangular.one('createChallenge').customPOST(challengeObj);
+		}
+	}
+});
+
+app.factory('APIUser', function(Restangular) {
+	return {
+		getUsers: function() {
+			return Restangular.one('getUsers').customGET();
+		},
+
+		disableUser: function(id) {
+			return Restangular.one('changeUserStatus').customPOST({"id": id, "enabled": "false"});
+		},
+
+		enableUser: function(id) {
+			return Restangular.one('changeUserStatus').customPOST({"id": id, "enabled": "true"});
+		},
+
+		updateUser: function(userObj) {
+			return Restangular.one('editUser').customPOST(userObj);
+		} 
+	}
+});
