@@ -254,6 +254,16 @@ body {
 /*================================================
 	GLOBAL CHANGES
 ================================================*/
+
+#logo {
+	// width: 40px;
+	div.logo {
+		background: url('../images/logo.png') top center;
+		// width: auto;
+		// height: 61px;
+	}
+}
+
 .clickable {
 	cursor: pointer;
 	color: blue;
@@ -309,10 +319,10 @@ body {
 	img {
 		float: left;
 		display: inline-block;
+		margin-right: 20px;
 	}
 
 	.author-info {
-		float: right;
 		display: inline-block;
 	}
 }

@@ -27,10 +27,10 @@ app.controller('ChallengeCtrl', function($routeParams, $scope, $rootScope, APICh
 	}
 
 	$scope.pledge = function(id, amount) {
+				$scope.challenge.funded_amount += +amount;
 		if(id && amount) {
 			APIChallenge.pledge(id, amount).then(function(success) {
 				console.log(success.data);
-				$scope.challenge.funded_amount += +amount;
 				$scope.pledged = true;
 				updatePledges();
 			});

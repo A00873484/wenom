@@ -28,6 +28,7 @@
 	<link rel="stylesheet" href="bower_components/ngQuickDate/dist/ng-quick-date.css">
 	<link rel="stylesheet" href="bower_components/angular-loading-bar/build/loading-bar.min.css">
 	<link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+	<link rel="shortcut icon" type="image/x-icon" href="favicon.ico"/>
 	<%= scripts %>
 	<%= css %>
 </head>
