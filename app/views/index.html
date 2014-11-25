@@ -53,7 +53,7 @@
 									<div class="ui successful progress">
 										<div class="bar" style="width: {{(challenge.funded_amount || 0) / (challenge.goal || 1) * 100 | number: 0}}%"></div>
 									</div>
-									<div class="meta">Funding: ${{challenge.goal}} ({{(challenge.funded_amount || 0) / (challenge.goal || 1) * 100 | number: 0}})%</div>
+									<div class="meta">Funding: ${{challenge.funded_amount}} / {{challenge.goal}} ({{(challenge.funded_amount || 0) / (challenge.goal || 1) * 100 | number: 0}}%)</div>
 								</div>
 							</div>
 						</a> <!-- ITEM -->

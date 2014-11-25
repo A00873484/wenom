@@ -72,19 +72,19 @@
 											<p ng-if="!dateInPast(challenge.ends)"> This campaign started on {{challenge.created | formatDate:"MMM DD YYYY"}} and will close on {{challenge.ends | formatDate:"MMMM DD YYYY (h:mma)"}}. </p>
 											<p ng-if="dateInPast(challenge.ends)"> This campaign has closed, funding is no longer available. </p>
 										</div>
-										<div ng-if="!dateInPast(challenge.ends)" class="three wide column">
+										<div ng-if="!dateInPast(challenge.ends) && challenge.funded_amount < challenge.goal" class="three wide column">
 											<form name="pledge_form" id="pledge_form" class="ui fluid form">
 												<h2>Contribute now</h2>
-												<div ng-show="!pledged" class="field">
+												<div ng-show="!pledged && $root.curruser.isLoggedIn()" class="field">
 													<input placeholder="$" ng-class="{'has-error': pledge_form.pledge.$invalid}" type="text" name="pledge" ng-model="challenge.pledge" numbers-only>
 												</div>
-												<button ng-show="!pledged" ng-click="pledge(challenge.id, challenge.pledge)" class="fluid ui blue button"> Count me in! </button>
+												<button ng-show="!pledged && $root.curruser.isLoggedIn()" ng-click="pledge(challenge.id, challenge.pledge)" class="fluid ui blue button"> Count me in! </button>
 												<div ng-show="pledged" class="ui positive message">
-													<i class="close icon"></i>
 													<div class="header">
 														Thanks for your contribution!
 													</div>
 												</div>
+												<h3 class="please-login" ng-show="!$root.curruser.isLoggedIn()"><a href="login">Please login to contribute</a></h3>
 											</form>
 										</div>
 									</div> <!-- LIST END -->
@@ -101,7 +101,7 @@
 						<div class="ui two column stackable grid">
 							<div class="ten wide column">
 								<div ng-repeat="pledge in pledges | orderBy: '-created_date'">
-									{{pledge.name}} pledged {{pledge.pledge_amount}} on {{pledge.created_date | formatDate:"MMM DD YYYY"}}
+									{{pledge.name}} pledged {{pledge.pledge_amount}} on {{pledge.created_date | formatDate:"MMM DD YYYY H:mm:ss"}}
 								</div>
 							</div> <!-- COLUMN END -->
 							<div class="six wide column">
@@ -142,19 +142,19 @@
 											<p ng-if="!dateInPast(challenge.ends)"> This campaign started on {{challenge.created | formatDate:"MMM DD YYYY"}} and will close on {{challenge.ends | formatDate:"MMMM DD YYYY (h:mma)"}}. </p>
 											<p ng-if="dateInPast(challenge.ends)"> This campaign has closed, funding is no longer available. </p>
 										</div>
-										<div ng-if="!dateInPast(challenge.ends)" class="three wide column">
+										<div ng-if="!dateInPast(challenge.ends) && challenge.funded_amount < challenge.goal" class="three wide column">
 											<form name="pledge_form" id="pledge_form" class="ui fluid form">
 												<h2>Contribute now</h2>
-												<div ng-show="!pledged" class="field">
+												<div ng-show="!pledged && $root.curruser.isLoggedIn()" class="field">
 													<input placeholder="$" ng-class="{'has-error': pledge_form.pledge.$invalid}" type="text" name="pledge" ng-model="challenge.pledge" numbers-only>
 												</div>
-												<button ng-show="!pledged" ng-click="pledge(challenge.id, challenge.pledge)" class="fluid ui blue button"> Count me in! </button>
+												<button ng-show="!pledged && $root.curruser.isLoggedIn()" ng-click="pledge(challenge.id, challenge.pledge)" class="fluid ui blue button"> Count me in! </button>
 												<div ng-show="pledged" class="ui positive message">
-													<i class="close icon"></i>
 													<div class="header">
 														Thanks for your contribution!
 													</div>
 												</div>
+												<h3 class="please-login" ng-show="!$root.curruser.isLoggedIn()"><a href="login">Please login to contribute</a></h3>
 											</form>
 										</div>
 									</div> <!-- LIST END -->

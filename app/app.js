@@ -114,25 +114,25 @@ app.config(function($routeProvider, $httpProvider, $locationProvider, Restangula
 	});
 });
 
-app.controller('MainCtrl', function($scope, API_URL, $rootScope, UserService, $timeout, Restangular, APIAuth, USER_ROLES) {
+app.controller('MainCtrl', function($scope, API_URL, $rootScope, $location, UserService, $timeout, Restangular, APIAuth, USER_ROLES) {
 	$rootScope.curruser = $scope.User = UserService;
 	$rootScope.challenges = $rootScope.challenges || [];
-	// $scope.$watch(function() {
-	// 	return $location.path();
-	// }, function(newValue, oldValue) {
-	// 	console.log(newValue);
-	// 	if (!User.isLoggedIn()) {
-	// 		if(newValue.split("/")[1] != "login" && newValue.split("/")[1] != "register" && newValue.split("/")[1] != "explore") {
-	// 			$location.path('/login');
-	// 		}
-	// 	} else {
-	// 		if(newValue.split("/")[1] == "admin" && User.user_level != USER_ROLES.admin) { // Make sure admin-only pages are off-limits to others
-	// 			$location.path('/');
-	// 		}
 
-	// 		if(newValue.split("/")[1] == "login" || newValue.split("/")[1] == "register") {
-	// 			$location.path('/');
-	// 		}
-	// 	}
-	// });
+	$scope.$watch(function() {
+		return $location.path();
+	}, function(newValue, oldValue) {
+		if (!UserService.isLoggedIn()) {
+			if(newValue.split("/")[1] != "login" && newValue.split("/")[1] != "register" && newValue.split("/")[1] != "explore" && newValue.split("/")[1] != "challenge") {
+				$location.path('/login');
+			}
+		} else {
+			if(newValue.split("/")[1] == "admin" && $rootScope.curruser.user_level != USER_ROLES.admin) { // Make sure admin-only pages are off-limits to others
+				$location.path('/');
+			}
+
+			if(newValue.split("/")[1] == "login" || newValue.split("/")[1] == "register") {
+				$location.path('/');
+			}
+		}
+	});
 });

@@ -1,3 +1,11 @@
+/*
+ * WeNomYou
+ * Project dependencies for the WeNomYou project
+ * @author Jay Huang, Daniel Engelhard, Enoch Yip
+ * @version 0.0.0
+ * License: BSD-2-Clause
+ */
+
 'use strict';
 
 var holdconsole = console;
@@ -114,27 +122,27 @@ app.config(function($routeProvider, $httpProvider, $locationProvider, Restangula
 	});
 });
 
-app.controller('MainCtrl', function($scope, API_URL, $rootScope, UserService, $timeout, Restangular, APIAuth, USER_ROLES) {
+app.controller('MainCtrl', function($scope, API_URL, $rootScope, $location, UserService, $timeout, Restangular, APIAuth, USER_ROLES) {
 	$rootScope.curruser = $scope.User = UserService;
 	$rootScope.challenges = $rootScope.challenges || [];
-	// $scope.$watch(function() {
-	// 	return $location.path();
-	// }, function(newValue, oldValue) {
-	// 	console.log(newValue);
-	// 	if (!User.isLoggedIn()) {
-	// 		if(newValue.split("/")[1] != "login" && newValue.split("/")[1] != "register" && newValue.split("/")[1] != "explore") {
-	// 			$location.path('/login');
-	// 		}
-	// 	} else {
-	// 		if(newValue.split("/")[1] == "admin" && User.user_level != USER_ROLES.admin) { // Make sure admin-only pages are off-limits to others
-	// 			$location.path('/');
-	// 		}
 
-	// 		if(newValue.split("/")[1] == "login" || newValue.split("/")[1] == "register") {
-	// 			$location.path('/');
-	// 		}
-	// 	}
-	// });
+	$scope.$watch(function() {
+		return $location.path();
+	}, function(newValue, oldValue) {
+		if (!UserService.isLoggedIn()) {
+			if(newValue.split("/")[1] != "login" && newValue.split("/")[1] != "register" && newValue.split("/")[1] != "explore" && newValue.split("/")[1] != "challenge") {
+				$location.path('/login');
+			}
+		} else {
+			if(newValue.split("/")[1] == "admin" && $rootScope.curruser.user_level != USER_ROLES.admin) { // Make sure admin-only pages are off-limits to others
+				$location.path('/');
+			}
+
+			if(newValue.split("/")[1] == "login" || newValue.split("/")[1] == "register") {
+				$location.path('/');
+			}
+		}
+	});
 });;app.controller('AdminCtrl', function($scope, APIUser) {
 	APIUser.getUsers().then(function(success) {
 		$scope.users = success.data;
@@ -248,7 +256,7 @@ app.factory('APIUser', function(Restangular) {
 	$scope.pledged = false;
 	// $scope.challenge = $rootScope.challenges[$routeParams.challengeid - 1];
 	APIChallenge.getChallenge($routeParams.challengeid).then(function(success) {
-		window.a = $scope.challenge = success.data;
+		$scope.challenge = success.data;
 		$rootScope.page_title = !angular.isUndefined($scope.challenge.name) ? $scope.challenge.name + ' - ' + $rootScope.site_title : $rootScope.site_title;
 		initAuthor();
 		updatePledges();
@@ -265,6 +273,13 @@ app.factory('APIUser', function(Restangular) {
 	function updatePledges() {
 		APIChallenge.getChallengePledges($scope.challenge.id).then(function(success) {
 			$scope.pledges = success.data;
+			convertDates();
+		});
+	}
+
+	function convertDates() {
+		$scope.pledges.forEach(function(pledge) {
+			pledge.created_date = new Date(pledge.created_date);
 		});
 	}
 
@@ -273,11 +288,10 @@ app.factory('APIUser', function(Restangular) {
 	}
 
 	$scope.pledge = function(id, amount) {
-				$scope.challenge.funded_amount += +amount;
 		if(id && amount) {
 			APIChallenge.pledge(id, amount).then(function(success) {
-				console.log(success.data);
 				$scope.pledged = true;
+				$scope.challenge.funded_amount = success.data;
 				updatePledges();
 			});
 		}

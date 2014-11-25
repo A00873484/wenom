@@ -76,18 +76,22 @@ body {
 ================================================*/
 
 #logo {
-	// width: 40px;
-	div.logo {
-		background: url('../images/logo.png') top center;
-		// width: auto;
-		// height: 61px;
-	}
+	background: url('../images/logo.png') no-repeat bottom;
+	background-size: 100%;
+	margin: 3px 10px 0 10px;
 }
 
 .clickable {
 	cursor: pointer;
 	color: blue;
 	text-decoration: underline;
+}
+
+.please-login {
+	text-decoration: underline;
+	color: red;
+	cursor: pointer;
+	margin: 5px 0;
 }
 
 .ui.progress {

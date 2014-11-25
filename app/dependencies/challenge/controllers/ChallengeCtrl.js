@@ -2,7 +2,7 @@ app.controller('ChallengeCtrl', function($routeParams, $scope, $rootScope, APICh
 	$scope.pledged = false;
 	// $scope.challenge = $rootScope.challenges[$routeParams.challengeid - 1];
 	APIChallenge.getChallenge($routeParams.challengeid).then(function(success) {
-		window.a = $scope.challenge = success.data;
+		$scope.challenge = success.data;
 		$rootScope.page_title = !angular.isUndefined($scope.challenge.name) ? $scope.challenge.name + ' - ' + $rootScope.site_title : $rootScope.site_title;
 		initAuthor();
 		updatePledges();
@@ -19,6 +19,13 @@ app.controller('ChallengeCtrl', function($routeParams, $scope, $rootScope, APICh
 	function updatePledges() {
 		APIChallenge.getChallengePledges($scope.challenge.id).then(function(success) {
 			$scope.pledges = success.data;
+			convertDates();
+		});
+	}
+
+	function convertDates() {
+		$scope.pledges.forEach(function(pledge) {
+			pledge.created_date = new Date(pledge.created_date);
 		});
 	}
 
@@ -27,11 +34,10 @@ app.controller('ChallengeCtrl', function($routeParams, $scope, $rootScope, APICh
 	}
 
 	$scope.pledge = function(id, amount) {
-				$scope.challenge.funded_amount += +amount;
 		if(id && amount) {
 			APIChallenge.pledge(id, amount).then(function(success) {
-				console.log(success.data);
 				$scope.pledged = true;
+				$scope.challenge.funded_amount = success.data;
 				updatePledges();
 			});
 		}
