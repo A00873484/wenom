@@ -1,11 +1,3 @@
-/*
- * WeNomYou
- * Project dependencies for the WeNomYou project
- * @author Jay Huang, Daniel Engelhard, Enoch Yip
- * @version 0.0.0
- * License: BSD-2-Clause
- */
-
 'use strict';
 
 var holdconsole = console;
