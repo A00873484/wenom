@@ -108,6 +108,48 @@ body {
   border-top-right-radius: 1px;
 }
 
+#pledge_form {
+	text-align: center;
+
+	.field {
+		input {
+			margin: 10px auto;
+		}
+	}
+
+	.header {
+		font-size: 1em;
+	}
+}
+
+.challenge-author {
+	background-color: #EEE;
+	padding: 20px;
+
+	img {
+		float: left;
+		display: inline-block;
+	}
+
+	.author-info {
+		float: right;
+		display: inline-block;
+	}
+}
+
+.bar {
+	max-width: 100%;
+}
+
+.nav-tabs {
+	.active {
+		// color: #01DF3A;
+		// background-color: #DDD !important;
+		font-weight: bold;
+		margin-bottom: 2px;
+	}
+}
+
 .ui.three.stackable.column.relaxed.grid { text-align: center; }
 .ui.button { text-transform: none; }
 a { text-decoration: none; }
@@ -558,12 +600,19 @@ blockquote p {
 		}
 	}
 	.campaign-listing {
-		// margin-bottom: 4.5em;
+		min-height: 250px;
+
+		.image {
+			max-height: 189px;
+		}
 		.content {
 			// min-height: 200px;
 			.name,
 			.description {
-				word-break: break-word;
+				// word-break: break-word;
+				white-space: nowrap;
+				text-overflow: ellipsis;
+				overflow: hidden;
 			}
 		}
 		.campaign-stats {

@@ -1,8 +1,17 @@
 'use strict';
 
-// Enable lines below to override console.log() statements for production
-// var console = {};
-// console.log = function(){};
+var holdconsole = console;
+function debug(bool){
+    if(!bool){
+        holdconsole = console;
+        console = {};
+        console.log = function(){};
+    } else
+        console = holdconsole;
+}
+
+debug(false);
+
 var app = angular.module('WeNomYou', [
 	'ngRoute',
 	'ui.bootstrap',
@@ -18,6 +27,11 @@ var app = angular.module('WeNomYou', [
 app.constant('API_URL', {
 	url: 'http://apitest.younom.me',
 	loc: '/apiservice.svc/'
+});
+
+app.constant('USER_ROLES', {
+	user: '0',
+	admin: '1'
 });
 
 app.run(function($rootScope, $route, $location, $templateCache) {
@@ -100,40 +114,27 @@ app.config(function($routeProvider, $httpProvider, $locationProvider, Restangula
 	});
 });
 
-app.controller('MainCtrl', function($scope, API_URL, $rootScope, UserService, $timeout, Restangular, APIAuth) {
+app.controller('MainCtrl', function($scope, API_URL, $rootScope, UserService, $timeout, Restangular, APIAuth, USER_ROLES) {
 	$rootScope.curruser = $scope.User = UserService;
 	$rootScope.challenges = $rootScope.challenges || [];
+	// $scope.$watch(function() {
+	// 	return $location.path();
+	// }, function(newValue, oldValue) {
+	// 	console.log(newValue);
+	// 	if (!User.isLoggedIn()) {
+	// 		if(newValue.split("/")[1] != "login" && newValue.split("/")[1] != "register" && newValue.split("/")[1] != "explore") {
+	// 			$location.path('/login');
+	// 		}
+	// 	} else {
+	// 		if(newValue.split("/")[1] == "admin" && User.user_level != USER_ROLES.admin) { // Make sure admin-only pages are off-limits to others
+	// 			$location.path('/');
+	// 		}
 
-	// $rootScope.users = $rootScope.users || [];
-	// $rootScope.users.push({
-	// 	auth_token: "FAKEDATADELETE",
-	// 	email: "jay@jayhuang.org",
-	// 	first_name: "Jay",
-	// 	password: "google",
-	// 	password_confirm: "google"
+	// 		if(newValue.split("/")[1] == "login" || newValue.split("/")[1] == "register") {
+	// 			$location.path('/');
+	// 		}
+	// 	}
 	// });
-
-	// window.a = function() {
-	// 	// Send request
-	// 	var acc = {"email":"jay@jayhuang.org", "password":"google"};
-	// 	Restangular.all('register').post(acc).then(
-	// 		function(success) {
-	// 			console.log(success.data);
-	// 		},
-	// 		function(fail) {
-	// 			console.log(fail);
-	// 		});
-	// }
-
-	// window.b = function() {
-	// 	APIAuth.getUser().then(function(success) {
-	// 		console.log(success);
-	// 		window.c = success;
-	// 	},
-	// 	function(fail) {
-	// 		console.log(fail);
-	// 	});
-	// }
 });;app.controller('AdminCtrl', function($scope, APIUser) {
 	APIUser.getUsers().then(function(success) {
 		$scope.users = success.data;
@@ -205,6 +206,14 @@ app.factory('APIChallenge', function(Restangular) {
 		// challenge_length
 		createChallenge: function(challengeObj) {
 			return Restangular.one('createChallenge').customPOST(challengeObj);
+		},
+
+		pledge: function(id, amount) {
+			return Restangular.one('makePledge').customPOST({'id': id, 'amount': amount});
+		},
+
+		getChallengePledges: function(id) {
+			return Restangular.one('getChallengePledges').customGET(id);
 		}
 	}
 });
@@ -236,20 +245,42 @@ app.factory('APIUser', function(Restangular) {
 		}
 	}
 });;app.controller('ChallengeCtrl', function($routeParams, $scope, $rootScope, APIChallenge, APIUser) {
+	$scope.pledged = false;
 	// $scope.challenge = $rootScope.challenges[$routeParams.challengeid - 1];
 	APIChallenge.getChallenge($routeParams.challengeid).then(function(success) {
-		window.b = $scope.challenge = success.data;
-		$scope.challenge.ends = "12/6/2013 9:36:30 PM";
+		window.a = $scope.challenge = success.data;
 		$rootScope.page_title = !angular.isUndefined($scope.challenge.name) ? $scope.challenge.name + ' - ' + $rootScope.site_title : $rootScope.site_title;
-		APIUser.getUser($scope.challenge.nominator).then(function(success) {
-			$scope.nominator = success.data;
-		});
+		initAuthor();
+		updatePledges();
 	}, function(fail) {
 		console.log(fail);
 	});
 
+	function initAuthor() {
+		APIUser.getUser($scope.challenge.nominator).then(function(success) {
+			$scope.nominator = success.data;
+		});
+	}
+
+	function updatePledges() {
+		APIChallenge.getChallengePledges($scope.challenge.id).then(function(success) {
+			$scope.pledges = success.data;
+		});
+	}
+
 	$scope.dateInPast = function(value) {
 		return moment(value) < moment(new Date());
+	}
+
+	$scope.pledge = function(id, amount) {
+		if(id && amount) {
+			APIChallenge.pledge(id, amount).then(function(success) {
+				console.log(success.data);
+				$scope.challenge.funded_amount += +amount;
+				$scope.pledged = true;
+				updatePledges();
+			});
+		}
 	}
 });;app.controller('CreateChallengeCtrl', function($scope, CreateChallengeService, APIAuth, $timeout, $rootScope, APIChallenge) {
 	// CreateChallengeService.enforceFormProgress(); // If the user hasn't started the challenge, send them back to the start
@@ -876,7 +907,7 @@ app.controller('RegCtrl', function($scope, UserService, $rootScope, APIAuth) {
 		if (!data) return false;
 
 		copyObjectProperties(data, User);
-		ipCookie('wenomyou.user', User, {expires: 239, expirationUnit: 'minutes'}); // Update the cookie data or new User data will be overwritten
+		ipCookie('wenomyou.user', User, {expires: 60, expirationUnit: 'minutes'}); // Update the cookie data or new User data will be overwritten
 	}
 
 	function copyObjectProperties(srcObj, destObj) {
@@ -903,7 +934,7 @@ app.controller('RegCtrl', function($scope, UserService, $rootScope, APIAuth) {
 		if(!data) return false;
 
 		copyObjectProperties(data, User);
-		console.log(ipCookie('wenomyou.user', data, {expires: 239, expirationUnit: 'minutes'})); // Server currently sets token expiry to 24 hours, prompt re-log before that
+		console.log(ipCookie('wenomyou.user', data, {expires: 60, expirationUnit: 'minutes'})); // Server currently sets token expiry to 24 hours, prompt re-log before that
 		$rootScope.curruser = angular.copy(User);
 		$location.path('/explore');
 		return true;

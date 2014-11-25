@@ -44,6 +44,14 @@ app.factory('APIChallenge', function(Restangular) {
 		// challenge_length
 		createChallenge: function(challengeObj) {
 			return Restangular.one('createChallenge').customPOST(challengeObj);
+		},
+
+		pledge: function(id, amount) {
+			return Restangular.one('makePledge').customPOST({'id': id, 'amount': amount});
+		},
+
+		getChallengePledges: function(id) {
+			return Restangular.one('getChallengePledges').customGET(id);
 		}
 	}
 });

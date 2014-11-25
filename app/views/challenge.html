@@ -10,16 +10,18 @@
 					<h1 class="ui header">{{challenge.name}}</h1>
 					<img ng-show="challenge.picture" ng-src="{{challenge.picture}}" width="480px" height="320px">
 				</div> <!-- COLUMN END -->
-				<div class="four wide right floated column">
-					<br>
-					<h4 class="ui header">{{nominator.first_name + " " + nominator.last_name}}</h4>
+				<div ng-show="nominator.email" class="four wide right floated column challenge-author">
 					<img ng-show="nominator.picture" ng-src="{{nominator.picture}}" width="120px" height="80px">
+					<div class="author-info">
+						<h4 class="ui header">{{nominator.first_name + " " + nominator.last_name}}</h4>
+						<span>{{nominator.email}}</span>
+					</div>
 				</div> <!-- COLUMN END -->
 			</div> <!-- HEADER GRID -->	
 
 			<!-- ============================================= CAMPAIGN BODY INFO -->
 			<tabset>
-				<tab>
+				<tab heading="Challenge">
 					<div class="ui challenge-info segment">
 						<div class="ui two column stackable grid">
 							<div class="ten wide column">
@@ -69,6 +71,91 @@
 										<div class="f-duration">
 											<p ng-if="!dateInPast(challenge.ends)"> This campaign started on {{challenge.created | formatDate:"MMM DD YYYY"}} and will close on {{challenge.ends | formatDate:"MMMM DD YYYY (h:mma)"}}. </p>
 											<p ng-if="dateInPast(challenge.ends)"> This campaign has closed, funding is no longer available. </p>
+										</div>
+										<div ng-if="!dateInPast(challenge.ends)" class="three wide column">
+											<form name="pledge_form" id="pledge_form" class="ui fluid form">
+												<h2>Contribute now</h2>
+												<div ng-show="!pledged" class="field">
+													<input placeholder="$" ng-class="{'has-error': pledge_form.pledge.$invalid}" type="text" name="pledge" ng-model="challenge.pledge" numbers-only>
+												</div>
+												<button ng-show="!pledged" ng-click="pledge(challenge.id, challenge.pledge)" class="fluid ui blue button"> Count me in! </button>
+												<div ng-show="pledged" class="ui positive message">
+													<i class="close icon"></i>
+													<div class="header">
+														Thanks for your contribution!
+													</div>
+												</div>
+											</form>
+										</div>
+									</div> <!-- LIST END -->
+
+									<!-- ================= CAMPAIGN PLEDGE -->
+									<!-- <div class="six wide column" ng-include="" src="'views/partials/campaign/pledge/campaign-pledge.html'"></div> -->
+								</div>
+							</div> <!-- TWO COLUMN GRID END -->
+						</div>
+					</div>
+				</tab>
+				<tab ng-show="pledges.length > 0" heading="Pledgers">
+					<div class="ui challenge-info segment">
+						<div class="ui two column stackable grid">
+							<div class="ten wide column">
+								<div ng-repeat="pledge in pledges | orderBy: '-created_date'">
+									{{pledge.name}} pledged {{pledge.pledge_amount}} on {{pledge.created_date | formatDate:"MMM DD YYYY"}}
+								</div>
+							</div> <!-- COLUMN END -->
+							<div class="six wide column">
+								<div class="funding-wrap">
+									<div class="ui f-balance list">
+										<div class="item">
+											<span class="c-value">{{"$" + challenge.funded_amount}}</span>
+										</div>
+										<div class="item">
+											<em class="c-meta"> Raised of <span>{{"$" + challenge.goal}}</span> goal </em>
+										</div>
+									</div> <!-- LIST END -->
+
+									<div class="ui successful progress">
+										<div class="bar" style="width: {{challenge.funded_amount || 0 / (challenge.goal || 1) * 100 | number: 0}}%"></div>
+									</div>
+									<div class="ui f-percent list">
+										<div class="item">
+											<span class="c-value"> {{challenge.funded_amount || 0 / (challenge.goal || 1) * 100 | number: 0}}% </span>
+										</div>
+										<div class="item">
+											<em class="c-meta"> Funded </em>
+										</div>
+									</div> <!-- LIST END -->
+
+									<div ng-show="challenge.challenge_length" class="ui f-days-left list"><!-- If it's not an ongoing campaign -->
+										<div class="item">
+											<span class="c-value">End date: {{challenge.ends | fromNow}}</span>
+										</div>
+										<!-- <div class="item">
+											<em class="c-meta">
+												{{challenge.ends | fromNow}} 
+												<span ng-if="!dateInPast(challenge.ends)">to go</span>
+												<span ng-if="dateInPast(challenge.ends)">ago</span>
+											</em>
+										</div> -->
+										<div class="f-duration">
+											<p ng-if="!dateInPast(challenge.ends)"> This campaign started on {{challenge.created | formatDate:"MMM DD YYYY"}} and will close on {{challenge.ends | formatDate:"MMMM DD YYYY (h:mma)"}}. </p>
+											<p ng-if="dateInPast(challenge.ends)"> This campaign has closed, funding is no longer available. </p>
+										</div>
+										<div ng-if="!dateInPast(challenge.ends)" class="three wide column">
+											<form name="pledge_form" id="pledge_form" class="ui fluid form">
+												<h2>Contribute now</h2>
+												<div ng-show="!pledged" class="field">
+													<input placeholder="$" ng-class="{'has-error': pledge_form.pledge.$invalid}" type="text" name="pledge" ng-model="challenge.pledge" numbers-only>
+												</div>
+												<button ng-show="!pledged" ng-click="pledge(challenge.id, challenge.pledge)" class="fluid ui blue button"> Count me in! </button>
+												<div ng-show="pledged" class="ui positive message">
+													<i class="close icon"></i>
+													<div class="header">
+														Thanks for your contribution!
+													</div>
+												</div>
+											</form>
 										</div>
 									</div> <!-- LIST END -->
 

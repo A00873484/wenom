@@ -1,8 +1,17 @@
 'use strict';
 
-// Enable lines below to override console.log() statements for production
-// var console = {};
-// console.log = function(){};
+var holdconsole = console;
+function debug(bool){
+    if(!bool){
+        holdconsole = console;
+        console = {};
+        console.log = function(){};
+    } else
+        console = holdconsole;
+}
+
+debug(false);
+
 var app = angular.module('WeNomYou', [
 	'ngRoute',
 	'ui.bootstrap',
@@ -18,6 +27,11 @@ var app = angular.module('WeNomYou', [
 app.constant('API_URL', {
 	url: 'http://apitest.younom.me',
 	loc: '/apiservice.svc/'
+});
+
+app.constant('USER_ROLES', {
+	user: '0',
+	admin: '1'
 });
 
 app.run(function($rootScope, $route, $location, $templateCache) {
@@ -100,38 +114,25 @@ app.config(function($routeProvider, $httpProvider, $locationProvider, Restangula
 	});
 });
 
-app.controller('MainCtrl', function($scope, API_URL, $rootScope, UserService, $timeout, Restangular, APIAuth) {
+app.controller('MainCtrl', function($scope, API_URL, $rootScope, UserService, $timeout, Restangular, APIAuth, USER_ROLES) {
 	$rootScope.curruser = $scope.User = UserService;
 	$rootScope.challenges = $rootScope.challenges || [];
+	// $scope.$watch(function() {
+	// 	return $location.path();
+	// }, function(newValue, oldValue) {
+	// 	console.log(newValue);
+	// 	if (!User.isLoggedIn()) {
+	// 		if(newValue.split("/")[1] != "login" && newValue.split("/")[1] != "register" && newValue.split("/")[1] != "explore") {
+	// 			$location.path('/login');
+	// 		}
+	// 	} else {
+	// 		if(newValue.split("/")[1] == "admin" && User.user_level != USER_ROLES.admin) { // Make sure admin-only pages are off-limits to others
+	// 			$location.path('/');
+	// 		}
 
-	// $rootScope.users = $rootScope.users || [];
-	// $rootScope.users.push({
-	// 	auth_token: "FAKEDATADELETE",
-	// 	email: "jay@jayhuang.org",
-	// 	first_name: "Jay",
-	// 	password: "google",
-	// 	password_confirm: "google"
+	// 		if(newValue.split("/")[1] == "login" || newValue.split("/")[1] == "register") {
+	// 			$location.path('/');
+	// 		}
+	// 	}
 	// });
-
-	// window.a = function() {
-	// 	// Send request
-	// 	var acc = {"email":"jay@jayhuang.org", "password":"google"};
-	// 	Restangular.all('register').post(acc).then(
-	// 		function(success) {
-	// 			console.log(success.data);
-	// 		},
-	// 		function(fail) {
-	// 			console.log(fail);
-	// 		});
-	// }
-
-	// window.b = function() {
-	// 	APIAuth.getUser().then(function(success) {
-	// 		console.log(success);
-	// 		window.c = success;
-	// 	},
-	// 	function(fail) {
-	// 		console.log(fail);
-	// 	});
-	// }
 });

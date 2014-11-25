@@ -31,7 +31,7 @@ app.service('UserService', function($location, $http, ipCookie, Restangular, $ti
 		if (!data) return false;
 
 		copyObjectProperties(data, User);
-		ipCookie('wenomyou.user', User, {expires: 239, expirationUnit: 'minutes'}); // Update the cookie data or new User data will be overwritten
+		ipCookie('wenomyou.user', User, {expires: 60, expirationUnit: 'minutes'}); // Update the cookie data or new User data will be overwritten
 	}
 
 	function copyObjectProperties(srcObj, destObj) {
@@ -58,7 +58,7 @@ app.service('UserService', function($location, $http, ipCookie, Restangular, $ti
 		if(!data) return false;
 
 		copyObjectProperties(data, User);
-		console.log(ipCookie('wenomyou.user', data, {expires: 239, expirationUnit: 'minutes'})); // Server currently sets token expiry to 24 hours, prompt re-log before that
+		console.log(ipCookie('wenomyou.user', data, {expires: 60, expirationUnit: 'minutes'})); // Server currently sets token expiry to 24 hours, prompt re-log before that
 		$rootScope.curruser = angular.copy(User);
 		$location.path('/explore');
 		return true;
